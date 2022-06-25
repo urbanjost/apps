@@ -1,9 +1,16 @@
-#numdiff(1)
+### fpm-tools : numdiff
 
-##NAME
+Build numdiff(1) using fpm(1):
+```bash
+git clone https://github.com/urbanjost/numdiff
+fpm install
+numdiff --help
+```
+
+## NAME
    numdiff(1f) - [DEVELOPER] Compare numeric differences in a file (LICENSE:PD)
 
-##SYNOPSIS
+## SYNOPSIS
 ```text
    numdiff
    -old FILENAME -new FILENAME
@@ -12,7 +19,7 @@
    [ --help|--version]
 ```
 
-##DESCRIPTION
+## DESCRIPTION
    NUMDIFF assumes two files are basically identical except for
    numeric differences, and finds values whose differences exceed
    a specified tolerance.
@@ -29,7 +36,7 @@
    is compiled with a new compiler or on a new platform it can help
    look for unexpected changes in answers.
 
-##OPTIONS
+## OPTIONS
    The options are
 
        -old       FILENAME name of file containing template values
@@ -52,7 +59,7 @@
 
        --version  display information on the code version and exit
 
-##USAGE
+## USAGE
        1. GENERATE TEMPLATE: call all your numeric procedures over
           their allowed ranges and print the values to a file on your
           original system.  Save this file as your master QA template.
@@ -66,7 +73,7 @@
    numdiff -old MASTER_TEMPLATE_FILE -new NEW_OUTPUT_FILE -percent 0.0001
 ```
 
-##EXAMPLE
+## EXAMPLE
    We will assume we have two files meeting the above criteria called
    "cray_results.txt" and "cygwin_results.txt". To compare the values
    we enter
@@ -80,7 +87,7 @@
    was found. Using numdiff(1) you can ignore most insignificant
    differences.
 
-###OUTPUT
+### OUTPUT
 ```text
        Results from the run are
 
@@ -193,8 +200,8 @@
        0         SUM=  0.6353636479675987E+05
 ```
 
-##AUTHOR
+## AUTHOR
        John S. Urban
 
-##LICENSE
+## LICENSE
        Public Domain
