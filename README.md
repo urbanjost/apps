@@ -1,4 +1,4 @@
-### fpm-tools : numdiff
+### fpm-tools : [numdiff](https://urbanjost.github.io/numdiff/)
 
 Build numdiff(1) using fpm(1):
 ```bash
