@@ -3,6 +3,7 @@
 Build numdiff(1) using fpm(1):
 ```bash
 git clone https://github.com/urbanjost/numdiff
+cd numdiff
 fpm install
 numdiff --help
 ```
