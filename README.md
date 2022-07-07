@@ -1,4 +1,4 @@
-### fpm-tools : [numdiff](https://urbanjost.github.io/numdiff/)
+### [fpm-tools](https://github.com/search?q="fpm-tools"%20in:topic%20language:fortran):[numdiff](https://urbanjost.github.io/numdiff/numdiff.1.html)
 
 Build numdiff(1) using fpm(1):
 ```bash
