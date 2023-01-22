@@ -1,13 +1,13 @@
 NAME
 ====
 
-**numdiff**(1f) - \[DEVELOPER\] Compare numeric differences in a file
-(LICENSE:PD)
+numdiff(1f) - \[DEVELOPER\] Compare numeric differences between two
+files (LICENSE:PD)
 
 SYNOPSIS
 ========
 
-**numdiff** **-old** *FILENAME* **-new** *FILENAME* \[ **-percent**
+numdiff **-old** FILENAME **-new** FILENAME \[ **-percent**
 REAL\_VALUE\|**-digits** N\|**-margin** XXX.XX\] \[ **-verbose**\]\| \[
 **--help**\|**--version**\]
 
@@ -33,9 +33,9 @@ OPTIONS
 
 The options are
 
-**-old** *FILENAME* name of file containing template values
+**-old** FILENAME name of file containing template values
 
-**-new** *FILENAME* name of file containing new values
+**-new** FILENAME name of file containing new values
 
 **-percent** REAL\_VALUE set threshold at which to report values as a
 percentage of the template value
@@ -64,7 +64,7 @@ USAGE
     or recompile using a new compiler run your QA program again and save
     the second file.
 
-3.  TEST/COMPARE: run the **numdiff**(1) program:
+3.  TEST/COMPARE: run the numdiff(1) program:
 
 <!-- -->
 
@@ -79,11 +79,11 @@ enter
 
          numdiff -old cray_results.txt -new cygwin_results.txt -percent 0.00001
 
-A **diff**(1) of the following input files would show every line, as one
+A diff(1) of the following input files would show every line, as one
 uses the "E" prefix for exponents, while the other uses "D". Even when a
-**diff**(1) would show few lines, you have to inspect each difference to
-see how large a difference in value was found. Using **numdiff**(1) you
-can ignore most insignificant differences.
+diff(1) would show few lines, you have to inspect each difference to see
+how large a difference in value was found. Using numdiff(1) you can
+ignore most insignificant differences.
 
 OUTPUT
 ------
