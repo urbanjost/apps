@@ -8,12 +8,23 @@ executable program(s).
 
 Most require being built in a POSIX environment.
 
-+ **f90split** - Michel Olagnons's version that splits Fortran source file into individual files
-+ **fcmd** - find the pathname of commands and optionally perform commands on them.
-+ **flower** - change case of free-format Fortran file; or remove code; or remove comments
-+ **lsup** - list permissions of pathname and directories in pathname
-+ **numdiff** - Compare numeric differences in a file
-+ **xpand** - expand tabs,remove trailing white space and adjacent blank lines somewhat like expand(1)
++ [**f90split**](https://github.com/urbanjost/apps/blob/main/f90split/README.md) - 
+  Michel Olagnons's version that splits Fortran source file into individual files
+
++ [**fcmd**](https://github.com/urbanjost/apps/blob/main/fcmd/README.md) - 
+  find the pathname of commands and optionally perform commands on them.
+
++ [**flower**](https://github.com/urbanjost/apps/blob/main/flower/README.md) - 
+  change case of free-format Fortran file; or remove code; or remove comments
+
++ [**lsup**](https://github.com/urbanjost/apps/blob/main/lsup/README.md) - 
+  list permissions of pathname and directories in pathname
+
++ [**numdiff**] (https://github.com/urbanjost/apps/blob/main/numdiff/README.md) -
+  Compare numeric differences in a file
+
++ [**xpand**](https://github.com/urbanjost/apps/blob/main/xpand/README.md) -
+  expand tabs,remove trailing white space and adjacent blank lines somewhat like expand(1)
 
 ### Building ...
 
