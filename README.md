@@ -13,13 +13,13 @@ small fpm(1) projects.
 
 Most require being built in a POSIX environment.
 + [**compute**](https://github.com/urbanjost/apps/blob/main/compute/README.md) - 
-  evaluate FORTRAN77-like mathematical expressions
+  evaluate FORTRAN77-like mathematical expressions in line mode
 
 + [**f90split**](https://github.com/urbanjost/apps/blob/main/f90split/README.md) - 
   Michel Olagnons's version that splits Fortran source file into individual files
 
 + [**fcmd**](https://github.com/urbanjost/apps/blob/main/fcmd/README.md) - 
-  find the pathname of commands and optionally perform commands on them.
+  find the pathname of commands and optionally perform commands on them
 
 + [**flower**](https://github.com/urbanjost/apps/blob/main/flower/README.md) - 
   change case of free-format Fortran file; or remove code; or remove comments
