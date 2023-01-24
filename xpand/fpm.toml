@@ -1,0 +1,22 @@
+# TOML file for fpm as described at https://github.com/fortran-lang/fpm/blob/master/manifest-reference.md
+name = "xpand"
+version = "1.0.0"
+license = "MIT"
+author = "John Urban"
+maintainer = "urbanjost@comcast.net"
+copyright = "2020 John Urban"
+description = "expand tabs from files"
+
+[[executable]]
+name="xpand"
+source-dir="app"
+main="xpand.f90"
+
+[dependencies.M_CLI2]
+git = "https://github.com/urbanjost/M_CLI2.git"
+
+[dependencies.M_io]
+git = "https://github.com/urbanjost/M_io.git"
+
+[dependencies.M_strings]
+git = "https://github.com/urbanjost/M_strings.git"

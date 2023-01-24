@@ -1,0 +1,19 @@
+# TOML file for fpm as described at https://github.com/fortran-lang/fpm/blob/master/manifest-reference.md
+name = "flower"
+version = "0.1.0"
+license = "MIT"
+maintainer = "urbanjost@comcast.net"
+copyright = "Copyright 2021, John S. Urban"
+author = "John S. Urban"
+description= "change case of Fortran free-format files"
+categories = ["Fortran", "apps", "fpm-tools"]
+keywords = ["fortran", "GPF", "General Purpose Fortran", "application" ]
+homepage = "https://github.com/urbanjost/flower.git"
+
+[[executable]]
+   name="flower"
+   source-dir="app"
+   main="flower.f90"
+   [executable.dependencies]
+   M_CLI2         = { git = "https://github.com/urbanjost/M_CLI2.git" }
+   M_io           = { git = "https://github.com/urbanjost/M_io.git" }

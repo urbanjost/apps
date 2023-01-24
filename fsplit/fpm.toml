@@ -1,0 +1,25 @@
+# TOML file for fpm as described at https://github.com/fortran-lang/fpm/blob/master/manifest-reference.md
+name        = "fsplit"
+version     = "0.1.0"
+license     = "MIT"
+author      = [ "M. Olagnon (Michel.Olagnon@ifremer.fr)", "Phil Garnatz, Cray Research Inc. ", "John S. Urban" ]
+maintainer  = "urbanjost@comcast.net"
+copyright   = "Copyright 2022, John S. Urban"
+description = "split Fortran files"
+categories  = ["Fortran"]
+keywords    = ["fortran", "split"]
+homepage    = "https://github.com/urbanjost/apps.git"
+
+[build]
+auto-executables = true
+auto-tests = true
+auto-examples = true
+
+[install]
+library = false
+
+[[executable]]
+   name="fsplit"
+   source-dir="app"
+   main="fsplit.c"
+   [executable.dependencies]
