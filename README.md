@@ -1,15 +1,19 @@
 # fpm tools and utilities
 
-A collection of fpm(1) projects that use the GPF (General Purpose
-Fortran) modules.
+A collection of small fpm(1) projects that use the GPF (General Purpose
+Fortran) modules to build utility programs.
 
-There is no simple hierarchy in github repositories, so this is one github
-repository that contains a number of directories that are independent
-fpm(1) projects that build executable program(s).
+These are generally miscellaneout small utility programs that are low activity
+that are unlikely to garner enough traffic to justify a separate repository.
+
+There is no simple hierarchy in github repositories that I found useful and the
+projects are relatively small so it is reasonable to create just one git(1) 
+project.
+
+Each directory is an independent fpm(1) project that builds an executable.
 
 Note most if not all of these programs are build as part of the General
-Purpose Fortran project with or without fpm(1). These are alternative
-small fpm(1) projects.
+Purpose Fortran project. These are alternative small fpm(1) projects.
 
 Most require being built in a POSIX environment.
 + [**compute**](https://github.com/urbanjost/apps/blob/main/compute/README.md) - 
