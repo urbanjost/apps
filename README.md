@@ -20,7 +20,7 @@ Most require being built in a POSIX environment.
 + [**lsup**](https://github.com/urbanjost/apps/blob/main/lsup/README.md) - 
   list permissions of pathname and directories in pathname
 
-+ [**numdiff**] (https://github.com/urbanjost/apps/blob/main/numdiff/README.md) -
++ [**numdiff**](https://github.com/urbanjost/apps/blob/main/numdiff/README.md) -
   Compare numeric differences in a file
 
 + [**xpand**](https://github.com/urbanjost/apps/blob/main/xpand/README.md) -
