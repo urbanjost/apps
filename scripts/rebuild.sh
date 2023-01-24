@@ -1,6 +1,6 @@
 #!/bin/bash
 export NAME
-for NAME in f90split fcmd flower lsup numdiff xpand
+for NAME in f90split fcmd flower lsup numdiff xpand compute
 do
    exec 2>&1
    # preprocess Fortran source

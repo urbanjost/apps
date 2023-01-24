@@ -1,12 +1,19 @@
 # fpm tools and utilities
 
-A collection of fpm(1) projects that use the GPF (General Purpose Fortran) modules
+A collection of fpm(1) projects that use the GPF (General Purpose
+Fortran) modules.
 
-There is no simple hierarchy in github repositories, so this is one github repository
-that contains a number of directories that are independent fpm(1) projects that build
-executable program(s).
+There is no simple hierarchy in github repositories, so this is one github
+repository that contains a number of directories that are independent
+fpm(1) projects that build executable program(s).
+
+Note most if not all of these programs are build as part of the General
+Purpose Fortran project with or without fpm(1). These are alternative
+small fpm(1) projects.
 
 Most require being built in a POSIX environment.
++ [**compute**](https://github.com/urbanjost/apps/blob/main/compute/README.md) - 
+  evaluate FORTRAN77-like mathematical expressions
 
 + [**f90split**](https://github.com/urbanjost/apps/blob/main/f90split/README.md) - 
   Michel Olagnons's version that splits Fortran source file into individual files
