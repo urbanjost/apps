@@ -55,6 +55,5 @@ flower --help
 Other programs in their own repositories ...
 
 + [**prep**](https://github.com/urbanjost/prep) - Fortran code preprocessor
-+ [**la**](https://github.com/urbanjost/la) - Linear algebra calculator
 + [**fpm-gdb**](https://github.com/urbanjost/fpm-gdb) - plug-in to call gdb(1) from fpm(1) on Linux
 + [**fpm-search**](https://github.com/urbanjost/fpm-search) - search through fpm(1) packages
