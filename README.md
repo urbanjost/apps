@@ -28,6 +28,9 @@ Most require being built in a POSIX environment.
 + [**flower**](https://github.com/urbanjost/apps/blob/main/flower/README.md) - 
   change case of free-format Fortran file; or remove code; or remove comments
 
++ [**la**](https://github.com/urbanjost/apps/blob/main/la/README.md) - 
+  interpret matrix expressions using a shell-like interface
+
 + [**lsup**](https://github.com/urbanjost/apps/blob/main/lsup/README.md) - 
   list permissions of pathname and directories in pathname
 

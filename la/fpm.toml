@@ -1,0 +1,20 @@
+# TOML file for fpm as described at https://github.com/fortran-lang/fpm/blob/master/manifest-reference.md
+name = "la"
+version = "1.0.0"
+license = "MIT"
+author = "John S. Urban"
+maintainer = "urbanjost@comcast.net"
+copyright = "2021 John S. Urban"
+description = "Linear Algebra laboratory"
+
+[dependencies]
+
+[dependencies.M_CLI2]
+   git = "https://github.com/urbanjost/M_CLI2.git"
+[dependencies.M_matrix]
+   git = "https://github.com/urbanjost/M_matrix.git"
+
+[[executable]]
+name = "la"
+source-dir = "app"
+main="la.f90"

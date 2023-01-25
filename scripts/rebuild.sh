@@ -1,6 +1,7 @@
 #!/bin/bash
+NAMES=${*:-'f90split fcmd flower lsup numdiff xpand compute la'}
 export NAME
-for NAME in f90split fcmd flower lsup numdiff xpand compute
+for NAME in $NAMES
 do
    exec 2>&1
    # preprocess Fortran source
