@@ -1,0 +1,97 @@
+$ifdef TESTPRG90
+$!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+$BLOCK HELP -file false-.1.man
+NAME
+       false-(1f) - [FUNIX] do nothing, unsuccessfully
+       (LICENSE:PD)
+
+SYNOPSIS
+       false- value [ --verbose][ --help| --version]
+
+DESCRIPTION
+       Exit with a status code indicating failure.
+OPTIONS
+       number     optional number of 1 to 32, which
+                  will be used to generate the exit
+                  status code if supported.
+       --help     display this help and exit
+       --version  output version information and exit
+       --verbose  display ASCII graphic of cockroach
+
+EXAMPLE
+      Bash example:
+
+         false- || echo Should print this
+
+         if false-
+         then
+            echo command got zero exit $?
+         else
+            echo command got non-zero exit $?
+         fi
+
+      Expected output::
+
+         ERROR STOP
+         Should print this
+         ERROR STOP
+         command got non-zero exit 1
+
+SEE ALSO
+       _true(1f)
+$BLOCK END
+$!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+$BLOCK VERSION
+PRODUCT:        GPF (General Purpose Fortran) utilities and examples
+PROGRAM:        false-(1f)
+DESCRIPTION:    do nothing, unsuccessfully
+VERSION:        1.0, 20170125
+AUTHOR:         John S. Urban
+LICENSE:        Public Domain
+$BLOCK END
+$!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+program false
+use M_kracken,       only : kracken, lget, iget
+use M_messages,      only : junroach
+use M_verify,         only : fstop
+use iso_fortran_env, only : ERROR_UNIT        ! access computing environment
+implicit none
+integer :: ios, istop
+
+call kracken('false',' -help .F. -version .F. -verbose .F.')
+call help_usage(lget('false_help'))      ! if -help option is present, display help text and exit
+call help_version(lget('false_version')) ! if -version option is present, display version text and exit
+if(lget('false_verbose'))then
+   call junroach('s')
+endif
+
+istop=iget('false_oo')
+
+select case(istop)
+case(1:32)
+   call fstop(istop)
+case default
+   !!error stop ''              ! get error returned to system and produce no message (hopefully -- compiler dependent)
+   !!error stop                 ! get error returned to system and produce no message (hopefully -- compiler dependent)
+   close(ERROR_UNIT,iostat=ios) ! try to stop default message
+   stop 1
+end select
+
+end program false
+$ENDIF
+$!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+$IFDEF PREP_TEST
+       This begins the section that will be processed by prep. Typically it is called by
+       prep -system -html -i FILENAME
+       if $SYSTEM commands are trusted
+
+   UNIT TEST OF false-
+
+        place unit test information in database
+$SYSTEM goodbad false- start -section 1
+
+        Execute program
+$SYSTEM false-           || goodbad false- good -section 1 && goodbad false- bad -section 1
+$SYSTEM false- --verbose || goodbad false- good -section 1 && goodbad false- bad -section 1
+$ENDIF
+$!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@

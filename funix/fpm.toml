@@ -1,0 +1,48 @@
+# TOML file for fpm as described at https://github.com/fortran-lang/fpm/blob/master/manifest-reference.md
+name = "funix"
+version = "1.0.0"
+license = "MIT"
+author = "John S. Urban"
+maintainer = "urbanjost@comcast.net"
+copyright = "2021 John S. Urban"
+description = "unix-like commands"
+
+[build]
+auto-executables = true
+auto-tests = true
+auto-examples = true
+
+[install]
+library = false
+
+[dependencies]
+
+[dependencies.M_kracken]
+   git = "https://github.com/urbanjost/M_kracken.git"
+[dependencies.M_calculator]
+   git = "https://github.com/urbanjost/M_calculator.git"
+[dependencies.M_history]
+   git = "https://github.com/urbanjost/M_history.git"
+[dependencies.M_readline]
+   git = "https://github.com/urbanjost/M_readline.git"
+[dependencies.M_io]
+   git = "https://github.com/urbanjost/M_io.git"
+[dependencies.M_msg]
+   git = "https://github.com/urbanjost/M_msg.git"
+[dependencies.M_system]
+   git = "https://github.com/urbanjost/M_system.git"
+[dependencies.M_CLI2]
+   git = "https://github.com/urbanjost/M_CLI2.git"
+[dependencies.M_random]
+   git = "https://github.com/urbanjost/M_random.git"
+[dependencies.M_time]
+   git = "https://github.com/urbanjost/M_time.git"
+[dependencies.M_stopwatch]
+   git = "https://github.com/urbanjost/M_stopwatch.git"
+[dependencies.M_CLI]
+   git = "https://github.com/urbanjost/M_CLI.git"
+#[dependencies.M_regex]
+#   git = "https://github.com/urbanjost/M_regex.git"
+#[dependencies.M_messages]
+#   git = "https://github.com/urbanjost/M_messages.git"
+

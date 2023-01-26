@@ -1,0 +1,70 @@
+$!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+program demo_system_link
+use M_kracken, only : kracken,lget,sgets,IPvalue
+use M_system,  only : system_link
+use M_system,  only : system_perror
+implicit none
+character(len=IPvalue),allocatable :: filenames(:)
+character(len=:),allocatable       :: oldname
+character(len=:),allocatable       :: newname
+integer                            :: ierr, i
+logical                            :: verbose
+   call kracken('link','-help .F. -version .F. -verbose .F.')
+   call help_usage(lget('link_help'))
+   call help_version(lget('link_version'))
+   verbose=lget('link_verbose')
+   filenames=sgets('link_oo')
+   i=0
+   do i=2,size(filenames),2
+      oldname=trim(filenames(i-1))
+      newname=trim(filenames(i))
+      ierr=system_link(oldname,newname)
+      if(ierr.ne.0)then
+         call system_perror('*link-*'//oldname//' '//newname)
+      elseif(verbose)then
+         write(*,'(a)')'*link-* linked '//oldname//' '//newname
+      endif
+   enddo
+   if(i.gt.size(filenames))then
+      write(*,*)'/*link-* error: odd number of files, leftover='//filenames(i-1:)
+   endif
+$!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+contains
+$!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+$BLOCK HELP -file link-.1.man
+NAME
+   link-(1f) - [FUNIX:FILESYSTEM] call the link(3c) function to create the specified file link
+   (LICENSE:PD)
+
+SYNOPSIS
+   link- [file newlink][file newlink][file newlink]...
+   link- OPTION
+
+DESCRIPTION
+   Call the link(3c) function to link the specified FILE.
+
+OPTIONS
+   FILES      list of file pairs to link [oldfile newfile]...
+   --verbose  toggle on verbose mode
+   --help     display this help and exit
+   --version  output version information and exit
+AUTHOR
+   John S. Urban
+LICENSE
+   Public Domain
+$BLOCK END
+$!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+$BLOCK VERSION
+PRODUCT:        GPF (General Purpose Fortran) utilities and examples
+PROGRAM:        link-(1f)
+DESCRIPTION:    link to file
+VERSION:        1.0, 2020-01-19
+AUTHOR:         John S. Urban
+REPORTING BUGS: http://www.urbanjost.altervista.org/
+HOME PAGE:      http://www.urbanjost.altervista.org/index.html
+LICENSE:        Public Domain. This is free software: you are free to change and redistribute it.
+                There is NO WARRANTY, to the extent permitted by law.
+$BLOCK END
+$!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+end program demo_system_link
+$!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@

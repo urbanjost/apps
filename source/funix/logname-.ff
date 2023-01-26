@@ -1,0 +1,45 @@
+program demo_system_getlogin
+use M_system, only : system_getlogin
+use M_kracken, only: kracken,lget
+implicit none
+character(len=:),allocatable :: name
+
+   call kracken('logname','-help .F. -version .F.')  ! crack command line
+   call help_usage(lget('logname_help'))             ! if -help present display help and exit
+   call help_version(lget('logname_version'))        ! if -version present display help and exit
+
+   name=system_getlogin()                            ! query login name
+   write(*,'(a)')name                                ! display login name
+contains
+$!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+$BLOCK HELP -file logname-.1.man
+NAME
+      logname-(1f) - [FUNIX] display login name
+      (LICENSE:PD)
+SYNOPSIS
+      logname- [ -help|-version]
+DESCRIPTION
+      Demonstrate call to system_getlogin(3f) (which calls getlogin(3c)
+OPTIONS
+       --help      display command help and exit
+       --version   output version information and exit
+EXAMPLE
+      Command usage:
+
+        logname-
+$BLOCK END
+$!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+$BLOCK VERSION
+PRODUCT:        GPF (General Purpose Fortran) utilities and examples
+PROGRAM:        logname-(1f)
+DESCRIPTION:    print login name using system_getlogin(3f)/getlogin(3c)
+VERSION:        1.0, 2016-12-02
+AUTHOR:         John S. Urban
+REPORTING BUGS: http://www.urbanjost.altervista.org/
+HOME PAGE:      http://www.urbanjost.altervista.org/index.html
+LICENSE:        Public Domain. This is free software: you are free to change and redistribute it.
+                There is NO WARRANTY, to the extent permitted by law.
+$BLOCK END
+$!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+end program demo_system_getlogin
+$!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@

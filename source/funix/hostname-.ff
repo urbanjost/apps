@@ -1,0 +1,47 @@
+program demo_system_gethostname
+use M_kracken, only : kracken, lget
+use M_system, only : system_gethostname
+implicit none
+character(len=:),allocatable :: name
+integer                      :: ierr
+   call kracken('hostname','-help .F. -version .F.')
+   call help_usage(lget('hostname_help'))
+   call help_version(lget('hostname_version'))
+   call system_gethostname(name,ierr)
+   write(*,'(a)')name
+contains
+$!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+$BLOCK HELP -file hostname-.1.man
+NAME
+    hostname-(1f) - [FUNIX] display hostname
+    (LICENSE:PD)
+SYNTAX
+    hostname- [ -help|-version]
+DESCRIPTION
+    Calls system_gethostname(3f), which calls get_hostname(3c) to determine
+    the current host name.
+OPTIONS
+       --help     display this help and exit
+       --version  output version information and exit
+EXAMPLE
+   Sample execution:
+
+    >hostname-
+    >buzz
+$BLOCK END
+$!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+$BLOCK VERSION
+PRODUCT:        GPF (General Purpose Fortran) utilities and examples
+PROGRAM:        hostname-(1f)
+DESCRIPTION:    print hostname
+VERSION:        1.0, 2016-12-01
+AUTHOR:         John S. Urban
+REPORTING BUGS: http://www.urbanjost.altervista.org/
+HOME PAGE:      http://www.urbanjost.altervista.org/index.html
+LICENSE:        Public Domain. This is free software: you are free to change and redistribute it.
+                There is NO WARRANTY, to the extent permitted by law.
+COMPILED:       Sun, Nov 27th, 2016 10:47:13 PM
+$BLOCK END
+$!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+end program demo_system_gethostname
+$!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@

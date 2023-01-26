@@ -28,6 +28,11 @@ Most require being built in a POSIX environment.
 + [**flower**](https://github.com/urbanjost/apps/blob/main/flower/README.md) - 
   change case of free-format Fortran file; or remove code; or remove comments
 
++ [**funix**](https://github.com/urbanjost/apps/blob/main/funix/README.md) - 
+  a collection of example programs mostly calling the M_system POSIX interface
+  that resemble (sometimes) Unix-like commands. Shows how to use fpm(1) to
+  call file-system-related packages.
+
 + [**la**](https://github.com/urbanjost/apps/blob/main/la/README.md) - 
   interpret matrix expressions using a shell-like interface
 
