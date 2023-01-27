@@ -33,6 +33,9 @@ Most require being built in a POSIX environment.
   that resemble (sometimes) Unix-like commands. Shows how to use fpm(1) to
   call file-system-related packages.
 
++ [**hashkeys**](https://github.com/urbanjost/apps/blob/main/la/README.md) - 
+  checksums of files
+
 + [**la**](https://github.com/urbanjost/apps/blob/main/la/README.md) - 
   interpret matrix expressions using a shell-like interface
 

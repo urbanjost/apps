@@ -1,0 +1,27 @@
+# TOML file for fpm as described at https://github.com/fortran-lang/fpm/blob/master/manifest-reference.md
+name = "hashkeys"
+version = "0.1.0"
+license = "Public Domain"
+author = "John S. Urban"
+maintainer = "urbanjost@comcast.net"
+copyright = "Copyright 2021 John S. Urban"
+description= "a collection of hash algorithm utility programs"
+categories = ["hash"]
+keywords = ["fortran", "hash" ]
+homepage = "https://github.com/urbanjost/hashkeys"
+
+[build]
+auto-executables = true
+auto-tests = true
+auto-examples = true
+
+[install]
+library = false
+
+[dependencies]
+M_hashkeys = { git = "https://github.com/urbanjost/M_hashkeys.git" }
+M_io       = { git = "https://github.com/urbanjost/M_io.git"       }
+M_kracken  = { git = "https://github.com/urbanjost/M_kracken.git"  }
+M_CLI2     = { git = "https://github.com/urbanjost/M_CLI2.git"     }
+M_strings  = { git = "https://github.com/urbanjost/M_strings.git"  }
+M_system   = { git = "https://github.com/urbanjost/M_system.git"   }

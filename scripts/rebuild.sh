@@ -1,5 +1,7 @@
 #!/bin/bash
+set -x
 EXE(){
+   set -x
    EXENAME=$1
    #  generate man page and install
    read VER VERSION OTHER <<< $($EXENAME --version|grep VERSION:|tail -n 1)
@@ -16,7 +18,7 @@ EXE(){
    man2html man/man1/$EXENAME.1 > docs/$EXENAME.1.html
    gzip -f man/man1/$EXENAME.1
 }
-NAMES=${*:-'f90split fcmd flower lsup numdiff xpand compute la funix'}
+NAMES=${*:-'f90split fcmd flower lsup numdiff xpand compute la funix hashkeys'}
 export NAME
 for NAME in $NAMES
 do
@@ -24,10 +26,10 @@ do
    # preprocess Fortran source
    export UFPP_DOCUMENT_DIR=$(pwd)
    case $NAME in
-   funix)
-    for SRC in source/funix/*.[fF][fF]
+   funix|hashkeys)
+    for SRC in source/$NAME/*.[fF][fF]
     do
-       prep F90 TESTPRG90 --noenv --comment doxygen --verbose -i source/$NAME/$SRC.[fF][fF] -o $NAME/app/$NAME.f90
+       prep F90 TESTPRG90 --noenv --comment doxygen --verbose -i $SRC -o $NAME/app/$NAME.f90
     done
     ;;
    *)
@@ -45,7 +47,7 @@ do
       mkdir -p docs/
       ford ford.md
    case $NAME in
-   funix)
+   funix|hashkeys)
       fpm run '*' --runner|while read LONGNAME
       do
          EXE $(basename $LONGNAME)
