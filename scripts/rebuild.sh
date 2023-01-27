@@ -18,7 +18,7 @@ EXE(){
    man2html man/man1/$EXENAME.1 > docs/$EXENAME.1.html
    gzip -f man/man1/$EXENAME.1
 }
-NAMES=${*:-'f90split fcmd flower lsup numdiff xpand compute la funix hashkeys'}
+NAMES=${*:-'f90split fcmd flower lsup numdiff xpand compute la sub funix hashkeys'}
 export NAME
 for NAME in $NAMES
 do

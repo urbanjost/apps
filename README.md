@@ -45,6 +45,9 @@ Most require being built in a POSIX environment.
 + [**numdiff**](https://github.com/urbanjost/apps/blob/main/numdiff/README.md) -
   Compare numeric differences in a file
 
++ [**sub**](https://github.com/urbanjost/apps/blob/main/sub/README.md) -
+  replace fixed strings in a file
+
 + [**xpand**](https://github.com/urbanjost/apps/blob/main/xpand/README.md) -
   expand tabs,remove trailing white space and adjacent blank lines somewhat like expand(1)
 
