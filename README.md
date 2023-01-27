@@ -53,8 +53,7 @@ Most require being built in a POSIX environment.
 
 ### Building ...
 
-For example, to build flower(1)
-flower(1) using fpm(1):
+For example, to build flower(1) using fpm(1):
 ```bash
 git clone https://github.com/urbanjost/apps
 cd apps/flower
