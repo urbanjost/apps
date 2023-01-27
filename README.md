@@ -3,7 +3,7 @@
 A collection of small fpm(1) projects that use the GPF (General Purpose
 Fortran) modules to build utility programs.
 
-These are generally miscellaneout small utility programs that are low activity
+These are generally miscellaneous small utility programs that are low activity
 that are unlikely to garner enough traffic to justify a separate repository.
 
 There is no simple hierarchy in github repositories that I found useful and the
@@ -12,7 +12,7 @@ project.
 
 Each directory is an independent fpm(1) project that builds an executable.
 
-Note most if not all of these programs are build as part of the General
+Note most if not all of these programs are also part of the General
 Purpose Fortran project. These are alternative small fpm(1) projects.
 
 Most require being built in a POSIX environment.
