@@ -1,7 +1,7 @@
 program tac
 !LICENSE:PD)
 use,intrinsic :: iso_fortran_env, only : stdin=>input_unit
-use M_io,      only : swallow, fileread
+use M_io,      only : filebyte, fileread
 use M_strings, only : switch
 use M_CLI2   , only : set_args, lget, sget, filenames=>unnamed, specified
 implicit none
@@ -21,12 +21,13 @@ character(len=:),allocatable :: pageout(:) ! array to hold file in memory
 integer                      :: i, j
 integer                      :: icount
    icount=size(filenames)
+   if(icount.eq.0)filenames=['-']
    do j=1,max(icount,1)
       ! allocate character array and copy file into it
       if(filenames(j).eq.'-')then
-         call swallow(5,pageout)
+         call filebyte(5,pageout)
       else
-         call swallow(filenames(j),pageout)
+         call filebyte(filenames(j),pageout)
       endif
       if(.not.allocated(pageout))then
          write(*,*)'*tac* failed to load file '//filenames(j)
@@ -47,6 +48,7 @@ character(len=1),allocatable :: chars(:,:) ! hold file as letters
 integer                      :: i, j
 integer                      :: icount
    icount=size(filenames)
+   if(icount.eq.0)filenames=['-']
    do j=1, max(1,icount)
       ! allocate character array and copy file into it
       if(allocated(pageout))deallocate(pageout)  ! release memory

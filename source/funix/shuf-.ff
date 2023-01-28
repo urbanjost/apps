@@ -48,7 +48,7 @@ LICENSE:        Public Domain. This is free software: you are free to change and
 $BLOCK END
 $!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 program shuf
-use M_io,      only : swallow
+use M_io,      only : filebyte
 use M_strings, only : notabs
 use M_random,  only : scramble, init_random_seed_by_system_clock
 use M_verify,   only : stderr
@@ -88,9 +88,9 @@ DONE : block
    do j=1,size(FILENAMES)
       ! allocate character array and copy file into it
       if(FILENAMES(j).eq.'-')then
-         call swallow(5,pageout)
+         call filebyte(5,pageout)
       else
-         call swallow(FILENAMES(j),pageout)
+         call filebyte(FILENAMES(j),pageout)
       endif
       if(.not.allocated(pageout))then
          call stderr('*shuf* failed to load file ',FILENAMES(j))

@@ -29,7 +29,8 @@ do
    funix|hashkeys)
     for SRC in source/$NAME/*.[fF][fF]
     do
-       prep F90 TESTPRG90 --noenv --comment doxygen --verbose -i $SRC -o $NAME/app/$NAME.f90
+       SHORTSRC=$(basename $(basename $SRC .ff) .FF)
+       prep F90 TESTPRG90 --noenv --comment doxygen --verbose -i $SRC -o $NAME/app/$SHORTSRC.f90
     done
     ;;
    *)
