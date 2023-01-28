@@ -1,0 +1,29 @@
+# TOML file for fpm as described at https://github.com/fortran-lang/fpm/blob/master/manifest-reference.md
+name = "examples"
+version = "0.1.0"
+license = "MIT"
+maintainer = "urbanjost@comcast.net"
+copyright = "Copyright 2021, John S. Urban"
+author = "John S. Urban"
+description= "General example programs"
+categories = ["Fortran", "apps"]
+keywords = ["fortran", "GPF", "General Purpose Fortran", "application", "example" ]
+homepage = "https://github.com/urbanjost/example.git"
+
+[build]
+external-modules = ["ifport", "dfport"]
+auto-executables = true
+auto-tests = true
+auto-examples = true
+
+[install]
+library = false
+
+[dependencies]
+#M_msg          = { git = "https://github.com/urbanjost/M_msg.git" }
+M_strings      = { git = "https://github.com/urbanjost/M_strings.git" }
+M_list         = { git = "https://github.com/urbanjost/M_list.git" }
+M_system       = { git = "https://github.com/urbanjost/M_system.git" }
+M_CLI2         = { git = "https://github.com/urbanjost/M_CLI2.git" }
+M_kracken      = { git = "https://github.com/urbanjost/M_kracken.git" }
+M_io           = { git = "https://github.com/urbanjost/M_io.git" }
