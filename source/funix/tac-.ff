@@ -1,7 +1,7 @@
 program tac
 !LICENSE:PD)
 use,intrinsic :: iso_fortran_env, only : stdin=>input_unit
-use M_io,      only : filebyte, fileread
+use M_io,      only : fileread
 use M_strings, only : switch
 use M_CLI2   , only : set_args, lget, sget, filenames=>unnamed, specified
 implicit none
@@ -25,9 +25,9 @@ integer                      :: icount
    do j=1,max(icount,1)
       ! allocate character array and copy file into it
       if(filenames(j).eq.'-')then
-         call filebyte(5,pageout)
+         call fileread(5,pageout)
       else
-         call filebyte(filenames(j),pageout)
+         call fileread(filenames(j),pageout)
       endif
       if(.not.allocated(pageout))then
          write(*,*)'*tac* failed to load file '//filenames(j)

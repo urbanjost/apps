@@ -98,14 +98,14 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)AUTHOR:         John S. Urban>',&
 '@(#)LICENSE:        Public Domain. This is free software: you are free to change and redistribute it.>',&
 '@(#)                There is NO WARRANTY, to the extent permitted by law.>',&
-'@(#)COMPILED:       2023-01-27 17:59:38 UTC-300>',&
+'@(#)COMPILED:       2023-01-27 19:59:12 UTC-300>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if --version was specified, stop
 endif
 end subroutine help_version
 program shuf
-use M_io,      only : swallow
+use M_io,      only : fileread
 use M_strings, only : notabs
 use M_random,  only : scramble, init_random_seed_by_system_clock
 use M_verify,   only : stderr
@@ -142,12 +142,13 @@ DONE : block
       exit DONE
    endif
 !-----------------------------------------------------------------------------------------------------------------------------------
+   if(size(FILENAMES)==0)FILENAMES=['-']
    do j=1,size(FILENAMES)
       ! allocate character array and copy file into it
       if(FILENAMES(j).eq.'-')then
-         call swallow(5,pageout)
+         call fileread(5,pageout)
       else
-         call swallow(FILENAMES(j),pageout)
+         call fileread(FILENAMES(j),pageout)
       endif
       if(.not.allocated(pageout))then
          call stderr('*shuf* failed to load file ',FILENAMES(j))

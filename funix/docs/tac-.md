@@ -45,11 +45,9 @@ EXAMPLES
 
 Typical usage:
 
-      tac /usr/bin/sort
+      tac myfile.txt
 
 SEE ALSO
 ========
 
-**tac(1),**
-
-:   cat(1)
+tac(1), cat(1)
