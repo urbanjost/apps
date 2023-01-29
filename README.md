@@ -19,6 +19,9 @@ Most require being built in a POSIX environment.
 + [**compute**](https://github.com/urbanjost/apps/blob/main/compute/README.md) - 
   evaluate FORTRAN77-like mathematical expressions in line mode
 
++ [**cprint**](https://github.com/urbanjost/apps/blob/main/cprint/README.md) - 
+  prints specified columns of a file
+
 + [**f90split**](https://github.com/urbanjost/apps/blob/main/f90split/README.md) - 
   Michel Olagnons's version that splits Fortran source file into individual files
 
