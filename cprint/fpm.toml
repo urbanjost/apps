@@ -27,3 +27,8 @@ M_system       = { git = "https://github.com/urbanjost/M_system.git" }
 M_CLI2         = { git = "https://github.com/urbanjost/M_CLI2.git" }
 M_kracken      = { git = "https://github.com/urbanjost/M_kracken.git" }
 M_io           = { git = "https://github.com/urbanjost/M_io.git" }
+
+[[executable]]
+name = "cprint"
+source-dir = "app/"
+main="cprint.f90"

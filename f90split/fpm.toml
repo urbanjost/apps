@@ -22,6 +22,7 @@ library = false
    name="f90split"
    source-dir="app"
    main="f90split.f90"
+
    [executable.dependencies]
    M_CLI2         = { git = "https://github.com/urbanjost/M_CLI2.git" }
    M_strings      = { git = "https://github.com/urbanjost/M_strings.git" }
