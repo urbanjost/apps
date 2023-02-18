@@ -14,26 +14,26 @@ flower \[ **--stat**\|\[ \[-**-nocomment**\|**--nocode**\]
 DESCRIPTION
 ===========
 
+flower(1) depends on the input being plain standard free-format Fortran
+so the output should be carefully checked.
+
 1.  flower(1) will convert free-format Fortran code to lowercase. It can
     also convert the code to uppercase. In each case comments and quoted
     text are left as-is.
 
-    This is a basic program that writes its results to stdout and does
-    not recognize Hollerith strings and preprocessor directives as
-    special cases.
-
-    Tabs should be expanded before processing the file.
-
-    flower(1) depends on the input being plain standard free-format
-    Fortran so the output should be carefully checked.
-
-2.  It may also be used to generate simple statistics about what
+2.  flower(3f) can additionally generate simple statistics about what
     percentage of the code is comments.
 
-3.  flower(1) can also be used to strip comments from the code.
+3.  flower(1) can strip comments from the code.
 
-4.  Lastly, the code can be removed so the comments can be used for
-    documentation or run through utilities like spell checkers.
+4.  Alternatively, the code can be removed so the comments can be used
+    for documentation or run through utilities like spell checkers.
+
+> This is a basic program that writes its results to stdout and does not
+> recognize Hollerith strings and preprocessor directives as special
+> cases.
+>
+> Tabs should be expanded before processing the file.
 
 OPTIONS
 =======

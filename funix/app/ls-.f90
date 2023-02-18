@@ -348,7 +348,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)DESCRIPTION:    list files in a directory>',&
 '@(#)VERSION:        1.0, 20161120>',&
 '@(#)AUTHOR:         John S. Urban>',&
-'@(#)COMPILED:       2023-01-28 22:02:43 UTC-300>',&
+'@(#)COMPILED:       2023-02-17 19:30:52 UTC-300>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if --version was specified, stop

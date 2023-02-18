@@ -1,6 +1,7 @@
 #!/bin/bash
 exec 2>&1
 set -x
+###############################################################################
 EXE(){
    EXENAME=$1
    #  generate man page and install
@@ -18,6 +19,7 @@ EXE(){
    man2html man/man1/$EXENAME.1 > docs/$EXENAME.1.html
    gzip -f man/man1/$EXENAME.1
 }
+###############################################################################
 NAMES=${*:-$(cd source;echo *)}
 export LNAME NAME
 export UFPP_DOCUMENT_DIR=$(pwd)
@@ -26,20 +28,23 @@ do
    # preprocess Fortran source
    NAME=$( basename "$LNAME" .ff )
    NAME=$( basename "$NAME" .FF )
+   : Long name is $LNAME
+   : Base name is $NAME
    #-----------------------------------------------
    case $LONGNAME in
    #-----------------------------------------------
    *.ff|*.FF)
     prep F90 TESTPRG90 --noenv --comment doxygen --verbose -i source/$NAME.[fF][fF] -o $NAME/app/$NAME.f90
+    ls -ld $NAME/app/$NAME.f90
     ;;
    #-----------------------------------------------
    *) # assumed to be a directory
-    for SRC in source/$NAME/*.[fF][fF]
+    for SRC in source/$NAME.[fF][fF]
     do
-       [ -r "$SCR" ] || continue
        SHORTSRC=$( basename "$SRC" .ff )
        SHORTSRC=$( basename "$SHORTSRC" .FF )
        prep F90 TESTPRG90 --noenv --comment doxygen --verbose -i $SRC -o $NAME/app/$SHORTSRC.f90
+       ls -ld $NAME/app/$SHORTSRC.f90
     done
     ;;
    #-----------------------------------------------

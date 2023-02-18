@@ -1,7 +1,6 @@
 ---
 src_dir: src
          app
-         test
 output_dir: docs/fpm-ford
 project: funix
 summary: Unix-like commands as seeds for fpm
