@@ -1,0 +1,396 @@
+-rwxrwxrwx 1 urbanjs urbanjs 16236 Feb 25 12:24 compute/app/compute.f90
+[  0%]                    compute.f90
+[ 50%]                    compute.f90  done.
+[ 50%]                        compute
+[100%]                        compute  done.
+[100%] Project compiled successfully.
+# Update: build/gfortran_2A42023B310FA28D/app/compute -> /home/urbanjs/venus/V600/.local/bin
+Reading file app/compute.f90
+
+Processing documentation comments...
+Correlating information from different parts of your project...
+
+Creating HTML documentation...
+
+Writing documentation to '/home/urbanjs/venus/V600/github/apps/compute/docs/fpm-ford'...
+
+Browse the generated documentation: file:///home/urbanjs/venus/V600/github/apps/compute/docs/fpm-ford/index.html
+[  0%]                        compute
+[100%]                        compute  done.
+[100%] Project compiled successfully.
+-rwxrwxrwx 1 urbanjs urbanjs 6967 Feb 25 12:24 cprint/app/cprint.f90
+# Update: build/gfortran_2A42023B310FA28D/app/cprint -> /home/urbanjs/venus/V600/.local/bin
+[  0%]                         cprint
+[100%]                         cprint  done.
+[100%] Project compiled successfully.
+-rw-rw-r-- 1 urbanjs urbanjs 7368 Feb 25 12:24 dw/app/dw.f90
+[  0%]                         dw.f90
+[ 50%]                         dw.f90  done.
+[ 50%]                             dw
+[100%]                             dw  done.
+[100%] Project compiled successfully.
+# Update: build/gfortran_2A42023B310FA28D/app/dw -> /home/urbanjs/venus/V600/.local/bin
+Reading file app/dw.f90
+
+Processing documentation comments...
+Correlating information from different parts of your project...
+
+Creating HTML documentation...
+
+Writing documentation to '/home/urbanjs/venus/V600/github/apps/dw/docs/fpm-ford'...
+Warning: error copying media directory /home/urbanjs/venus/V600/github/apps/dw/docs/images, [Errno 2] No such file or directory: '/home/urbanjs/venus/V600/github/apps/dw/docs/images'
+[  0%]                             dw
+[100%]                             dw  done.
+[100%] Project compiled successfully.
+-rwxrwxrwx 1 urbanjs urbanjs 57060 Feb 25 12:24 f90split/app/f90split.f90
+[  0%]                   f90split.f90
+[ 50%]                   f90split.f90  done.
+[ 50%]                       f90split
+[100%]                       f90split  done.
+[100%] Project compiled successfully.
+# Update: build/gfortran_2A42023B310FA28D/app/f90split -> /home/urbanjs/venus/V600/.local/bin
+Reading file app/f90split.f90
+
+Processing documentation comments...
+Correlating information from different parts of your project...
+
+Creating HTML documentation...
+
+Writing documentation to '/home/urbanjs/venus/V600/github/apps/f90split/docs/fpm-ford'...
+
+Browse the generated documentation: file:///home/urbanjs/venus/V600/github/apps/f90split/docs/fpm-ford/index.html
+[  0%]                       f90split
+[100%]                       f90split  done.
+[100%] Project compiled successfully.
+-rwxrwxrwx 1 urbanjs urbanjs 12453 Feb 25 12:24 fcmd/app/fcmd.f90
+[  0%]                       fcmd.f90
+[ 50%]                       fcmd.f90  done.
+[ 50%]                           fcmd
+[100%]                           fcmd  done.
+[100%] Project compiled successfully.
+# Update: build/gfortran_2A42023B310FA28D/app/fcmd -> /home/urbanjs/venus/V600/.local/bin
+Reading file app/fcmd.f90
+
+Processing documentation comments...
+Correlating information from different parts of your project...
+
+Creating HTML documentation...
+
+Writing documentation to '/home/urbanjs/venus/V600/github/apps/fcmd/docs/fpm-ford'...
+
+Browse the generated documentation: file:///home/urbanjs/venus/V600/github/apps/fcmd/docs/fpm-ford/index.html
+[  0%]                           fcmd
+[100%]                           fcmd  done.
+[100%] Project compiled successfully.
+-rwxrwxrwx 1 urbanjs urbanjs 15786 Feb 25 12:24 flower/app/flower.f90
+[  0%]                     flower.f90
+[ 50%]                     flower.f90  done.
+[ 50%]                         flower
+[100%]                         flower  done.
+[100%] Project compiled successfully.
+# Update: build/gfortran_2A42023B310FA28D/app/flower -> /home/urbanjs/venus/V600/.local/bin
+Reading file app/flower.f90
+
+Processing documentation comments...
+Correlating information from different parts of your project...
+
+Creating HTML documentation...
+
+Writing documentation to '/home/urbanjs/venus/V600/github/apps/flower/docs/fpm-ford'...
+
+Browse the generated documentation: file:///home/urbanjs/venus/V600/github/apps/flower/docs/fpm-ford/index.html
+[  0%]                         flower
+[100%]                         flower  done.
+[100%] Project compiled successfully.
+-rw-rw-r-- 1 urbanjs urbanjs 1000 Feb 25 12:24 funix/app/funix.[fF][fF].f90
+# Update: build/gfortran_2A42023B310FA28D/app/rmdir- -> /home/urbanjs/venus/V600/.local/bin
+# Update: build/gfortran_2A42023B310FA28D/app/pwd- -> /home/urbanjs/venus/V600/.local/bin
+# Update: build/gfortran_2A42023B310FA28D/app/link- -> /home/urbanjs/venus/V600/.local/bin
+# Update: build/gfortran_2A42023B310FA28D/app/sleep- -> /home/urbanjs/venus/V600/.local/bin
+# Update: build/gfortran_2A42023B310FA28D/app/funix -> /home/urbanjs/venus/V600/.local/bin
+# Update: build/gfortran_2A42023B310FA28D/app/rename- -> /home/urbanjs/venus/V600/.local/bin
+# Update: build/gfortran_2A42023B310FA28D/app/showumask- -> /home/urbanjs/venus/V600/.local/bin
+# Update: build/gfortran_2A42023B310FA28D/app/logname- -> /home/urbanjs/venus/V600/.local/bin
+# Update: build/gfortran_2A42023B310FA28D/app/kill- -> /home/urbanjs/venus/V600/.local/bin
+# Update: build/gfortran_2A42023B310FA28D/app/cmp- -> /home/urbanjs/venus/V600/.local/bin
+# Update: build/gfortran_2A42023B310FA28D/app/fmt- -> /home/urbanjs/venus/V600/.local/bin
+# Update: build/gfortran_2A42023B310FA28D/app/uname- -> /home/urbanjs/venus/V600/.local/bin
+# Update: build/gfortran_2A42023B310FA28D/app/realpath- -> /home/urbanjs/venus/V600/.local/bin
+# Update: build/gfortran_2A42023B310FA28D/app/basename- -> /home/urbanjs/venus/V600/.local/bin
+# Update: build/gfortran_2A42023B310FA28D/app/rev- -> /home/urbanjs/venus/V600/.local/bin
+# Update: build/gfortran_2A42023B310FA28D/app/ls- -> /home/urbanjs/venus/V600/.local/bin
+# Update: build/gfortran_2A42023B310FA28D/app/unlink- -> /home/urbanjs/venus/V600/.local/bin
+# Update: build/gfortran_2A42023B310FA28D/app/colrm- -> /home/urbanjs/venus/V600/.local/bin
+# Update: build/gfortran_2A42023B310FA28D/app/yes- -> /home/urbanjs/venus/V600/.local/bin
+# Update: build/gfortran_2A42023B310FA28D/app/echo- -> /home/urbanjs/venus/V600/.local/bin
+# Update: build/gfortran_2A42023B310FA28D/app/tr- -> /home/urbanjs/venus/V600/.local/bin
+# Update: build/gfortran_2A42023B310FA28D/app/time- -> /home/urbanjs/venus/V600/.local/bin
+# Update: build/gfortran_2A42023B310FA28D/app/ln- -> /home/urbanjs/venus/V600/.local/bin
+# Update: build/gfortran_2A42023B310FA28D/app/paste- -> /home/urbanjs/venus/V600/.local/bin
+# Update: build/gfortran_2A42023B310FA28D/app/shuf- -> /home/urbanjs/venus/V600/.local/bin
+# Update: build/gfortran_2A42023B310FA28D/app/printenv- -> /home/urbanjs/venus/V600/.local/bin
+# Update: build/gfortran_2A42023B310FA28D/app/touch- -> /home/urbanjs/venus/V600/.local/bin
+# Update: build/gfortran_2A42023B310FA28D/app/mv- -> /home/urbanjs/venus/V600/.local/bin
+# Update: build/gfortran_2A42023B310FA28D/app/expand- -> /home/urbanjs/venus/V600/.local/bin
+# Update: build/gfortran_2A42023B310FA28D/app/stat- -> /home/urbanjs/venus/V600/.local/bin
+# Update: build/gfortran_2A42023B310FA28D/app/seq- -> /home/urbanjs/venus/V600/.local/bin
+# Update: build/gfortran_2A42023B310FA28D/app/whoami- -> /home/urbanjs/venus/V600/.local/bin
+# Update: build/gfortran_2A42023B310FA28D/app/mkdir- -> /home/urbanjs/venus/V600/.local/bin
+# Update: build/gfortran_2A42023B310FA28D/app/hostname- -> /home/urbanjs/venus/V600/.local/bin
+# Update: build/gfortran_2A42023B310FA28D/app/mkfifo- -> /home/urbanjs/venus/V600/.local/bin
+# Update: build/gfortran_2A42023B310FA28D/app/tac- -> /home/urbanjs/venus/V600/.local/bin
+# Update: build/gfortran_2A42023B310FA28D/app/dirname- -> /home/urbanjs/venus/V600/.local/bin
+# Update: build/gfortran_2A42023B310FA28D/app/which- -> /home/urbanjs/venus/V600/.local/bin
+# Update: build/gfortran_2A42023B310FA28D/app/rm- -> /home/urbanjs/venus/V600/.local/bin
+# Update: build/gfortran_2A42023B310FA28D/app/tty- -> /home/urbanjs/venus/V600/.local/bin
+Reading file app/rmdir-.f90
+Reading file app/pwd-.f90
+Reading file app/link-.f90
+Reading file app/sleep-.f90
+Reading file app/main.f90
+Reading file app/rename-.f90
+Reading file app/showumask-.f90
+Reading file app/logname-.f90
+Reading file app/kill-.f90
+Reading file app/cmp-.f90
+Reading file app/fmt-.f90
+Reading file app/uname-.f90
+Reading file app/realpath-.f90
+Reading file app/basename-.f90
+Reading file app/rev-.f90
+Reading file app/ls-.f90
+Reading file app/unlink-.f90
+Reading file app/colrm-.f90
+Reading file app/yes-.f90
+Reading file app/echo-.f90
+Reading file app/tr-.f90
+Reading file app/time-.f90
+Reading file app/ln-.f90
+Reading file app/paste-.f90
+Reading file app/shuf-.f90
+Reading file app/printenv-.f90
+Reading file app/touch-.f90
+Reading file app/mv-.f90
+Reading file app/expand-.f90
+Reading file app/stat-.f90
+Reading file app/seq-.f90
+Reading file app/whoami-.f90
+Reading file app/mkdir-.f90
+Reading file app/hostname-.f90
+Reading file app/mkfifo-.f90
+Reading file app/funix.[fF][fF].f90
+Reading file app/tac-.f90
+Reading file app/dirname-.f90
+Reading file app/which-.f90
+Reading file app/rm-.f90
+Reading file app/tty-.f90
+
+Processing documentation comments...
+Correlating information from different parts of your project...
+
+Creating HTML documentation...
+
+Writing documentation to '/home/urbanjs/venus/V600/github/apps/funix/docs/fpm-ford'...
+
+Browse the generated documentation: file:///home/urbanjs/venus/V600/github/apps/funix/docs/fpm-ford/index.html
+[  0%]                         rmdir-
+[  2%]                         rmdir-  done.
+[  2%]                           pwd-
+[  5%]                           pwd-  done.
+[  5%]                          link-
+[  7%]                          link-  done.
+[  7%]                         sleep-
+[ 10%]                         sleep-  done.
+[ 10%]                          funix
+[ 12%]                          funix  done.
+[ 12%]                        rename-
+[ 15%]                        rename-  done.
+[ 15%]                     showumask-
+[ 17%]                     showumask-  done.
+[ 17%]                       logname-
+[ 20%]                       logname-  done.
+[ 20%]                          kill-
+[ 22%]                          kill-  done.
+[ 22%]                           cmp-
+[ 25%]                           cmp-  done.
+[ 25%]                           fmt-
+[ 27%]                           fmt-  done.
+[ 27%]                         uname-
+[ 30%]                         uname-  done.
+[ 30%]                      realpath-
+[ 32%]                      realpath-  done.
+[ 32%]                      basename-
+[ 35%]                      basename-  done.
+[ 35%]                           rev-
+[ 37%]                           rev-  done.
+[ 37%]                            ls-
+[ 40%]                            ls-  done.
+[ 40%]                        unlink-
+[ 42%]                        unlink-  done.
+[ 42%]                         colrm-
+[ 45%]                         colrm-  done.
+[ 45%]                           yes-
+[ 47%]                           yes-  done.
+[ 47%]                          echo-
+[ 50%]                          echo-  done.
+[ 50%]                            tr-
+[ 52%]                            tr-  done.
+[ 52%]                          time-
+[ 55%]                          time-  done.
+[ 55%]                            ln-
+[ 57%]                            ln-  done.
+[ 57%]                         paste-
+[ 60%]                         paste-  done.
+[ 60%]                          shuf-
+[ 62%]                          shuf-  done.
+[ 62%]                      printenv-
+[ 65%]                      printenv-  done.
+[ 65%]                         touch-
+[ 67%]                         touch-  done.
+[ 67%]                            mv-
+[ 70%]                            mv-  done.
+[ 70%]                        expand-
+[ 72%]                        expand-  done.
+[ 72%]                          stat-
+[ 75%]                          stat-  done.
+[ 75%]                           seq-
+[ 77%]                           seq-  done.
+[ 77%]                        whoami-
+[ 80%]                        whoami-  done.
+[ 80%]                         mkdir-
+[ 82%]                         mkdir-  done.
+[ 82%]                      hostname-
+[ 85%]                      hostname-  done.
+[ 85%]                        mkfifo-
+[ 87%]                        mkfifo-  done.
+[ 87%]                           tac-
+[ 90%]                           tac-  done.
+[ 90%]                       dirname-
+[ 92%]                       dirname-  done.
+[ 92%]                         which-
+[ 95%]                         which-  done.
+[ 95%]                            rm-
+[ 97%]                            rm-  done.
+[ 97%]                           tty-
+[100%]                           tty-  done.
+[100%] Project compiled successfully.
+-rw-rw-r-- 1 urbanjs urbanjs 1012 Feb 25 12:25 hashkeys/app/hashkeys.[fF][fF].f90
+# Update: build/gfortran_2A42023B310FA28D/app/hashkeys -> /home/urbanjs/venus/V600/.local/bin
+# Update: build/gfortran_2A42023B310FA28D/app/sha3 -> /home/urbanjs/venus/V600/.local/bin
+# Update: build/gfortran_2A42023B310FA28D/app/hasher -> /home/urbanjs/venus/V600/.local/bin
+# Update: build/gfortran_2A42023B310FA28D/app/digest -> /home/urbanjs/venus/V600/.local/bin
+Reading file app/hashkeys.[fF][fF].f90
+Reading file app/main.f90
+Reading file app/sha3.f90
+Reading file app/hasher.f90
+Reading file app/digest.f90
+
+Processing documentation comments...
+Correlating information from different parts of your project...
+
+Creating HTML documentation...
+
+Writing documentation to '/home/urbanjs/venus/V600/github/apps/hashkeys/docs/fpm-ford'...
+
+Browse the generated documentation: file:///home/urbanjs/venus/V600/github/apps/hashkeys/docs/fpm-ford/index.html
+[  0%]                       hashkeys
+[ 25%]                       hashkeys  done.
+[ 25%]                           sha3
+[ 50%]                           sha3  done.
+[ 50%]                         hasher
+[ 75%]                         hasher  done.
+[ 75%]                         digest
+[100%]                         digest  done.
+[100%] Project compiled successfully.
+-rw-rw-r-- 1 urbanjs urbanjs 11317 Feb 25 12:25 la/app/la.f90
+[  0%]                         la.f90
+[ 50%]                         la.f90  done.
+[ 50%]                             la
+[100%]                             la  done.
+[100%] Project compiled successfully.
+# Update: build/gfortran_2A42023B310FA28D/app/la -> /home/urbanjs/venus/V600/.local/bin
+Reading file app/la.f90
+
+Processing documentation comments...
+Correlating information from different parts of your project...
+
+Creating HTML documentation...
+
+Writing documentation to '/home/urbanjs/venus/V600/github/apps/la/docs/fpm-ford'...
+
+Browse the generated documentation: file:///home/urbanjs/venus/V600/github/apps/la/docs/fpm-ford/index.html
+[  0%]                             la
+[100%]                             la  done.
+[100%] Project compiled successfully.
+-rwxrwxrwx 1 urbanjs urbanjs 11201 Feb 25 12:25 lsup/app/lsup.f90
+Reading file app/lsup.f90
+
+Processing documentation comments...
+Correlating information from different parts of your project...
+
+Creating HTML documentation...
+
+Writing documentation to '/home/urbanjs/venus/V600/github/apps/lsup/docs/fpm-ford'...
+
+Browse the generated documentation: file:///home/urbanjs/venus/V600/github/apps/lsup/docs/fpm-ford/index.html
+-rwxrwxrwx 1 urbanjs urbanjs 70474 Feb 25 12:25 numdiff/app/numdiff.f90
+[  0%]                    numdiff.f90
+[ 50%]                    numdiff.f90  done.
+[ 50%]                        numdiff
+[100%]                        numdiff  done.
+[100%] Project compiled successfully.
+# Update: build/gfortran_2A42023B310FA28D/app/numdiff -> /home/urbanjs/venus/V600/.local/bin
+Reading file app/numdiff.f90
+Reading file test/check.f90
+
+Processing documentation comments...
+Correlating information from different parts of your project...
+
+Creating HTML documentation...
+
+Writing documentation to '/home/urbanjs/venus/V600/github/apps/numdiff/docs/fpm-ford'...
+
+Browse the generated documentation: file:///home/urbanjs/venus/V600/github/apps/numdiff/docs/fpm-ford/index.html
+[  0%]                        numdiff
+[100%]                        numdiff  done.
+[100%] Project compiled successfully.
+-rw-rw-r-- 1 urbanjs urbanjs 12827 Feb 25 12:25 sub/app/sub.f90
+[  0%]                        sub.f90
+[ 50%]                        sub.f90  done.
+[ 50%]                            sub
+[100%]                            sub  done.
+[100%] Project compiled successfully.
+# Update: build/gfortran_2A42023B310FA28D/app/sub -> /home/urbanjs/venus/V600/.local/bin
+Reading file app/sub.f90
+
+Processing documentation comments...
+Correlating information from different parts of your project...
+
+Creating HTML documentation...
+
+Writing documentation to '/home/urbanjs/venus/V600/github/apps/sub/docs/fpm-ford'...
+
+Browse the generated documentation: file:///home/urbanjs/venus/V600/github/apps/sub/docs/fpm-ford/index.html
+[  0%]                            sub
+[100%]                            sub  done.
+[100%] Project compiled successfully.
+-rw-rw-r-- 1 urbanjs urbanjs 5137 Feb 25 12:25 xpand/app/xpand.f90
+[  0%]                      xpand.f90
+[ 50%]                      xpand.f90  done.
+[ 50%]                          xpand
+[100%]                          xpand  done.
+[100%] Project compiled successfully.
+# Update: build/gfortran_2A42023B310FA28D/app/xpand -> /home/urbanjs/venus/V600/.local/bin
+Reading file app/xpand.f90
+
+Processing documentation comments...
+Correlating information from different parts of your project...
+
+Creating HTML documentation...
+
+Writing documentation to '/home/urbanjs/venus/V600/github/apps/xpand/docs/fpm-ford'...
+
+Browse the generated documentation: file:///home/urbanjs/venus/V600/github/apps/xpand/docs/fpm-ford/index.html
+[  0%]                          xpand
+[100%]                          xpand  done.
+[100%] Project compiled successfully.

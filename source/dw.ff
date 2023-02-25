@@ -10,12 +10,13 @@ integer                       :: stat, i, ios, icount
 character(len=:), allocatable :: line, last, lastline, downword
 character(len=:), allocatable :: array(:) ! output array of tokens
 logical :: verbose
+logical :: debug=.false.
 character,parameter :: &
 & int*(*)   = '1234567890', &
 & low*(*)   = 'abcdefghijklmnopqrstuvwxyz', &
 & upp*(*)   = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', &
 & punc*(*)  = "!""#$%&'()*+,-./:;<=>?@[\]^_`{|}~", &
-& dw*(*)  = "!""#$%&'+,-:;<>?@\^`|~", &
+& dw*(*)  = "!""#$%& '+,-:;<>?@\^`|~", &
 & blank*(*) = ' ', &
 & tab       = char(11), &
 & prnt*(*) = int//low//upp//blank//punc
@@ -24,23 +25,38 @@ character,parameter :: &
    icount = 0
    open (unit=stdin, pad='yes')
    call setup()
+   if(debug)write(*,*)'<DEBUG> dw::'
    INFINITE: do while (read_line(line, ios=stat) == 0)
+      if(debug)write(*,*)'<DEBUG> read line ::',icount,line
       icount = icount + 1
       call split(line, array, dw)
       do i = 1, size(array)
          downword=trim(adjustl(lower(array(i))))
+         if(debug)write(*,*)'<DEBUG> compare',downword,last,'',array(i)
          if (downword .eq. last) then
-            if(len(downword) == 1 .and. index('IA',downword) == 0)then
+
+            if(debug)write(*,*)'<DEBUG> process duplicate ',downword
+
+            if(len(downword) == 1 .and. index('ia',downword) == 0)then
+               if(debug)write(*,*)'<DEBUG>skip one character word ',downword
             elseif(index(downword,'(') /= 0)then
+               if(debug)write(*,*)'<DEBUG>skip ',downword
             elseif(index(downword,')') /= 0)then
+               if(debug)write(*,*)'<DEBUG>skip ',downword
             elseif(array(i) == blank)then
+               if(debug)write(*,*)'<DEBUG>skip blank ',downword
             elseif(verify(array(i), int//blank) == 0)then ! whole number
+               if(debug)write(*,*)'<DEBUG>skip digits ',downword
             elseif(i==1)then
                   write (*, '(i0.6,1x,a)') icount-1, trim(last)//'::'//trim(lastline)
-                  write (*, '(i0.6,1x,a)') icount, trim(last)//'::'//trim(line)
+                  write (*, '(7x,a)') trim(last)//'::'//trim(line)
+                  if(debug)write(*,*)'<DEBUG> duplicate in adjacent lines'
             else
                   write (*, '(i0.6,1x,a)') icount, trim(last)//'::'//trim(line)
+                  if(debug)write(*,*)'<DEBUG> duplicate in current line'
             endif
+         else
+               if(debug)write(*,*)'<DEBUG> no duplicate in ',line
          endif
          last = downword
          lastline = line
@@ -56,7 +72,7 @@ subroutine setup()
 use M_CLI2,  only : set_mode, set_args, get_args
 character(len=:),allocatable :: help_text(:), version_text(:)
 $!=============================================================================
-$BLOCK variable --varname help_text
+$BLOCK variable --varname help_text -width 80
 NAME
    dw(1f) - [TEXT] find duplicate words
    (LICENSE:PD)
@@ -70,8 +86,8 @@ DESCRIPTION
    duplicated word and the line it occurs on when a word appears twice
    in succession. Each duplicate word is prefixed by its line number.
 
-   A word starts with a letter or underscore, and is followed by zero
-   or more letters, underscores, or digits. Letter case is ignored.
+   A reasonable guess is made as to what constitutes a reasonable word.
+   Letter case is ignored.
 
    This is a handy tool for finding a common typographical error in
    documentation.
@@ -115,8 +131,9 @@ $!=============================================================================
 call set_mode([character(len=20) :: 'strict','ignorecase'])
 ! a single call to set_args can define the options and their defaults, set help
 ! text and version information, and crack command line.
-call set_args( ' ',help_text,version_text)
+call set_args( '--debug F',help_text,version_text)
 call get_args('verbose',verbose)
+call get_args('debug',debug)
 end subroutine setup
 
 end program demo_split

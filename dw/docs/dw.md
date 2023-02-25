@@ -15,8 +15,8 @@ dw(1) filters its standard input, printing on standard output the
 duplicated word and the line it occurs on when a word appears twice in
 succession. Each duplicate word is prefixed by its line number.
 
-A word starts with a letter or underscore, and is followed by zero or
-more letters, underscores, or digits. Letter case is ignored.
+A reasonable guess is made as to what constitutes a reasonable word.
+Letter case is ignored.
 
 This is a handy tool for finding a common typographical error in
 documentation.
