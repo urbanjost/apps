@@ -7,20 +7,43 @@ use M_io, only: read_line
 use M_strings, only: split, lower
 implicit none
 integer                       :: stat, i, ios, icount
-character(len=:), allocatable :: line, last
+character(len=:), allocatable :: line, last, lastline, downword
 character(len=:), allocatable :: array(:) ! output array of tokens
+logical :: verbose
+character,parameter :: &
+& int*(*)   = '1234567890', &
+& low*(*)   = 'abcdefghijklmnopqrstuvwxyz', &
+& upp*(*)   = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', &
+& punc*(*)  = "!""#$%&'()*+,-./:;<=>?@[\]^_`{|}~", &
+& dw*(*)  = "!""#$%&'+,-:;<>?@\^`|~", &
+& blank*(*) = ' ', &
+& tab       = char(11), &
+& prnt*(*) = int//low//upp//blank//punc
    last = ' '
+   lastline = ' '
    icount = 0
    open (unit=stdin, pad='yes')
    call setup()
    INFINITE: do while (read_line(line, ios=stat) == 0)
       icount = icount + 1
-      call split(line, array, ' ,;!.?&')
+      call split(line, array, dw)
       do i = 1, size(array)
-         if (lower(array(i)) .eq. last) then
-            write (*, '(i0.6,1x,a)') icount, trim(last)//'::'//trim(line)
+         downword=trim(adjustl(lower(array(i))))
+         if (downword .eq. last) then
+            if(len(downword) == 1 .and. index('IA',downword) == 0)then
+            elseif(index(downword,'(') /= 0)then
+            elseif(index(downword,')') /= 0)then
+            elseif(array(i) == blank)then
+            elseif(verify(array(i), int//blank) == 0)then ! whole number
+            elseif(i==1)then
+                  write (*, '(i0.6,1x,a)') icount-1, trim(last)//'::'//trim(lastline)
+                  write (*, '(i0.6,1x,a)') icount, trim(last)//'::'//trim(line)
+            else
+                  write (*, '(i0.6,1x,a)') icount, trim(last)//'::'//trim(line)
+            endif
          endif
-         last = lower(array(i))
+         last = downword
+         lastline = line
       enddo
    enddo INFINITE
    if (.not. is_iostat_end(stat)) then
@@ -30,7 +53,7 @@ character(len=:), allocatable :: array(:) ! output array of tokens
 contains
 subroutine setup()
 !! Put everything to do with command parsing here 
-use M_CLI2,  only : set_args, set_mode
+use M_CLI2,  only : set_mode, set_args, get_args
 character(len=:),allocatable :: help_text(:), version_text(:)
 $!=============================================================================
 $BLOCK variable --varname help_text
@@ -93,6 +116,7 @@ call set_mode([character(len=20) :: 'strict','ignorecase'])
 ! a single call to set_args can define the options and their defaults, set help
 ! text and version information, and crack command line.
 call set_args( ' ',help_text,version_text)
+call get_args('verbose',verbose)
 end subroutine setup
 
 end program demo_split
