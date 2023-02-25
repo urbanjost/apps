@@ -8,7 +8,7 @@ author = "John S. Urban"
 description= "change case of Fortran free-format files"
 categories = ["Fortran", "apps", "fpm-tools"]
 keywords = ["fortran", "GPF", "General Purpose Fortran", "application" ]
-homepage = "https://github.com/urbanjost/flower.git"
+homepage = "https://github.com/urbanjost/apps.git"
 
 [[executable]]
    name="flower"

@@ -9,12 +9,12 @@ description = "list permissions of file and all parent directories "
 
 [dependencies]
 
-[dependencies.M_kracken]
-   git = "https://github.com/urbanjost/M_kracken.git"
-[dependencies.M_io]
-   git = "https://github.com/urbanjost/M_io.git"
-[dependencies.M_system]
-   git = "https://github.com/urbanjost/M_system.git"
+[dependencies.general_purpose_fortran]
+   git = "https://github.com/urbanjost/general_purpose_fortran.git"
+#[dependencies.M_io]
+#   git = "https://github.com/urbanjost/M_io.git"
+#[dependencies.M_system]
+#   git = "https://github.com/urbanjost/M_system.git"
 
 [[executable]]
 name = "lsup"

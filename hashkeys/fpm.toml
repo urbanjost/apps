@@ -8,7 +8,7 @@ copyright = "Copyright 2021 John S. Urban"
 description= "a collection of hash algorithm utility programs"
 categories = ["hash"]
 keywords = ["fortran", "hash" ]
-homepage = "https://github.com/urbanjost/hashkeys"
+homepage = "https://github.com/urbanjost/apps"
 
 [build]
 auto-executables = true

@@ -8,7 +8,7 @@ copyright   = "Copyright 2022, John S. Urban"
 description = "split Fortran files"
 categories  = ["Fortran"]
 keywords    = ["fortran", "split"]
-homepage    = "https://github.com/urbanjost/fpm-tools.git"
+homepage    = "https://github.com/urbanjost/apps.git"
 
 [build]
 auto-executables = true

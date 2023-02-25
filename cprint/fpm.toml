@@ -8,7 +8,7 @@ author = "John S. Urban"
 description= "General example programs"
 categories = ["Fortran", "apps"]
 keywords = ["fortran", "GPF", "General Purpose Fortran", "application", "example" ]
-homepage = "https://github.com/urbanjost/example.git"
+homepage = "https://github.com/urbanjost/apps.git"
 
 [build]
 external-modules = ["ifport", "dfport"]

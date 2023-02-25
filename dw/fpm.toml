@@ -1,0 +1,34 @@
+name = "dw"
+version = "0.1.0"
+license = "license"
+author = "John S. Urban"
+maintainer = "urbanjost@comcast.net"
+copyright = "Copyright 2023, John S. Urban"
+description= "General example programs"
+categories = ["Fortran", "apps"]
+keywords = ["fortran", "GPF", "General Purpose Fortran", "application", "example" ]
+homepage = "https://github.com/urbanjost/apps.git"
+
+[build]
+auto-executables = true
+auto-tests = true
+auto-examples = true
+
+[install]
+library = false
+
+[dependencies]
+
+[dependencies.M_strings]
+   git = "https://github.com/urbanjost/M_strings.git"
+
+[dependencies.M_io]
+   git = "https://github.com/urbanjost/M_io.git"
+
+[dependencies.M_CLI2]
+   git = "https://github.com/urbanjost/M_CLI2.git"
+
+[[executable]]
+name = "dw"
+source-dir = "app/"
+main="dw.f90"
