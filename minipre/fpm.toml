@@ -21,7 +21,6 @@ implicit-typing = false
 implicit-external = false
 source-form = "free"
 
-
 [dependencies]
 [dependencies.M_calculator]
    git = "https://github.com/urbanjost/M_calculator.git"
@@ -31,4 +30,4 @@ source-form = "free"
 [[executable]]
 name = "minipre"
 source-dir = "app/"
-main="main.f90"
+main="main.f"
