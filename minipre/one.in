@@ -1,0 +1,19 @@
+  Here is an input file for the test program
+
+#define A=10
+#define B=1234.0
+#define C=sin(30)
+DEFINED SOME VALUES AND READY TO START
+#if eq(A,20)
+   SHOULD NOT BE OUTPUT
+#elseif eq(A,10)
+  CORRECT BRANCH WRITE THIS
+   #if gt(B,A)
+      CORRECT AGAIN
+   #else
+      SHOULD NOT BE IN OUTPUT EITHER
+   #endif
+#else
+   SHOULD NOT BE OUTPUT ONCE AGAIN
+#endif
+GOT TO END

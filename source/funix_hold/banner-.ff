@@ -51,6 +51,17 @@ EXAMPLE
    >   X   X   X    X   X   X   X   X  X   X 
    >  XXX XXX XXXXXXX XXXXXXX XXXXXXX   XXX  
                                          
+   >banner -c L HELLO                                     
+   >  LLL LLL LLLLLLL LLLLL   LLLLL     LLL  
+   >   L   L   L    L   L       L      L   L 
+   >   L   L   L        L       L     L     L
+   >   L   L   L  L     L       L     L     L
+   >   LLLLL   LLLL     L       L     L     L
+   >   L   L   L  L     L       L     L     L
+   >   L   L   L        L       L     L     L
+   >   L   L   L    L   L   L   L   L  L   L 
+   >  LLL LLL LLLLLLL LLLLLLL LLLLLLL   LLL  
+                                         
 $BLOCK END
 !----------------------------------------------------------------------------------------------------------------------------------!
 $!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@

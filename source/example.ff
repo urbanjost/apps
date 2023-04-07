@@ -1,0 +1,104 @@
+program example
+implicit none
+character(len=:),allocatable :: exprgrm(:)
+integer :: i
+call setup()
+write(*,'(a)')(trim(exprgrm(i)),i=1,size(exprgrm))
+contains
+subroutine setup
+$BLOCK VARIABLE -varname exprgrm
+program example
+use, intrinsic :: iso_fortran_env, only: real32, wp => real64, int8, int16, int32, int64
+use M_CLI2, only : set_args, get_args, iget, lget, rget, iget, sget, sgets, unnamed
+implicit none
+integer,parameter     :: dp=kind(0.0d0)
+character(len=*),parameter :: all='(*(g0,1x))'
+character(len=255) :: filename
+character(len=:), allocatable :: mystring
+! implied shape array: length must be constant, but size of array and length an asterisk
+character(len=*),parameter :: array(*)=[ &
+&'line 1',&
+&'line 2',&
+&'line 3',&
+&'      ']
+real(kind=dp),save :: x(10)=0.0_dp
+logical :: lval
+integer :: ival, i, j, k
+real    :: rval
+character(len=:),allocatable :: help_text(:), version_text(:)
+!  define command arguments, default values and crack command line
+   call setup()
+   call set_args('-i 10 -r 10e3 -l .false. -f input -d x11',help_text,version_text)
+!  get values
+   filename=sget('f')
+   lval = lget('l')
+   rval = rget('r')
+   ival = iget('i')
+
+!  all done parsing; do something with the values
+   print *, "filename=",filename, " i=",ival, " r=",rval, " l=",lval, " d="//sget('d')
+
+   MYLOOP: do I=1,10  ! DO loop
+      cycle MYLOOP    ! start next pass of loop
+      exit  MYLOOP    ! go to next statment after corresponding ENDDO
+   enddo MYLOOP
+
+   mystring='j'
+   select case(mystring)
+   case('*')
+   CASE ('a' : 'j'); WRITE(*,*)  'One of the first ten letters'
+   CASE ('k','z', 'q' : 't'); WRITE(*,*)  'One of k, z, q, r, s, t'
+   case('/')
+   case default
+      WRITE(*,*)  'Other characters'
+   end select
+
+
+contains
+
+! An integer signum function:
+INTEGER FUNCTION SIGNUM (N)
+integer,intent(in) :: n
+   SELECT CASE (N)
+   CASE (:-1); SIGNUM = 1
+   CASE (0);  SIGNUM = 0
+   CASE (1:); SIGNUM = 1
+   END SELECT
+END FUNCTION SIGNUM
+
+function mine(nskip) result(xx) ! note when RESULT used, function name has no type
+INTEGER, INTENT(IN), OPTIONAL :: nskip  ! no of lines to skip
+integer :: xx
+   IF(PRESENT(nskip)) then
+      write(*,*)'*mine* NSKIP=',nskip
+   ELSE
+      write(*,*)'*mine* NSKIP=null'
+   ENDIF
+   xx=10
+end function mine
+
+subroutine setup()
+help_text=[ character(len=132) :: &
+&'12345678901234567890123456789012345678901234567890123456789012345678901234567890',&
+&'This is example help text for the example program',&
+&'all the lines will be set to the specified length of 132. ',&
+&' ',&
+&' ',&
+&' ']
+! if not specified length must be constant
+version_text=[ &
+&'12345678901234567890123456789012345678901234567890123456789012345678901234567890',&
+&'                                                                                ',&
+&'                                                                                ']
+end subroutine setup
+
+SUBROUTINE SAMPLE (ARRAY)
+REAL :: ARRAY( : )
+INTEGER :: N
+N = UBOUND(ARRAY,1) ! get the size of array without having to pass it
+END SUBROUTINE SAMPLE
+
+end program example
+$ENDBLOCK
+end subroutine setup
+end program example
