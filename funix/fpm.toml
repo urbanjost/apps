@@ -1,4 +1,4 @@
-# TOML file for fpm as described at https://github.com/fortran-lang/fpm/blob/master/manifest-reference.md
+# TOML file for fpm as described at https://fpm.fortran-lang.org/en/spec/manifest.html
 name = "funix"
 version = "1.0.0"
 license = "MIT"
@@ -27,8 +27,8 @@ library = false
    git = "https://github.com/urbanjost/M_readline.git"
 [dependencies.M_io]
    git = "https://github.com/urbanjost/M_io.git"
-[dependencies.M_msg]
-   git = "https://github.com/urbanjost/M_msg.git"
+[dependencies.M_framework]
+   git = "https://github.com/urbanjost/M_framework.git"
 [dependencies.M_system]
    git = "https://github.com/urbanjost/M_system.git"
 [dependencies.M_CLI2]

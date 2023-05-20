@@ -1,4 +1,4 @@
-# TOML file for fpm as described at https://github.com/fortran-lang/fpm/blob/master/manifest-reference.md
+# TOML file for fpm as described at https://fpm.fortran-lang.org/en/spec/manifest.html
 name = "fcmd"
 version = "0.1.0"
 license = "MIT"
@@ -30,7 +30,7 @@ auto-examples = true
 library = false
 
 [dependencies]
-#M_msg          = { git = "https://github.com/urbanjost/M_msg.git" }
+#M_framework          = { git = "https://github.com/urbanjost/M_framework.git" }
 M_strings      = { git = "https://github.com/urbanjost/M_strings.git" }
 M_list         = { git = "https://github.com/urbanjost/M_list.git" }
 M_system       = { git = "https://github.com/urbanjost/M_system.git" }

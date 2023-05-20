@@ -34,17 +34,23 @@ do
    case $LONGNAME in
    #-----------------------------------------------
    *.ff|*.FF)
-    prep F90 TESTPRG90 --noenv --comment doxygen --verbose -i source/$NAME.[fF][fF] -o $NAME/app/$NAME.f90
+    [ ! -f source/$NAME.[fF][fF] ] && continue
+    END=f90
+    grep -q '^#' source/$NAME.[fF][fF] && END=F90
+    prep F90 TESTPRG90 --noenv --comment doxygen --verbose -i source/$NAME.[fF][fF] -o $NAME/app/$NAME.$END
     ls -ld $NAME/app/$NAME.f90
     ;;
    #-----------------------------------------------
    *) # assumed to be a directory
     for SRC in source/$NAME.[fF][fF]
     do
+       [ ! -f "$SRC" ] && continue
        SHORTSRC=$( basename "$SRC" .ff )
        SHORTSRC=$( basename "$SHORTSRC" .FF )
-       prep F90 TESTPRG90 --noenv --comment doxygen --verbose -i $SRC -o $NAME/app/$SHORTSRC.f90
-       ls -ld $NAME/app/$SHORTSRC.f90
+       END=f90
+       grep -q '^#' $SRC && END=F90
+       prep F90 TESTPRG90 --noenv --comment doxygen --verbose -i $SRC -o $NAME/app/$SHORTSRC.$END
+       ls -ld $NAME/app/$SHORTSRC.$END
     done
     ;;
    #-----------------------------------------------

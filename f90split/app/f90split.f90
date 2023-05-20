@@ -152,8 +152,8 @@ subroutine chktab (zstr, lstr)
 !  Verify and possibly update current TAB expansion plan
 character (len=*), intent (inout) :: zstr  ! The string
 integer, intent (inout)           :: lstr  ! its trimmed length
-integer :: lfil
 integer :: lexp
+integer :: istr
 ! __________________________________________________________________________________________________________________________________
 !
    lexp = lstr
@@ -188,9 +188,11 @@ integer :: lexp
    enddo body
    mlins = max (lexp, mlins)
 contains
-subroutine expand
+
+subroutine expand()
 integer :: iexp
 integer :: iwrk
+integer :: lfil
 !
 !  Expand each TAB on to next tab mark
 !
@@ -251,6 +253,7 @@ integer                           :: iexp
 integer                           :: istr
 integer                           :: iwrk
 integer                           :: lexp
+integer                           :: lfil
 ! __________________________________________________________________________________________________________________________________
 !
 character (len=linem) :: zlinw  ! work string

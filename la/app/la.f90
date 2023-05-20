@@ -12,7 +12,7 @@ logical                      :: echo
 logical                      :: markdown
    call setup()
    ! define command arguments,default values and crack command line
-   call set_args('la --markdown F -noecho F',help_text,version_text )
+   call set_args(' --markdown F -noecho F',help_text,version_text )
    echo=.not.lget('noecho')
    if(size(expressions).eq.0)then
       call lala(echo=echo)                           ! CALL LALA interactively with default scratch space
