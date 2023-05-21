@@ -1,5 +1,12 @@
-# playground
+### [fpm-tools](https://github.com/search?q="fpm-tools"%20in:topic%20language:fortran):[playground](https://urbanjost.github.io/playground/playground.1.html)
 
+Build playground(1) using fpm(1):
+```bash
+git clone https://github.com/urbanjost/apps
+cd apps/playground
+fpm install
+playground --help
+```
 ## NAME
   playground(1f) - convert Fortran file to an HTML document that uploads the
   code to "Fortran Playground"

@@ -1,5 +1,13 @@
 # dw
+### [fpm-tools](https://github.com/search?q="fpm-tools"%20in:topic%20language:fortran):[dw](https://urbanjost.github.io/dw/dw.1.html)
 
+Build dw(1) using fpm(1):
+```bash
+git clone https://github.com/urbanjost/apps
+cd apps/dw
+fpm install
+dw --help
+```
 ## NAME
   dw(1f) - [TEXT] find duplicate words (LICENSE:PD)
 
