@@ -11,15 +11,15 @@ dw \< infile \>outfile
 DESCRIPTION
 ===========
 
+dw(1) is a handy tool for finding a common typographical error in
+documentation.
+
 dw(1) filters its standard input, printing on standard output the
 duplicated word and the line it occurs on when a word appears twice in
 succession. Each duplicate word is prefixed by its line number.
 
-A reasonable guess is made as to what constitutes a reasonable word.
-Letter case is ignored.
-
-This is a handy tool for finding a common typographical error in
-documentation.
+A reasonable guess is made as to what constitutes a word. Letter case is
+ignored.
 
 OPTIONS
 =======

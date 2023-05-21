@@ -7,9 +7,7 @@ the code to "Fortran Playground"
 SYNOPSIS
 ========
 
-**playground**
-
-:   \[ **--help**\| **--version**\] \*.\[fF\]90
+playground \[ **--help**\| **--version**\] \*.\[fF\]90
 
 DESCRIPTION
 ===========
@@ -19,8 +17,8 @@ click-able download to the "Fortran Playground".
 
 URL encoding, officially known as percent-encoding, is a method to
 encode arbitrary data in a Uniform Resource Identifier (URI) using only
-the limited ASCII characters, replacing them with one or more character
-triplets that consist of the percent character and a two-digit
+a limited subset of ASCII characters, replacing them with one or more
+character triplets that consist of the percent character and a two-digit
 hexadecimal value.
 
 OPTIONS
