@@ -20,8 +20,9 @@ implicit-external = false
 source-form = "free"
 
 [dependencies]                                                              
-M_io    = { git = "https://github.com/urbanjost/M_io.git" }    
-M_CLI2  = { git = "https://github.com/urbanjost/M_cli2.git" }    
+M_strings  =  {  git  =  "https://github.com/urbanjost/M_strings.git"  }
+M_io       =  {  git  =  "https://github.com/urbanjost/M_io.git"       }
+M_CLI2     =  {  git  =  "https://github.com/urbanjost/M_cli2.git"     }
 
 [[executable]]
 name = "playground"
