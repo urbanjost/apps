@@ -3,7 +3,7 @@
 !===================================================================================================================================
 program seq
 use M_kracken, only : kracken, lget, sget, dgets, parse             ! add command-line parser module
-use M_verify,   only : stderr
+use M_framework__verify,   only : stderr
 implicit none
 character(len=:),allocatable :: fmt
 integer                      :: ios

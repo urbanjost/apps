@@ -11,6 +11,7 @@ description = "unix-like commands"
 auto-executables = true
 auto-tests = true
 auto-examples = true
+module-naming = true
 
 [install]
 library = false

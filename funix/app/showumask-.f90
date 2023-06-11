@@ -1,6 +1,8 @@
 program demo_umask
 use M_kracken, only : kracken, lget
 use M_system, only : system_getumask, system_setumask
+implicit none
+integer                        :: i
 
 !  define command arguments, default values and crack command line
 

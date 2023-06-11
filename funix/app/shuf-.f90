@@ -108,7 +108,7 @@ program shuf
 use M_io,      only : fileread
 use M_strings, only : notabs
 use M_random,  only : scramble, init_random_seed_by_system_clock
-use M_verify,   only : stderr
+use M_framework__verify,   only : stderr
 use M_kracken, only : kracken, lget, sgets, iget, igets             ! add command-line parser module
 implicit none
 character(len=4096),allocatable  :: FILENAMES(:)

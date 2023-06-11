@@ -5,7 +5,7 @@ use M_kracken, only : kracken,lget,sget,sgets
 use M_strings, only : split, substitute
 use M_strings, only : describe, visible
 use M_io,      only : get_next_char
-use M_verify,  only : stderr
+use M_framework__verify,  only : stderr
 implicit none
 
 ! ident_1="@(#) cmp-(1f) compare two files byte by byte"
