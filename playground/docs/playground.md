@@ -7,7 +7,8 @@ the code to "Fortran Playground"
 SYNOPSIS
 ========
 
-playground \[ **--help**\| **--version**\] \*.\[fF\]90
+playground \[ **--help**\| **--version**\] \[ **--type** OUTPUT\_TYPE\]
+\*.\[fF\]90
 
 DESCRIPTION
 ===========
@@ -23,6 +24,10 @@ hexadecimal value.
 
 OPTIONS
 =======
+
+****--type****
+
+:   "html", or "md"
 
 ****--help****
 
@@ -62,7 +67,7 @@ Sample commands
        >   </a>
        >   <xmp>
        > program hello_world
-       >    write(*,*)'Hello World!'
+       >    write(*,*)''Hello World!''
        > end program hello_world
        >   </xmp>
        > </body>

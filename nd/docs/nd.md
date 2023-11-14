@@ -1,8 +1,8 @@
 NAME
 ====
 
-nd(1f) - \[DEVELOPER\] Compare numeric differences between two
-files (LICENSE:PD)
+nd(1f) - \[DEVELOPER\] Compare numeric differences between two files
+(LICENSE:PD)
 
 SYNOPSIS
 ========
@@ -14,7 +14,7 @@ REAL\_VALUE\|**-digits** N\|**-margin** XXX.XX\] \[ **-verbose**\]\| \[
 DESCRIPTION
 ===========
 
-NUMDIFF assumes two files are basically identical except for numeric
+ND(1) assumes two files are basically identical except for numeric
 differences, and finds values whose differences exceed a specified
 tolerance.
 
@@ -82,8 +82,8 @@ enter
 A diff(1) of the following input files would show every line, as one
 uses the "E" prefix for exponents, while the other uses "D". Even when a
 diff(1) would show few lines, you have to inspect each difference to see
-how large a difference in value was found. Using nd(1) you can
-ignore most insignificant differences.
+how large a difference in value was found. Using nd(1) you can ignore
+most insignificant differences.
 
 OUTPUT
 ------

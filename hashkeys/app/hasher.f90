@@ -103,7 +103,6 @@ use M_hashkeys,                   only : sdbm_hash
 use M_hashkeys,                   only : crc32_hash
 use M_kracken,                    only : kracken,lget,sget,sgets
 use M_system,                     only : system_isreg
-use M_verify,                     only : debug
 implicit none
 integer                         :: i
 integer                         :: ios
@@ -119,6 +118,7 @@ integer,parameter               :: bufsize=1048576*32
 character(len=1)                :: buff(bufsize)
 integer                         :: sz
 integer                         :: filepoint
+logical                         :: debug
 abstract interface
    function hashkey (anything,continue)
       import int128

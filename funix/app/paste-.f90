@@ -40,7 +40,7 @@ contains
 !-----------------------------------------------------------------------------------------------------------------------------------
 subroutine dofile()
 use M_io,    only  : read_line, getline
-use M_framework__verify, only  : stderr
+use M_framework, only  : stderr
 character(len=256)           :: msg
 integer                      :: i, ios, istat, idelims, id
 character(len=:),allocatable :: line

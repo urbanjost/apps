@@ -1,6 +1,6 @@
 program rev
 use M_io,      only : notopen, read_line
-use M_framework__verify,   only : stderr
+use M_framework,   only : stderr
 use M_kracken, only : kracken, sgets, lget
 use M_strings, only : reverse
 implicit none

@@ -1,4 +1,31 @@
 $ifdef TESTPRG90
+program false
+use M_kracken,       only : kracken, lget, iget
+use M_messages,      only : junroach
+use M_framework,         only : fstop
+use iso_fortran_env, only : ERROR_UNIT        ! access computing environment
+implicit none
+integer :: ios, istop
+
+call kracken('false',' -help .F. -version .F. -verbose .F.')
+call help_usage(lget('false_help'))      ! if -help option is present, display help text and exit
+call help_version(lget('false_version')) ! if -version option is present, display version text and exit
+if(lget('false_verbose'))then
+   call junroach('s')
+endif
+
+istop=iget('false_oo')
+
+select case(istop)
+case(1:32)
+   call fstop(istop)
+case default
+   !!error stop ''              ! get error returned to system and produce no message (hopefully -- compiler dependent)
+   !!error stop                 ! get error returned to system and produce no message (hopefully -- compiler dependent)
+   close(ERROR_UNIT,iostat=ios) ! try to stop default message
+   stop 1
+end select
+contains
 $!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 $BLOCK HELP -file false-.1.man
 NAME
@@ -50,33 +77,6 @@ AUTHOR:         John S. Urban
 LICENSE:        Public Domain
 $BLOCK END
 $!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-program false
-use M_kracken,       only : kracken, lget, iget
-use M_messages,      only : junroach
-use M_verify,         only : fstop
-use iso_fortran_env, only : ERROR_UNIT        ! access computing environment
-implicit none
-integer :: ios, istop
-
-call kracken('false',' -help .F. -version .F. -verbose .F.')
-call help_usage(lget('false_help'))      ! if -help option is present, display help text and exit
-call help_version(lget('false_version')) ! if -version option is present, display version text and exit
-if(lget('false_verbose'))then
-   call junroach('s')
-endif
-
-istop=iget('false_oo')
-
-select case(istop)
-case(1:32)
-   call fstop(istop)
-case default
-   !!error stop ''              ! get error returned to system and produce no message (hopefully -- compiler dependent)
-   !!error stop                 ! get error returned to system and produce no message (hopefully -- compiler dependent)
-   close(ERROR_UNIT,iostat=ios) ! try to stop default message
-   stop 1
-end select
-
 end program false
 $ENDIF
 $!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@

@@ -8,7 +8,7 @@ copyright = "Copyright 2023, John S. Urban"
 auto-executables = true
 auto-tests = true
 auto-examples = true
-module-naming = false
+module-naming = true
 [install]
 library = false
 [fortran]

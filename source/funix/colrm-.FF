@@ -4,7 +4,7 @@
 program colrm
 use M_CLI2,  only : set_args, igets
 use M_io,    only : getline
-use M_verify, only : stderr
+use M_framework, only : stderr
 implicit none
 integer,allocatable          :: columns(:)
 character(len=:),allocatable :: line

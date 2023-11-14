@@ -7,58 +7,15 @@ $BLOCK NULL
    it is at least worth a look to look at the sample code.
 $ENDBLOCK
 $!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-$BLOCK HELP -file hasher.1.man
-NAME
-   hasher(1f) - [M_hashkeys] exercise the string hash methods in the M_hashkey(3fm) module
-   (LICENSE:PD)
-
-SYNOPSIS
-   hasher [ input_files [ -hash hashname] ]|[ -string string_value]|--help|--version
-
-DESCRIPTION
-   hasher(1f) does a byte by byte hash of a file or a hash of a string
-   using the procedures available in the M_hashkey(3fm) module. It is up
-   to the user to determine if the method is suitable for a specific use.
-
-OPTIONS
-   input_files  files to generate a hash for
-   hash         name of hash algorithm. Currently allowed
-                values are:
-
-                  djb2 (default)   calls djb2_hash(3f)
-                  sdbm             calls sdbm_hash(3f)
-                  crc32            calls cfc32_hash(3f)
-
-   --help       display this help and exit
-   --version    output version information and exit
-AUTHOR
-   John S. Urban
-LICENSE
-   Public Domain
-$BLOCK END
-$!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-$BLOCK VERSION
-PRODUCT:        GPF (General Purpose Fortran) utilities and examples
-PROGRAM:        hasher(1f)
-DESCRIPTION:    string hash example
-VERSION:        20180928
-AUTHOR:         John S. Urban
-LICENSE:        Public Domain. This is free software: you are free to
-                change and redistribute it.  There is NO WARRANTY;
-                without even the implied warranty of MERCHANTABILITY or
-                FITNESS FOR A PARTICULAR PURPOSE.
-$BLOCK END
-$!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 program hash_exe
 use,intrinsic :: iso_fortran_env, only : ERROR_UNIT            ! access computing environment
 use,intrinsic :: iso_fortran_env, only : iostat_end
 use,intrinsic :: ISO_FORTRAN_ENV, only : int8,int16,int32,int64,real32,real64,real128
 use M_hashkeys,                   only : djb2_hash, int128
-use M_hashkeys,                   only : sdbm_hash  
+use M_hashkeys,                   only : sdbm_hash
 use M_hashkeys,                   only : crc32_hash
 use M_kracken,                    only : kracken,lget,sget,sgets
 use M_system,                     only : system_isreg
-use M_verify,                     only : debug
 implicit none
 integer                         :: i
 integer                         :: ios
@@ -74,6 +31,7 @@ integer,parameter               :: bufsize=1048576*32
 character(len=1)                :: buff(bufsize)
 integer                         :: sz
 integer                         :: filepoint
+logical                         :: debug    
 abstract interface
    function hashkey (anything,continue)
       import int128
@@ -143,13 +101,13 @@ procedure (hashkey), pointer :: hash_ptr => null ()
          elseif(ios == 0)then                                      ! no error occurred so successfully read a buffer
              filepoint=filepoint+sz
          endif
-         if(ios /= 0)then                                          ! quit reading on error 
+         if(ios /= 0)then                                          ! quit reading on error
             exit INFINITE
          endif
 
          !!hash=hash_ptr(buff(:sz),continue=cont)                    ! build up hash
          select case(hashname)                                     ! point to selected function
-         case('skip');  
+         case('skip');
          case('djb2');  hash=djb2_hash(buff(:sz),continue=cont)    ! build up hash
          case('sdbm');  hash=sdbm_hash(buff(:sz),continue=cont)    ! build up hash
          case('crc32'); hash=crc32_hash(buff(:sz),continue=cont)   ! build up hash
@@ -165,11 +123,11 @@ procedure (hashkey), pointer :: hash_ptr => null ()
          write(ERROR_UNIT,'(*(a))')'*hasher* error: file ',trim(filenames(i)),' is empty'
       else
          select case(hashname)                                                       ! point to selected function
-         case('djb2','sdbm'); 
+         case('djb2','sdbm');
             write(*,'(a,1x,i0.20,1x,i15,1x,a)')trim(hashname),hash,icount,trim(filenames(i))
-         case('crc32'); 
+         case('crc32');
             write(*,'(a,1x,i0.11,1x,i15,1x,a)')trim(hashname),hash,icount,trim(filenames(i))
-         case('skip'); 
+         case('skip');
             hash=0_int128
             write(*,'(a,1x,i0.11,1x,i15,1x,a)')trim(hashname),hash,icount,trim(filenames(i))
          end select
@@ -178,4 +136,48 @@ procedure (hashkey), pointer :: hash_ptr => null ()
       close(unit=IUNIT,iostat=ios)
 
    enddo FILES
+contains
+$!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+$BLOCK HELP -file hasher.1.man
+NAME
+   hasher(1f) - [M_hashkeys] exercise the string hash methods in the M_hashkey(3fm) module
+   (LICENSE:PD)
+
+SYNOPSIS
+   hasher [ input_files [ -hash hashname] ]|[ -string string_value]|--help|--version
+
+DESCRIPTION
+   hasher(1f) does a byte by byte hash of a file or a hash of a string
+   using the procedures available in the M_hashkey(3fm) module. It is up
+   to the user to determine if the method is suitable for a specific use.
+
+OPTIONS
+   input_files  files to generate a hash for
+   hash         name of hash algorithm. Currently allowed
+                values are:
+
+                  djb2 (default)   calls djb2_hash(3f)
+                  sdbm             calls sdbm_hash(3f)
+                  crc32            calls cfc32_hash(3f)
+
+   --help       display this help and exit
+   --version    output version information and exit
+AUTHOR
+   John S. Urban
+LICENSE
+   Public Domain
+$BLOCK END
+$!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+$BLOCK VERSION
+PRODUCT:        GPF (General Purpose Fortran) utilities and examples
+PROGRAM:        hasher(1f)
+DESCRIPTION:    string hash example
+VERSION:        20180928
+AUTHOR:         John S. Urban
+LICENSE:        Public Domain. This is free software: you are free to
+                change and redistribute it.  There is NO WARRANTY;
+                without even the implied warranty of MERCHANTABILITY or
+                FITNESS FOR A PARTICULAR PURPOSE.
+$BLOCK END
+$!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 end program hash_exe

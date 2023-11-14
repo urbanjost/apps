@@ -226,7 +226,7 @@ subroutine margin_diff(line,line2,dline,per,margin,ier,ilen,ilen2,ind_line)
 !  find if they are equal within a specified relative margin.  makes assumption that only difference in lines is values of numbers
 !  that string word differences can be ignored, and same number of words on each line
 !-----------------------------------------------------------------------------------------------------------------------------------
-use :: M_verify, only : in_margin
+use :: M_framework, only : in_margin
 implicit none
 !-----------------------------------------------------------------------------------------------------------------------------------
 character(len=*),intent(in)    :: line                 ! line from file 1
