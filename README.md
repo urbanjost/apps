@@ -39,8 +39,11 @@ Most require being built in a POSIX environment.
   interpret matrix expressions using a shell-like interface
 + [**lsup**](https://github.com/urbanjost/apps/blob/main/lsup/README.md) - 
   list permissions of pathname and directories in pathname
+
 + [**nd**](https://github.com/urbanjost/apps/blob/main/nd/README.md) -
   Compare numeric differences in a file
++ [**paranoid**](https://github.com/urbanjost/apps/blob/main/paranoid/README.md) -
+  test compiler options with modified versions of the "paranoia" procedures
 + [**playground**](https://github.com/urbanjost/apps/blob/main/playground/README.md) -
   generate an HTML page that lists and downloads a list of Fortran source files to "Fortran Playground"
 + [**sub**](https://github.com/urbanjost/apps/blob/main/sub/README.md) -

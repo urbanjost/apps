@@ -22,4 +22,3 @@ implicit none
    call dparanoia()
 end program test_paranoia
 ```
-
