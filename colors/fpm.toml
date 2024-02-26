@@ -1,6 +1,6 @@
 name = "colors"
 version = "0.1.0"
-license = "license"
+license = "MIT"
 author = "John S. Urban"
 maintainer = "urbanjost@comcast.net"
 copyright = "Copyright 2023, John S. Urban"

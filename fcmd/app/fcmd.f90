@@ -18,7 +18,6 @@ integer                         :: icount
 logical                         :: all
 logical                         :: verbose
 logical                         :: wild
-logical                         :: long
 logical                         :: interactive
 logical                         :: tstfor
 logical                         :: ignorecase
@@ -29,7 +28,7 @@ integer                         :: cmdstat
 character(len=256)              :: cmdmsg
    ! process command-line options
    call setup()
-   call set_args('fcmd --vi F --first:f F --cmd:c " " --ignorecase:i F --wild:w F --ok F --test:t F --long:l',help,version)
+   call set_args('fcmd --vi F --first:f F --cmd:c " " --ignorecase:i F --wild:w F --ok F --test:t F --ls:l',help,version)
    all=.not.lget('first')
    wild=lget('wild')
    interactive=lget('ok')
@@ -43,7 +42,7 @@ character(len=256)              :: cmdmsg
       cmd=cmd//':'//sget('cmd')
       if(sget('cmd')==':') cmd=system_getenv('FCEDIT',system_getenv('EDITOR',system_getenv('VISUAL','vi')))
    endif
-   if(lget('long')) cmd=cmd//':ls -l'
+   if(lget('ls')) cmd=cmd//':ls -l'
 
    call get_environment_variable(name="PATH", length=path_line_length)  ! get length of $PATH
    allocate(character(len=path_line_length) :: searchpath)              ! make a string variable long enough to hold $PATH
@@ -125,7 +124,7 @@ help=[ CHARACTER(LEN=128) :: &
 '                                                                  ',&
 'SYNOPSIS                                                          ',&
 '    fcmd [commands(s) [--wild] [ --first][--ignorecase][--test]   ',&
-'    [ --cmd COMMAND;COMMAND,COMMAND;... ]|[--long]|[--vi]         ',&
+'    [ --cmd COMMAND;COMMAND,COMMAND;... ]|[--ls]|[--vi]           ',&
 '    [ --help|--version]                                           ',&
 '                                                                  ',&
 'DESCRIPTION                                                       ',&
@@ -157,7 +156,7 @@ help=[ CHARACTER(LEN=128) :: &
 '                                                                                ',&
 '                Abbreviations for common --cmd options:                         ',&
 '                                                                                ',&
-'                --long,l   abbreviation for "--cmd ''ls -l''"                   ',&
+'                --ls,l   abbreviation for "--cmd ''ls -l''"                     ',&
 '                --vi       abbreviation for "--cmd ''vim''"                     ',&
 '                                                                                ',&
 '    --ok        Prompt for a y/n answer before executing the list of            ',&

@@ -112,7 +112,7 @@ DESCRIPTION
 
     # list known color names and their RGB values
     colors
-    # show values for a known named color
+    # show conversion values for a known named color
     colors COLOR_NAME
     # find closest named color
     colors R G B
@@ -141,7 +141,7 @@ EXAMPLE
      colors
      # convert RGB values to HLS value
      colors rgb 0 100 0 hls
-     # display RGB values for named color
+     # display conversion values for a color
      colors green
 AUTHOR
    John S. Urban

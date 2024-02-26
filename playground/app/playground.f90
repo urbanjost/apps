@@ -6,15 +6,16 @@ program playground
    use M_io, only: filebyte, basename
    use M_cli2, only: set_args, get_args, names => unnamed
    use M_cli2, only: sget
-   use M_strings, only: percent_encode
+   use M_strings, only: percent_encode, switch
    implicit none
+   character(len=1), parameter   :: nl=new_line('A') ! array to hold file in memory
    character(len=1), allocatable :: text(:) ! array to hold file in memory
    character(len=:), allocatable :: help_text(:)
    character(len=:), allocatable :: version_text(:)
    character(len=:), allocatable :: shortname
    character(len=:), allocatable :: play(:)
    character(len=:), allocatable :: type
-   integer                      :: i, j, k
+   integer                      :: i, j
    call setup()
    call set_args(' --type "html" ', help_text, version_text)
 !-----------------------------------------------------------------------------------------------------------------------------------
@@ -34,16 +35,43 @@ program playground
    end select
 !-----------------------------------------------------------------------------------------------------------------------------------
    ! process input files
-   do i = 1, size(names)
-      call filebyte(names(i), text) ! allocate character array and copy file into it
-      if (.not. allocated(text)) then
-         write (stderr, *) '*playground* failed to load file '//trim(names(i))
-         cycle
-      endif
-      shortname = basename(names(i))//'      '
-      if (index(shortname, 'demo_') .eq. 1) shortname = shortname(6:)
-      shortname = trim(shortname)
-
+   if(size(names).eq.0)then
+      text=switch( &
+      "program demo_compiler_version                                           "//nl// &
+      "use, intrinsic :: iso_fortran_env, only : compiler_version              "//nl// &
+      "use, intrinsic :: iso_fortran_env, only : compiler_options              "//nl// &
+      "implicit none                                                           "//nl// &
+      "   print '(4a)', &                                                      "//nl// &
+      "     'This file was compiled by ', &                                    "//nl// &
+      "     compiler_version(),           &                                    "//nl// &
+      "     ' using the options ',        &                                    "//nl// &
+      "     compiler_options()                                                 "//nl// &
+      "end program demo_compiler_version                                       "//nl// &
+      "")
+      shortname="version.f90"
+      call printme()
+   else
+      do i = 1, size(names)
+         call filebyte(names(i), text) ! allocate character array and copy file into it
+         if (.not. allocated(text)) then
+            write (stderr, *) '*playground* failed to load file '//trim(names(i))
+            cycle
+         endif
+         shortname = basename(names(i))//'      '
+         if (index(shortname, 'demo_') .eq. 1) shortname = shortname(6:)
+         shortname = trim(shortname)
+         call printme()
+      enddo
+   endif
+!-----------------------------------------------------------------------------------------------------------------------------------
+   ! close out file
+   select case (type)
+   case ('html')
+      call write ([CHARACTER(LEN=128) :: '</body>', '</html>', ''])
+   end select
+!-----------------------------------------------------------------------------------------------------------------------------------
+contains
+   subroutine printme ()
       select case (type)
       case ('html')
          ! write percent-encrypted copy of code as a URI
@@ -76,15 +104,7 @@ program playground
       case default
          write (stderr,*) '<ERROR> unknown type', type, 'must be from {html|md}'
       end select
-   enddo
-!-----------------------------------------------------------------------------------------------------------------------------------
-   ! close out file
-   select case (type)
-   case ('html')
-      call write ([CHARACTER(LEN=128) :: '</body>', '</html>', ''])
-   end select
-!-----------------------------------------------------------------------------------------------------------------------------------
-contains
+   end subroutine printme
 
    subroutine write (strings)
       character(len=*), intent(in) :: strings(:)

@@ -2,6 +2,8 @@ program prg_color
 use,intrinsic :: iso_fortran_env, only : stderr=>ERROR_UNIT, stdin=>INPUT_UNIT, stdout=>OUTPUT_UNIT
 use M_CLI2,                       only : set_args, sget, colors=>unnamed ! add command-line parser module
 use M_io,                         only : get_env
+use M_color,                      only : color_name2rgb
+use M_color,                      only :
 implicit none
 character(len=:),allocatable :: help_text(:), version_text(:), background, foreground, cursorcolor, output
 integer                      :: sz, ios, lun
@@ -18,6 +20,7 @@ integer                      :: sz, ios, lun
       open(file=output,iostat=ios,newunit=lun)
       if(ios /= 0)lun=stdout
    endif
+   if( sz.eq.0 ) call listallnames()
    if( sz.gt.0 ) background=trim(colors(1) )
    if( background.ne.'' ) write(lun,'(g0)',advance='no',iostat=ios)achar(27)//']11;'//background//achar(7)
    if( sz.gt.1 ) foreground=trim(colors(2) )
@@ -25,6 +28,32 @@ integer                      :: sz, ios, lun
    if( sz.gt.2 ) cursorcolor=trim(colors(3) )
    if( cursorcolor.ne.'' ) write(lun,'(g0)',advance='no',iostat=ios)achar(27)//']12;'//cursorcolor//achar(7)
 contains
+!-----------------------------------------------------------------------------------------------------------------------------------
+subroutine listallnames()
+    ! list colors known to colorname2rgb(3f) & corresponding RGB values
+    character(len=20) :: name
+    character(len=20) :: echoname
+    real              :: red,green,blue
+    integer           :: i,r,g,b
+    character(len=1),parameter :: esc=achar(27),bel=achar(7)
+    character(len=*),parameter :: gen='(*(g0))'
+    TRYALL: do i=1,10000
+       ! color names may be numeric strings from 1 to N
+       write(name,'(i0)')i
+       ! get the RGB values and English name of the color
+       call color_name2rgb(name,red,green,blue,echoname)
+       r=2.5*red
+       g=2.5*green
+       b=2.5*blue
+       ! the last color name is "Unknown" so the loop should exit
+       if(echoname == 'Unknown')exit TRYALL
+       ! display the English name and RGB values for the name
+       ! printf "\x1b[38;2;40;177;249mTRUECOLOR\x1b[0m\n"
+       ! write(*,gen,advance='no') esc, '[38;5;', r, ';', g, ';', b, 'm_________', esc, '[0m'
+       write(*,*),echoname,int([red,green,blue])
+    enddo TRYALL
+    !write(*,*)'Number of colors found is ',i-1
+end subroutine listallnames
 !-----------------------------------------------------------------------------------------------------------------------------------
 subroutine setup()
 help_text=[ CHARACTER(LEN=128) :: &
@@ -43,7 +72,8 @@ help_text=[ CHARACTER(LEN=128) :: &
 '                                                                                                ',&
 '    If you use something that filters stdout such as tmux(1) or screen(1)                       ',&
 '    assign kolor(1) output to the initial stdout before starting the                            ',&
-'    program. For example:                                                                       ',&
+'    program by setting the environment variable OTHERTTY to the output                          ',&
+'    device path. For example:                                                                   ',&
 '                                                                                                ',&
 '       export OTHERTTY=`tty`                                                                    ',&
 '       tmux                                                                                     ',&
@@ -64,7 +94,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '    file. This is commonly required before starting programs that                               ',&
 '    filter stdout, such as tmux(1) and screen(1).                                               ',&
 '                                                                                                ',&
-'       export OTHERTTY=/dev/pts/1                                                               ',&
+'       export OTHERTTY=$(realpath /proc/$$/fd/1)                                                ',&
 '                                                                                                ',&
 'EXAMPLE                                                                                         ',&
 '                                                                                                ',&

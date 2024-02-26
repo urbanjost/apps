@@ -9,7 +9,7 @@ SYNOPSIS
 
 fcmd \[commands(s) \[-**-wild**\] \[
 **--first**\]\[-**-ignorecase**\]\[-**-test**\] \[ **--cmd**
-COMMAND;COMMAND,COMMAND;\`\`\` \]\|\[-**-long**\]\|\[-**-vi**\] \[
+COMMAND;COMMAND,COMMAND;\`\`\` \]\|\[-**-ls**\]\|\[-**-vi**\] \[
 **--help**\|**--version**\]
 
 DESCRIPTION
@@ -45,7 +45,7 @@ directory per line.
 
                     Abbreviations for common --cmd options:
 
-                    --long,l   abbreviation for "--cmd 'ls -l'"
+                    --ls,l   abbreviation for "--cmd 'ls -l'"
                     --vi       abbreviation for "--cmd 'vim'"
 
         --ok        Prompt for a y/n answer before executing the list of
