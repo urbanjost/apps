@@ -29,6 +29,13 @@ integer                      :: sz, ios, lun
    if( cursorcolor.ne.'' ) write(lun,'(g0)',advance='no',iostat=ios)achar(27)//']12;'//cursorcolor//achar(7)
 contains
 !-----------------------------------------------------------------------------------------------------------------------------------
+character(len=1) function paws()
+integer :: iostat
+   paws=' '
+   write(*,'(a)',advance='no')'enter return to continue ...'
+   read(*,'(a)',iostat=iostat)paws
+end function paws
+!-----------------------------------------------------------------------------------------------------------------------------------
 subroutine listallnames()
     ! list colors known to colorname2rgb(3f) & corresponding RGB values
     character(len=20) :: name
@@ -37,7 +44,8 @@ subroutine listallnames()
     integer           :: i,r,g,b
     character(len=1),parameter :: esc=achar(27),bel=achar(7)
     character(len=*),parameter :: gen='(*(g0))'
-    TRYALL: do i=1,10000
+    i=1
+    TRYALL: do 
        ! color names may be numeric strings from 1 to N
        write(name,'(i0)')i
        ! get the RGB values and English name of the color
@@ -50,7 +58,16 @@ subroutine listallnames()
        ! display the English name and RGB values for the name
        ! printf "\x1b[38;2;40;177;249mTRUECOLOR\x1b[0m\n"
        ! write(*,gen,advance='no') esc, '[38;5;', r, ';', g, ';', b, 'm_________', esc, '[0m'
+       write(lun,'(*(g0))',advance='no',iostat=ios)achar(27)//']11;'//trim(echoname)//achar(7)
+       write(lun,'(g0,g0,z0,z0,z0,g0)',advance='no',iostat=ios)achar(27),']10;#',255-r,255-g,255-b,achar(7)
        write(*,*),echoname,int([red,green,blue])
+         select case(paws())
+         case('t')          ; i=1
+         case('b')          ; i=i-1
+         case('n')          ; i=i+1
+         case('q')          ; exit TRYALL
+         case default       ; i=i+1
+       end select
     enddo TRYALL
     !write(*,*)'Number of colors found is ',i-1
 end subroutine listallnames
@@ -69,6 +86,9 @@ DESCRIPTION
     Set the background, foreground, and cursor color for terminals and
     terminal emulators that obey the ANSI in-band signaling control
     sequences
+
+    If no options are supplied, steps through known color names changing the
+    background kolor. Obeys "back", "top", "next", "quit". Defaults to "next".
 
     If you use something that filters stdout such as tmux(1) or screen(1)
     assign kolor(1) output to the initial stdout before starting the
