@@ -60,13 +60,13 @@ subroutine listallnames()
        ! write(*,gen,advance='no') esc, '[38;5;', r, ';', g, ';', b, 'm_________', esc, '[0m'
        write(lun,'(*(g0))',advance='no',iostat=ios)achar(27)//']11;'//trim(echoname)//achar(7)
        write(lun,'(g0,g0,z0,z0,z0,g0)',advance='no',iostat=ios)achar(27),']10;#',255-r,255-g,255-b,achar(7)
-       write(*,*),echoname,int([red,green,blue])
+       write(*,'(a,1x,i3,1x,i3,1x,i3)'),echoname,int([red,green,blue])
          select case(paws())
-         case('t')          ; i=1
-         case('b')          ; i=i-1
-         case('n')          ; i=i+1
+         case('t')          ; i=1; write(*,'(a)')'back to top'
+         case('b')          ; i=max(1,i-1)
+         case('n',' ')      ; i=i+1
          case('q')          ; exit TRYALL
-         case default       ; i=i+1
+         case default       ; write(*,'(*(g0))')'(t)op,(b)ack,(n)ext,(q)uit'
        end select
     enddo TRYALL
     !write(*,*)'Number of colors found is ',i-1

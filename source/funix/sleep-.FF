@@ -1,7 +1,7 @@
 $!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 $IF DEFINED(TESTPRG90) ! Place test program source here
 program demo_system_sleep
-use M_kracken, only: kracken, sgets, lget, iget
+use M_kracken, only: kracken, sgets, lget, iget, sget
 use M_time, only :   days2sec, realtime, system_sleep
 use M_strings, only: substitute
 implicit none
@@ -15,22 +15,24 @@ real                          :: chance
 integer                       :: values(1:8)
 logical                       :: countdown, countup
 logical                       :: verbose
-integer                       :: count
-   call kracken('sleep',' -oo 0.0 -help .F. -version .F. -countdown .F. -countup .F. -count 1 -verbose .F.') ! parse command line
+integer                       :: interval
+character(len=:),allocatable  :: cmd
+   call kracken('sleep',' -oo 0.0 -cmd " " -help .F. -version .F. -countdown .F. -countup .F. -interval 1 -verbose .F.') ! parse command line
    call help_usage(lget('sleep_help'))                        ! display help information and stop if true
    call help_version(lget('sleep_version'))                   ! display version information and stop if true
    countdown=lget('sleep_countdown')
    countup=lget('sleep_countup')
-   count=iget('sleep_count')
+   interval=iget('sleep_count')
    verbose=lget('sleep_verbose')
+   cmd=sget('sleep_cmd')
 !===================================================================================================================================
    ! determine value of cyclical pause duration
    delays=sgets('sleep_oo')
    if(verbose)write(*,*)'DELAYS(SEC)=',delays
    if(verbose)write(*,*)'COUNTDOWN=',countdown
    if(verbose)write(*,*)'COUNTUP=',countup
-   if(verbose)write(*,*)'COUNT=',count
-   if(count.lt.1)count=1
+   if(verbose)write(*,*)'INTERVAL=',interval
+   if(interval.lt.1)interval=1
    do i=1,size(delays)
       if(index(delays(i),'r').ne.0)then                                  ! random number seconds between zero and value specified
          call substitute(delays(i),'r','s')                              ! change 'r' suffix to 's'
@@ -50,19 +52,25 @@ integer                       :: count
       if(verbose)write(*,*)'DELAY(SEC)=',delay_value
       if(countdown.and.delay_value.gt.1)then
          if(verbose)write(*,*)'COUNTDOWN'
-         do j=int(delay_value),1,-count
-            call system_sleep(count)
+         do j=int(delay_value),1,-interval
+            call system_sleep(interval)
             write(*,'(i0,a)',advance='no')j,merge(new_line('A'),' ',mod(j,10).eq.0)
+            if(cmd.ne.'')write(*,*)
+            if(cmd.ne.'')call execute_command_line(cmd)
          enddo
       elseif(countup.and.delay_value.gt.1)then
          if(verbose)write(*,*)'COUNTUP'
-         do j=1,int(delay_value),count
-            call system_sleep(count)
+         do j=1,int(delay_value),interval
+            call system_sleep(interval)
             write(*,'(i0,a)',advance='no')j,merge(new_line('A'),' ',mod(j,10).eq.0)
+            if(cmd.ne.'')write(*,*)
+            if(cmd.ne.'')call execute_command_line(cmd)
          enddo
       else
          if(verbose)write(*,*)'SLEEP'
          call system_sleep(delay_value)
+         if(cmd.ne.'')write(*,*)
+         if(cmd.ne.'')call execute_command_line(cmd)
       endif
    enddo
 $!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
@@ -73,7 +81,7 @@ NAME
    sleep-(1f) - [FUNIX:TIME] pause for specified duration
    (LICENSE:PD)
 SYNOPSIS
-   sleep- [dd-hh:mm:ss[.xxx]|xxx.yyy[s|m|h|d]] [ -countdown|-countup -count]|--help|--version
+   sleep- [dd-hh:mm:ss[.xxx]|xxx.yyy[s|m|h|d]] [ -countdown|-countup -interval]|--help|--version
 DESCRIPTION
    Given a duration in the form dd-hh:mm:ss.xxx where dd is days, hh
    hours, mm minutes and ss.xxx seconds pause for the specified amount
@@ -104,9 +112,10 @@ OPTIONS
                   end of sleep command
    -countup       sleep in one-second intervals and count up till end
                   of command
-   -count COUNT   how many seconds between counts when -countdown and -countup
+   -interval COUNT   how many seconds between counts when -countdown and -countup
                   are specified. Values other than one may trim the total sleep
                   time by up to COUNT seconds.
+     cmd          system command to repeat at the end of each interval
    --help         display this help and exit
    --version      output version information and exit
 EXAMPLE
@@ -115,6 +124,8 @@ EXAMPLE
    sleep- 0.10     # pause one tenth of a second
    sleep- 3m 10s   # pause three minutes and 10 seconds
    sleep- 1:00:00  # pause for one hour
+SEE ALSO
+   sleep(1), usleep(1), watch(1), xargs(1), yes(1), seq(1), repeat(1csh)
 AUTHOR
    John S. Urban
 LICENSE

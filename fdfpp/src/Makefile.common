@@ -1,0 +1,69 @@
+# @(#)Makefile.common 1.10 96/07/24
+#
+# ====================================================
+# Copyright (C) 1995 by Sun Microsystems, Inc. All rights reserved.
+#
+# Developed at SunSoft, a Sun Microsystems, Inc. business.
+# Permission to use, copy, modify, and distribute this
+# software is freely granted, provided that this notice
+# is preserved.
+# ====================================================
+#
+
+
+SORC = fpp.c proc.c lex.c error.c rgram.c symtab.c service.c 
+OBJ  = $(SORC:%.c=%.o) 
+OBJ1 = y.tab.o
+
+ALL_OPTS = $(COPTS) $(EXTRA_DEF) $(EXTRA_INC)
+
+fpp:	$(OBJ) $(OBJ1) $(EXTRA_LIB)
+	$(CC) $(COPTS) -o $@ $(OBJ) $(OBJ1) $(EXTRA_LIB)
+
+$(OBJ):	$$(@:%.o=$(SRC)/%.c)
+	$(CC) -c $(ALL_OPTS) $(@:%.o=$(SRC)/%.c)
+
+y.tab.o: y.tab.c
+	$(CC) -c $(ALL_OPTS) y.tab.c
+
+y.tab.c: $(SRC)/eval.y
+	$(YACC) $(SRC)/eval.y
+
+LINTFILES = $(SORC:%.c=%.ln)
+
+lint:	$(LINTFILES)
+	$(LINT) $(LINTFILES)
+
+$(LINTFILES): $$(@:%.ln=$(SRC)/%.c)
+	$(LINT) $(LOPTS) $(EXTRA_DEF) $(EXTRA_INC) $(@:%.ln=$(SRC)/%.c)
+
+clean:
+	$(RM) fpp *.o y.tab.c $(LINTFILES)
+
+fpp.o:		$(SRC)/fpp.h 
+fpp.o:		$(SRC)/service.h
+service.o:	$(SRC)/fpp.h
+service.o:	$(SRC)/service.h
+proc.o:		$(SRC)/fpp.h
+proc.o:		$(SRC)/service.h
+proc.o:		$(SRC)/lex.h
+proc.o:		$(SRC)/symtab.h
+proc.o:		$(SRC)/rgram.h
+proc.o:		$(SRC)/sb.h
+lex.o:		$(SRC)/fpp.h
+lex.o:		$(SRC)/service.h
+lex.o:		$(SRC)/symtab.h
+lex.o:		$(SRC)/rgram.h
+lex.o:		$(SRC)/lex.h
+lex.o:		$(SRC)/sb.h
+symtab.o:	$(SRC)/fpp.h
+symtab.o:	$(SRC)/service.h
+symtab.o:	$(SRC)/symtab.h
+error.o:	$(SRC)/fpp.h
+y.tab.o:	$(SRC)/fpp.h
+y.tab.o:	$(SRC)/symtab.h
+y.tab.o:	$(SRC)/rgram.h
+y.tab.o:	$(SRC)/service.h
+y.tab.o:	$(SRC)/sb.h
+rgram.o:	$(SRC)/fpp.h
+rgram.o:	$(SRC)/rgram.h

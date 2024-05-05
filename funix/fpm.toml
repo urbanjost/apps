@@ -42,6 +42,8 @@ library = false
    git = "https://github.com/urbanjost/M_stopwatch.git"
 [dependencies.M_CLI]
    git = "https://github.com/urbanjost/M_CLI.git"
+[dependencies.M_uuid]
+   git = "https://github.com/urbanjost/M_uuid.git"
 #[dependencies.M_regex]
 #   git = "https://github.com/urbanjost/M_regex.git"
 #[dependencies.M_messages]
