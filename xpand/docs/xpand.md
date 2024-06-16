@@ -12,10 +12,10 @@ xpand \[ **-blanks** NNN\]\[ **--width** \] FILENAME(S)
 DESCRIPTION
 ===========
 
-Convert tabs in each FILE to spaces, writing to standard output. If no
-filename is specified standard input is read. Tab stops are assumed to
-be every eight (8) columns. Trailing spaces, carriage returns, and
-newlines are removed.
+Defaults to converting tabs in each FILE to spaces, writing to standard
+output. If no filename is specified standard input is read. Tab stops
+are assumed to be every eight (8) columns. Trailing spaces, carriage
+returns, and newlines are removed.
 
 OPTIONS
 =======
@@ -26,14 +26,35 @@ OPTIONS
 
 ****--width**,**-w****
 
-:   line width to produce a warning if exceeded. Defaults to 132. If
-    less then or equal to 0 no warnings are produced. Warning messages
-    appear on stderr.
+:   line width at which to produce a warning if exceeded. If less then
+    or equal to 0 no warnings are produced. The default is 0. Warning
+    messages appear on stderr.
 
 ****--blanks**,**-b****
 
 :   maximum number of adjacent blank lines to retain. Default is **-1**,
     which is equivalent to unlimited.
+
+****--show-nonprinting**,**-c****
+
+:   use \^ and M- notation, except for linefeed
+
+****--show-ends**,**-e****
+
+:   display $ at end of each line
+
+****--number**,**-n****
+
+:   number all output lines **--number-nonblank**,**-N** number nonempty
+    output lines, overrides **-n**
+
+****--uppercase**,**-U****
+
+:   convert all lowercase ASCII characters to uppercase
+
+****--lowercase**,**-l****
+
+:   convert all uppercase ASCII characters to lowercase
 
 STANDARD OPTIONS
 ================

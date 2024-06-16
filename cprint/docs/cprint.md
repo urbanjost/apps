@@ -7,7 +7,8 @@ cprint(1f) - \[FILE FILTER\] filter prints specified columns
 SYNOPSIS
 ========
 
-cprint \[ columns \]\[ **-delimiters** delim\] \|**-help**\|**-version**
+cprint \[ columns \]\[ **--delimiters** delim\]
+\|**--help**\|**--version**
 
 DESCRIPTION
 ===========
@@ -22,16 +23,16 @@ OPTIONS
 :   numbers indicating which columns to print. A negative value denotes
     the end of a range. A value must be from 1 to 1000.
 
-****-delimiters****
+****--delimiters****
 
 :   input column delimiter character(s) (default: whitespace) Delimiters
     are changed to spaces on outout.
 
-****-help****
+****--help****
 
 :   display command help and exit
 
-****-version****
+****--version****
 
 :   display command metadata and exit
 

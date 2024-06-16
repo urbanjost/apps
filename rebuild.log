@@ -1,50 +1,7 @@
--rwxrwxrwx 1 urbanjs urbanjs 13356 May  5 14:32 compute/app/compute.f90
+-rwxrwxrwx 1 urbanjs urbanjs 13356 Jun 12 22:30 compute/app/compute.f90
  + mkdir -p build/dependencies
 Initialized empty Git repository in /home/urbanjs/venus/V600/github/apps/compute/build/dependencies/M_kracken/.git/
 Initialized empty Git repository in /home/urbanjs/venus/V600/github/apps/compute/build/dependencies/M_calculator/.git/
-Initialized empty Git repository in /home/urbanjs/venus/V600/github/apps/compute/build/dependencies/M_history/.git/
-Initialized empty Git repository in /home/urbanjs/venus/V600/github/apps/compute/build/dependencies/M_readline/.git/
-Initialized empty Git repository in /home/urbanjs/venus/V600/github/apps/compute/build/dependencies/M_io/.git/
-Initialized empty Git repository in /home/urbanjs/venus/V600/github/apps/compute/build/dependencies/M_framework/.git/
-Initialized empty Git repository in /home/urbanjs/venus/V600/github/apps/compute/build/dependencies/M_strings/.git/
-Initialized empty Git repository in /home/urbanjs/venus/V600/github/apps/compute/build/dependencies/M_list/.git/
-Initialized empty Git repository in /home/urbanjs/venus/V600/github/apps/compute/build/dependencies/M_args/.git/
-[  0%]               M_calculator.f90
-[  5%]               M_calculator.f90  done.
-[  5%]                  M_history.f90
-[ 11%]                  M_history.f90  done.
-[ 11%]                 C-M_readline.c
-[ 17%]                 C-M_readline.c  done.
-[ 17%]                       M_io.F90
-[ 23%]                       M_io.F90  done.
-[ 23%]           M_framework__msg.F90
-[ 29%]           M_framework__msg.F90  done.
-[ 29%]       M_framework__utility.f90
-[ 35%]       M_framework__utility.f90  done.
-[ 35%]                  M_strings.F90
-[ 41%]                  M_strings.F90  done.
-[ 41%]                     M_list.f90
-[ 47%]                     M_list.f90  done.
-[ 47%]        M_framework__verify.F90
-[ 52%]        M_framework__verify.F90  done.
-[ 52%]       M_framework__journal.f90
-[ 58%]       M_framework__journal.f90  done.
-[ 58%]        M_framework__approx.F90
-[ 64%]        M_framework__approx.F90  done.
-[ 64%]                     M_args.f90
-[ 70%]                     M_args.f90  done.
-[ 70%]                  M_kracken.f90
-[ 76%]                  M_kracken.f90  done.
-[ 76%]                M_framework.f90
-[ 82%]                M_framework.f90  done.
-[ 82%]                   libcompute.a
-[ 88%]                   libcompute.a  done.
-[ 88%]                    compute.f90
-[ 94%]                    compute.f90  done.
-[ 94%]                        compute
-[100%]                        compute  done.
-[100%] Project compiled successfully.
-# Update: build/gfortran_E167FD2A985B468F/app/compute -> /home/urbanjs/venus/V600/.local/bin
 Reading file app/compute.f90
 
 Processing documentation comments...
@@ -55,61 +12,12 @@ Creating HTML documentation...
 Writing documentation to '/home/urbanjs/venus/V600/github/apps/compute/docs/fpm-ford'...
 
 Browse the generated documentation: file:///home/urbanjs/venus/V600/github/apps/compute/docs/fpm-ford/index.html
--rwxrwxrwx 1 urbanjs urbanjs 6976 May  5 14:33 cprint/app/cprint.f90
+-rwxrwxrwx 1 urbanjs urbanjs 6976 Jun 12 22:31 cprint/app/cprint.f90
  + mkdir -p build/dependencies
 Initialized empty Git repository in /home/urbanjs/venus/V600/github/apps/cprint/build/dependencies/M_strings/.git/
-Initialized empty Git repository in /home/urbanjs/venus/V600/github/apps/cprint/build/dependencies/M_list/.git/
-Initialized empty Git repository in /home/urbanjs/venus/V600/github/apps/cprint/build/dependencies/M_system/.git/
-Initialized empty Git repository in /home/urbanjs/venus/V600/github/apps/cprint/build/dependencies/M_CLI2/.git/
-Initialized empty Git repository in /home/urbanjs/venus/V600/github/apps/cprint/build/dependencies/M_kracken/.git/
-Initialized empty Git repository in /home/urbanjs/venus/V600/github/apps/cprint/build/dependencies/M_io/.git/
-Initialized empty Git repository in /home/urbanjs/venus/V600/github/apps/cprint/build/dependencies/M_args/.git/
-Initialized empty Git repository in /home/urbanjs/venus/V600/github/apps/cprint/build/dependencies/M_framework/.git/
-[  0%]                  M_strings.F90
-[  8%]                  M_strings.F90  done.
-[  8%]                     M_list.f90
-[ 16%]                     M_list.f90  done.
-[ 16%]                   C-M_system.c
-[ 25%]                   C-M_system.c  done.
-[ 25%]                   M_system.F90
-[ 33%]                   M_system.F90  done.
-[ 33%]                       M_io.F90
-[ 41%]                       M_io.F90  done.
-[ 41%]           M_framework__msg.F90
-[ 50%]           M_framework__msg.F90  done.
-[ 50%]       M_framework__journal.f90
-[ 58%]       M_framework__journal.f90  done.
-[ 58%]                     M_args.f90
-[ 66%]                     M_args.f90  done.
-[ 66%]                  M_kracken.f90
-[ 75%]                  M_kracken.f90  done.
-[ 75%]                  libexamples.a
-[ 83%]                  libexamples.a  done.
-[ 83%]                     cprint.f90
-[ 91%]                     cprint.f90  done.
-[ 91%]                         cprint
-[100%]                         cprint  done.
-[100%] Project compiled successfully.
-# Update: build/gfortran_E167FD2A985B468F/app/cprint -> /home/urbanjs/venus/V600/.local/bin
--rw-rw-r-- 1 urbanjs urbanjs 7368 May  5 14:33 dw/app/dw.f90
+-rw-rw-r-- 1 urbanjs urbanjs 7368 Jun 12 22:32 dw/app/dw.f90
  + mkdir -p build/dependencies
 Initialized empty Git repository in /home/urbanjs/venus/V600/github/apps/dw/build/dependencies/M_strings/.git/
-Initialized empty Git repository in /home/urbanjs/venus/V600/github/apps/dw/build/dependencies/M_io/.git/
-Initialized empty Git repository in /home/urbanjs/venus/V600/github/apps/dw/build/dependencies/M_CLI2/.git/
-[  0%]                  M_strings.F90
-[ 16%]                  M_strings.F90  done.
-[ 16%]                       M_io.F90
-[ 33%]                       M_io.F90  done.
-[ 33%]                     M_CLI2.F90
-[ 50%]                     M_CLI2.F90  done.
-[ 50%]                        libdw.a
-[ 66%]                        libdw.a  done.
-[ 66%]                         dw.f90
-[ 83%]                         dw.f90  done.
-[ 83%]                             dw
-[100%]                             dw  done.
-[100%] Project compiled successfully.
-# Update: build/gfortran_E167FD2A985B468F/app/dw -> /home/urbanjs/venus/V600/.local/bin
 Reading file app/dw.f90
 
 Processing documentation comments...
@@ -120,22 +28,9 @@ Creating HTML documentation...
 Writing documentation to '/home/urbanjs/venus/V600/github/apps/dw/docs/fpm-ford'...
 
 Browse the generated documentation: file:///home/urbanjs/venus/V600/github/apps/dw/docs/fpm-ford/index.html
--rwxrwxrwx 1 urbanjs urbanjs 57121 May  5 14:34 f90split/app/f90split.f90
+-rwxrwxrwx 1 urbanjs urbanjs 57121 Jun 12 22:33 f90split/app/f90split.f90
  + mkdir -p build/dependencies
 Initialized empty Git repository in /home/urbanjs/venus/V600/github/apps/f90split/build/dependencies/M_CLI2/.git/
-Initialized empty Git repository in /home/urbanjs/venus/V600/github/apps/f90split/build/dependencies/M_strings/.git/
-[  0%]                     M_CLI2.F90
-[ 20%]                     M_CLI2.F90  done.
-[ 20%]                  M_strings.F90
-[ 40%]                  M_strings.F90  done.
-[ 40%]                  libf90split.a
-[ 60%]                  libf90split.a  done.
-[ 60%]                   f90split.f90
-[ 80%]                   f90split.f90  done.
-[ 80%]                       f90split
-[100%]                       f90split  done.
-[100%] Project compiled successfully.
-# Update: build/gfortran_E167FD2A985B468F/app/f90split -> /home/urbanjs/venus/V600/.local/bin
 Reading file app/f90split.f90
 
 Processing documentation comments...
@@ -146,34 +41,9 @@ Creating HTML documentation...
 Writing documentation to '/home/urbanjs/venus/V600/github/apps/f90split/docs/fpm-ford'...
 
 Browse the generated documentation: file:///home/urbanjs/venus/V600/github/apps/f90split/docs/fpm-ford/index.html
--rwxrwxrwx 1 urbanjs urbanjs 12409 May  5 14:35 fcmd/app/fcmd.f90
+-rwxrwxrwx 1 urbanjs urbanjs 12409 Jun 12 22:34 fcmd/app/fcmd.f90
  + mkdir -p build/dependencies
 Initialized empty Git repository in /home/urbanjs/venus/V600/github/apps/fcmd/build/dependencies/M_strings/.git/
-Initialized empty Git repository in /home/urbanjs/venus/V600/github/apps/fcmd/build/dependencies/M_list/.git/
-Initialized empty Git repository in /home/urbanjs/venus/V600/github/apps/fcmd/build/dependencies/M_system/.git/
-Initialized empty Git repository in /home/urbanjs/venus/V600/github/apps/fcmd/build/dependencies/M_CLI2/.git/
-Initialized empty Git repository in /home/urbanjs/venus/V600/github/apps/fcmd/build/dependencies/M_kracken/.git/
-Initialized empty Git repository in /home/urbanjs/venus/V600/github/apps/fcmd/build/dependencies/M_io/.git/
-Initialized empty Git repository in /home/urbanjs/venus/V600/github/apps/fcmd/build/dependencies/M_args/.git/
-Initialized empty Git repository in /home/urbanjs/venus/V600/github/apps/fcmd/build/dependencies/M_framework/.git/
-[  0%]                  M_strings.F90
-[ 12%]                  M_strings.F90  done.
-[ 12%]                   C-M_system.c
-[ 25%]                   C-M_system.c  done.
-[ 25%]                   M_system.F90
-[ 37%]                   M_system.F90  done.
-[ 37%]                     M_CLI2.F90
-[ 50%]                     M_CLI2.F90  done.
-[ 50%]                       M_io.F90
-[ 62%]                       M_io.F90  done.
-[ 62%]                      libfcmd.a
-[ 75%]                      libfcmd.a  done.
-[ 75%]                       fcmd.f90
-[ 87%]                       fcmd.f90  done.
-[ 87%]                           fcmd
-[100%]                           fcmd  done.
-[100%] Project compiled successfully.
-# Update: build/gfortran_E167FD2A985B468F/app/fcmd -> /home/urbanjs/venus/V600/.local/bin
 Reading file app/fcmd.f90
 
 Processing documentation comments...
@@ -184,22 +54,9 @@ Creating HTML documentation...
 Writing documentation to '/home/urbanjs/venus/V600/github/apps/fcmd/docs/fpm-ford'...
 
 Browse the generated documentation: file:///home/urbanjs/venus/V600/github/apps/fcmd/docs/fpm-ford/index.html
--rwxrwxrwx 1 urbanjs urbanjs 15786 May  5 14:35 flower/app/flower.f90
+-rwxrwxrwx 1 urbanjs urbanjs 15786 Jun 12 22:36 flower/app/flower.f90
  + mkdir -p build/dependencies
 Initialized empty Git repository in /home/urbanjs/venus/V600/github/apps/flower/build/dependencies/M_CLI2/.git/
-Initialized empty Git repository in /home/urbanjs/venus/V600/github/apps/flower/build/dependencies/M_io/.git/
-[  0%]                     M_CLI2.F90
-[ 20%]                     M_CLI2.F90  done.
-[ 20%]                       M_io.F90
-[ 40%]                       M_io.F90  done.
-[ 40%]                    libflower.a
-[ 60%]                    libflower.a  done.
-[ 60%]                     flower.f90
-[ 80%]                     flower.f90  done.
-[ 80%]                         flower
-[100%]                         flower  done.
-[100%] Project compiled successfully.
-# Update: build/gfortran_E167FD2A985B468F/app/flower -> /home/urbanjs/venus/V600/.local/bin
 Reading file app/flower.f90
 
 Processing documentation comments...
@@ -213,264 +70,6 @@ Browse the generated documentation: file:///home/urbanjs/venus/V600/github/apps/
  + mkdir -p build/dependencies
 Initialized empty Git repository in /home/urbanjs/venus/V600/github/apps/funix/build/dependencies/M_kracken/.git/
 Initialized empty Git repository in /home/urbanjs/venus/V600/github/apps/funix/build/dependencies/M_calculator/.git/
-Initialized empty Git repository in /home/urbanjs/venus/V600/github/apps/funix/build/dependencies/M_history/.git/
-Initialized empty Git repository in /home/urbanjs/venus/V600/github/apps/funix/build/dependencies/M_readline/.git/
-Initialized empty Git repository in /home/urbanjs/venus/V600/github/apps/funix/build/dependencies/M_io/.git/
-Initialized empty Git repository in /home/urbanjs/venus/V600/github/apps/funix/build/dependencies/M_framework/.git/
-Initialized empty Git repository in /home/urbanjs/venus/V600/github/apps/funix/build/dependencies/M_system/.git/
-Initialized empty Git repository in /home/urbanjs/venus/V600/github/apps/funix/build/dependencies/M_CLI2/.git/
-Initialized empty Git repository in /home/urbanjs/venus/V600/github/apps/funix/build/dependencies/M_random/.git/
-Initialized empty Git repository in /home/urbanjs/venus/V600/github/apps/funix/build/dependencies/M_time/.git/
-Initialized empty Git repository in /home/urbanjs/venus/V600/github/apps/funix/build/dependencies/M_stopwatch/.git/
-Initialized empty Git repository in /home/urbanjs/venus/V600/github/apps/funix/build/dependencies/M_CLI/.git/
-Initialized empty Git repository in /home/urbanjs/venus/V600/github/apps/funix/build/dependencies/M_strings/.git/
-Initialized empty Git repository in /home/urbanjs/venus/V600/github/apps/funix/build/dependencies/M_list/.git/
-Initialized empty Git repository in /home/urbanjs/venus/V600/github/apps/funix/build/dependencies/M_args/.git/
-[  0%]                 C-M_readline.c
-[  0%]                 C-M_readline.c  done.
-[  0%]                       M_io.F90
-[  1%]                       M_io.F90  done.
-[  1%]           M_framework__msg.F90
-[  2%]           M_framework__msg.F90  done.
-[  2%]       M_framework__utility.f90
-[  3%]       M_framework__utility.f90  done.
-[  3%]                   C-M_system.c
-[  4%]                   C-M_system.c  done.
-[  4%]                   M_system.F90
-[  5%]                   M_system.F90  done.
-[  5%]                     M_CLI2.F90
-[  6%]                     M_CLI2.F90  done.
-[  6%]                   M_random.f90
-[  7%]                   M_random.f90  done.
-[  7%]          M_time__duplicate.f90
-[  8%]          M_time__duplicate.f90  done.
-[  8%]                M_stopwatch.f90
-[  9%]                M_stopwatch.f90  done.
-[  9%]        my_stopwatch_cpu_time.c
-[ 10%]        my_stopwatch_cpu_time.c  done.
-[ 10%]                      M_CLI.f90
-[ 11%]                      M_CLI.f90  done.
-[ 11%]                  M_strings.F90
-[ 12%]                  M_strings.F90  done.
-[ 12%]                     M_list.f90
-[ 13%]                     M_list.f90  done.
-[ 13%]                       main.f90
-[ 14%]                       main.f90  done.
-[ 14%]                  realpath-.f90
-[ 15%]                  realpath-.f90  done.
-[ 15%]                  basename-.f90
-[ 16%]                  basename-.f90  done.
-[ 16%]                      time-.f90
-[ 17%]                      time-.f90  done.
-[ 17%]                       tac-.f90
-[ 18%]                       tac-.f90  done.
-[ 18%]        M_framework__verify.F90
-[ 19%]        M_framework__verify.F90  done.
-[ 19%]       M_framework__journal.f90
-[ 20%]       M_framework__journal.f90  done.
-[ 20%]                     M_time.F90
-[ 21%]                     M_time.F90  done.
-[ 21%]        M_framework__approx.F90
-[ 22%]        M_framework__approx.F90  done.
-[ 22%]                     M_args.f90
-[ 23%]                     M_args.f90  done.
-[ 23%]                  M_kracken.f90
-[ 24%]                  M_kracken.f90  done.
-[ 24%]                M_framework.f90
-[ 25%]                M_framework.f90  done.
-[ 25%]                     libfunix.a
-[ 26%]                     libfunix.a  done.
-[ 26%]                     rmdir-.f90
-[ 27%]                     rmdir-.f90  done.
-[ 27%]                       pwd-.f90
-[ 28%]                       pwd-.f90  done.
-[ 28%]                      link-.f90
-[ 29%]                      link-.f90  done.
-[ 29%]                     sleep-.f90
-[ 30%]                     sleep-.f90  done.
-[ 30%]                    rename-.f90
-[ 31%]                    rename-.f90  done.
-[ 31%]                 showumask-.f90
-[ 32%]                 showumask-.f90  done.
-[ 32%]                   logname-.f90
-[ 33%]                   logname-.f90  done.
-[ 33%]                      kill-.f90
-[ 34%]                      kill-.f90  done.
-[ 34%]                       cmp-.f90
-[ 35%]                       cmp-.f90  done.
-[ 35%]                       fmt-.f90
-[ 36%]                       fmt-.f90  done.
-[ 36%]                     uname-.f90
-[ 37%]                     uname-.f90  done.
-[ 37%]                       rev-.f90
-[ 38%]                       rev-.f90  done.
-[ 38%]                        ls-.f90
-[ 39%]                        ls-.f90  done.
-[ 39%]                    unlink-.f90
-[ 40%]                    unlink-.f90  done.
-[ 40%]                     colrm-.f90
-[ 41%]                     colrm-.f90  done.
-[ 41%]                       yes-.f90
-[ 42%]                       yes-.f90  done.
-[ 42%]                      echo-.f90
-[ 43%]                      echo-.f90  done.
-[ 43%]                        tr-.f90
-[ 44%]                        tr-.f90  done.
-[ 44%]                        ln-.f90
-[ 45%]                        ln-.f90  done.
-[ 45%]                     paste-.f90
-[ 46%]                     paste-.f90  done.
-[ 46%]                      shuf-.f90
-[ 47%]                      shuf-.f90  done.
-[ 47%]                  printenv-.f90
-[ 48%]                  printenv-.f90  done.
-[ 48%]                     touch-.f90
-[ 49%]                     touch-.f90  done.
-[ 49%]                        mv-.f90
-[ 50%]                        mv-.f90  done.
-[ 50%]                    expand-.f90
-[ 50%]                    expand-.f90  done.
-[ 50%]                      stat-.f90
-[ 51%]                      stat-.f90  done.
-[ 51%]                       seq-.f90
-[ 52%]                       seq-.f90  done.
-[ 52%]                    whoami-.f90
-[ 53%]                    whoami-.f90  done.
-[ 53%]                     mkdir-.f90
-[ 54%]                     mkdir-.f90  done.
-[ 54%]                  hostname-.f90
-[ 55%]                  hostname-.f90  done.
-[ 55%]                    mkfifo-.f90
-[ 56%]                    mkfifo-.f90  done.
-[ 56%]                   dirname-.f90
-[ 57%]                   dirname-.f90  done.
-[ 57%]                     which-.f90
-[ 58%]                     which-.f90  done.
-[ 58%]                        rm-.f90
-[ 59%]                        rm-.f90  done.
-[ 59%]                       tty-.f90
-[ 60%]                       tty-.f90  done.
-[ 60%]                         rmdir-
-[ 61%]                         rmdir-  done.
-[ 61%]                           pwd-
-[ 62%]                           pwd-  done.
-[ 62%]                          link-
-[ 63%]                          link-  done.
-[ 63%]                         sleep-
-[ 64%]                         sleep-  done.
-[ 64%]                          funix
-[ 65%]                          funix  done.
-[ 65%]                        rename-
-[ 66%]                        rename-  done.
-[ 66%]                     showumask-
-[ 67%]                     showumask-  done.
-[ 67%]                       logname-
-[ 68%]                       logname-  done.
-[ 68%]                          kill-
-[ 69%]                          kill-  done.
-[ 69%]                           cmp-
-[ 70%]                           cmp-  done.
-[ 70%]                           fmt-
-[ 71%]                           fmt-  done.
-[ 71%]                         uname-
-[ 72%]                         uname-  done.
-[ 72%]                      realpath-
-[ 73%]                      realpath-  done.
-[ 73%]                      basename-
-[ 74%]                      basename-  done.
-[ 74%]                           rev-
-[ 75%]                           rev-  done.
-[ 75%]                            ls-
-[ 76%]                            ls-  done.
-[ 76%]                        unlink-
-[ 77%]                        unlink-  done.
-[ 77%]                         colrm-
-[ 78%]                         colrm-  done.
-[ 78%]                           yes-
-[ 79%]                           yes-  done.
-[ 79%]                          echo-
-[ 80%]                          echo-  done.
-[ 80%]                            tr-
-[ 81%]                            tr-  done.
-[ 81%]                          time-
-[ 82%]                          time-  done.
-[ 82%]                            ln-
-[ 83%]                            ln-  done.
-[ 83%]                         paste-
-[ 84%]                         paste-  done.
-[ 84%]                          shuf-
-[ 85%]                          shuf-  done.
-[ 85%]                      printenv-
-[ 86%]                      printenv-  done.
-[ 86%]                         touch-
-[ 87%]                         touch-  done.
-[ 87%]                            mv-
-[ 88%]                            mv-  done.
-[ 88%]                        expand-
-[ 89%]                        expand-  done.
-[ 89%]                          stat-
-[ 90%]                          stat-  done.
-[ 90%]                           seq-
-[ 91%]                           seq-  done.
-[ 91%]                        whoami-
-[ 92%]                        whoami-  done.
-[ 92%]                         mkdir-
-[ 93%]                         mkdir-  done.
-[ 93%]                      hostname-
-[ 94%]                      hostname-  done.
-[ 94%]                        mkfifo-
-[ 95%]                        mkfifo-  done.
-[ 95%]                           tac-
-[ 96%]                           tac-  done.
-[ 96%]                       dirname-
-[ 97%]                       dirname-  done.
-[ 97%]                         which-
-[ 98%]                         which-  done.
-[ 98%]                            rm-
-[ 99%]                            rm-  done.
-[ 99%]                           tty-
-[100%]                           tty-  done.
-[100%] Project compiled successfully.
-# Update: build/gfortran_E167FD2A985B468F/app/rmdir- -> /home/urbanjs/venus/V600/.local/bin
-# Update: build/gfortran_E167FD2A985B468F/app/pwd- -> /home/urbanjs/venus/V600/.local/bin
-# Update: build/gfortran_E167FD2A985B468F/app/link- -> /home/urbanjs/venus/V600/.local/bin
-# Update: build/gfortran_E167FD2A985B468F/app/sleep- -> /home/urbanjs/venus/V600/.local/bin
-# Update: build/gfortran_E167FD2A985B468F/app/funix -> /home/urbanjs/venus/V600/.local/bin
-# Update: build/gfortran_E167FD2A985B468F/app/rename- -> /home/urbanjs/venus/V600/.local/bin
-# Update: build/gfortran_E167FD2A985B468F/app/showumask- -> /home/urbanjs/venus/V600/.local/bin
-# Update: build/gfortran_E167FD2A985B468F/app/logname- -> /home/urbanjs/venus/V600/.local/bin
-# Update: build/gfortran_E167FD2A985B468F/app/kill- -> /home/urbanjs/venus/V600/.local/bin
-# Update: build/gfortran_E167FD2A985B468F/app/cmp- -> /home/urbanjs/venus/V600/.local/bin
-# Update: build/gfortran_E167FD2A985B468F/app/fmt- -> /home/urbanjs/venus/V600/.local/bin
-# Update: build/gfortran_E167FD2A985B468F/app/uname- -> /home/urbanjs/venus/V600/.local/bin
-# Update: build/gfortran_E167FD2A985B468F/app/realpath- -> /home/urbanjs/venus/V600/.local/bin
-# Update: build/gfortran_E167FD2A985B468F/app/basename- -> /home/urbanjs/venus/V600/.local/bin
-# Update: build/gfortran_E167FD2A985B468F/app/rev- -> /home/urbanjs/venus/V600/.local/bin
-# Update: build/gfortran_E167FD2A985B468F/app/ls- -> /home/urbanjs/venus/V600/.local/bin
-# Update: build/gfortran_E167FD2A985B468F/app/unlink- -> /home/urbanjs/venus/V600/.local/bin
-# Update: build/gfortran_E167FD2A985B468F/app/colrm- -> /home/urbanjs/venus/V600/.local/bin
-# Update: build/gfortran_E167FD2A985B468F/app/yes- -> /home/urbanjs/venus/V600/.local/bin
-# Update: build/gfortran_E167FD2A985B468F/app/echo- -> /home/urbanjs/venus/V600/.local/bin
-# Update: build/gfortran_E167FD2A985B468F/app/tr- -> /home/urbanjs/venus/V600/.local/bin
-# Update: build/gfortran_E167FD2A985B468F/app/time- -> /home/urbanjs/venus/V600/.local/bin
-# Update: build/gfortran_E167FD2A985B468F/app/ln- -> /home/urbanjs/venus/V600/.local/bin
-# Update: build/gfortran_E167FD2A985B468F/app/paste- -> /home/urbanjs/venus/V600/.local/bin
-# Update: build/gfortran_E167FD2A985B468F/app/shuf- -> /home/urbanjs/venus/V600/.local/bin
-# Update: build/gfortran_E167FD2A985B468F/app/printenv- -> /home/urbanjs/venus/V600/.local/bin
-# Update: build/gfortran_E167FD2A985B468F/app/touch- -> /home/urbanjs/venus/V600/.local/bin
-# Update: build/gfortran_E167FD2A985B468F/app/mv- -> /home/urbanjs/venus/V600/.local/bin
-# Update: build/gfortran_E167FD2A985B468F/app/expand- -> /home/urbanjs/venus/V600/.local/bin
-# Update: build/gfortran_E167FD2A985B468F/app/stat- -> /home/urbanjs/venus/V600/.local/bin
-# Update: build/gfortran_E167FD2A985B468F/app/seq- -> /home/urbanjs/venus/V600/.local/bin
-# Update: build/gfortran_E167FD2A985B468F/app/whoami- -> /home/urbanjs/venus/V600/.local/bin
-# Update: build/gfortran_E167FD2A985B468F/app/mkdir- -> /home/urbanjs/venus/V600/.local/bin
-# Update: build/gfortran_E167FD2A985B468F/app/hostname- -> /home/urbanjs/venus/V600/.local/bin
-# Update: build/gfortran_E167FD2A985B468F/app/mkfifo- -> /home/urbanjs/venus/V600/.local/bin
-# Update: build/gfortran_E167FD2A985B468F/app/tac- -> /home/urbanjs/venus/V600/.local/bin
-# Update: build/gfortran_E167FD2A985B468F/app/dirname- -> /home/urbanjs/venus/V600/.local/bin
-# Update: build/gfortran_E167FD2A985B468F/app/which- -> /home/urbanjs/venus/V600/.local/bin
-# Update: build/gfortran_E167FD2A985B468F/app/rm- -> /home/urbanjs/venus/V600/.local/bin
-# Update: build/gfortran_E167FD2A985B468F/app/tty- -> /home/urbanjs/venus/V600/.local/bin
 Reading file app/rmdir-.f90
 Reading file app/pwd-.f90
 Reading file app/link-.f90
@@ -495,6 +94,7 @@ Reading file app/tr-.f90
 Reading file app/time-.f90
 Reading file app/ln-.f90
 Reading file app/paste-.f90
+Reading file app/replace-.f90
 Reading file app/shuf-.f90
 Reading file app/printenv-.f90
 Reading file app/touch-.f90
@@ -523,71 +123,6 @@ Browse the generated documentation: file:///home/urbanjs/venus/V600/github/apps/
  + mkdir -p build/dependencies
 Initialized empty Git repository in /home/urbanjs/venus/V600/github/apps/hashkeys/build/dependencies/M_hashkeys/.git/
 Initialized empty Git repository in /home/urbanjs/venus/V600/github/apps/hashkeys/build/dependencies/M_io/.git/
-Initialized empty Git repository in /home/urbanjs/venus/V600/github/apps/hashkeys/build/dependencies/M_kracken/.git/
-Initialized empty Git repository in /home/urbanjs/venus/V600/github/apps/hashkeys/build/dependencies/M_CLI2/.git/
-Initialized empty Git repository in /home/urbanjs/venus/V600/github/apps/hashkeys/build/dependencies/M_strings/.git/
-Initialized empty Git repository in /home/urbanjs/venus/V600/github/apps/hashkeys/build/dependencies/M_system/.git/
-Initialized empty Git repository in /home/urbanjs/venus/V600/github/apps/hashkeys/build/dependencies/M_list/.git/
-Initialized empty Git repository in /home/urbanjs/venus/V600/github/apps/hashkeys/build/dependencies/M_args/.git/
-Initialized empty Git repository in /home/urbanjs/venus/V600/github/apps/hashkeys/build/dependencies/M_framework/.git/
-[  0%]                       main.f90
-[  4%]                       main.f90  done.
-[  4%]                 C-M_hashkeys.c
-[  8%]                 C-M_hashkeys.c  done.
-[  8%]                       M_io.F90
-[ 13%]                       M_io.F90  done.
-[ 13%]                     M_CLI2.F90
-[ 17%]                     M_CLI2.F90  done.
-[ 17%]                  M_strings.F90
-[ 21%]                  M_strings.F90  done.
-[ 21%]                   C-M_system.c
-[ 26%]                   C-M_system.c  done.
-[ 26%]                   M_system.F90
-[ 30%]                   M_system.F90  done.
-[ 30%]                     M_list.f90
-[ 34%]                     M_list.f90  done.
-[ 34%]           M_framework__msg.F90
-[ 39%]           M_framework__msg.F90  done.
-[ 39%]        M_framework__verify.F90
-[ 43%]        M_framework__verify.F90  done.
-[ 43%]       M_framework__journal.f90
-[ 47%]       M_framework__journal.f90  done.
-[ 47%]           M_hashkeys__sha3.f90
-[ 52%]           M_hashkeys__sha3.f90  done.
-[ 52%]                 M_hashkeys.F90
-[ 56%]                 M_hashkeys.F90  done.
-[ 56%]                     M_args.f90
-[ 60%]                     M_args.f90  done.
-[ 60%]                       sha3.f90
-[ 65%]                       sha3.f90  done.
-[ 65%]                     digest.f90
-[ 69%]                     digest.f90  done.
-[ 69%]                  M_kracken.f90
-[ 73%]                  M_kracken.f90  done.
-[ 73%]                  libhashkeys.a
-[ 78%]                  libhashkeys.a  done.
-[ 78%]                     hasher.f90
-[ 82%]                     hasher.f90  done.
-
-app/hasher.f90:133:104:
-
-  133 |    call help_usage(lget('hasher_help'))                                        ! check if help requested
-      |                                                                                                        1
-Error: Procedure ‘help_usage’ called with an implicit interface at (1) [-Werror=implicit-interface]
-compilation terminated due to -fmax-errors=1.
-[  0%]                       hashkeys
-[ 20%]                       hashkeys  done.
-[ 20%]                           sha3
-[ 40%]                           sha3  done.
-[ 40%]                     hasher.f90
-[ 60%]                     hasher.f90  done.
-
-app/hasher.f90:133:104:
-
-  133 |    call help_usage(lget('hasher_help'))                                        ! check if help requested
-      |                                                                                                        1
-Error: Procedure ‘help_usage’ called with an implicit interface at (1) [-Werror=implicit-interface]
-compilation terminated due to -fmax-errors=1.
 Reading file app/main.f90
 Reading file app/sha3.f90
 Reading file app/hasher.f90
@@ -601,16 +136,7 @@ Creating HTML documentation...
 Writing documentation to '/home/urbanjs/venus/V600/github/apps/hashkeys/docs/fpm-ford'...
 
 Browse the generated documentation: file:///home/urbanjs/venus/V600/github/apps/hashkeys/docs/fpm-ford/index.html
-[  0%]                     hasher.f90
-[ 33%]                     hasher.f90  done.
-
-app/hasher.f90:133:104:
-
-  133 |    call help_usage(lget('hasher_help'))                                        ! check if help requested
-      |                                                                                                        1
-Error: Procedure ‘help_usage’ called with an implicit interface at (1) [-Werror=implicit-interface]
-compilation terminated due to -fmax-errors=1.
--rw-rw-r-- 1 urbanjs urbanjs 11315 May  5 14:39 la/app/la.f90
+-rw-rw-r-- 1 urbanjs urbanjs 11315 Jun 12 22:39 la/app/la.f90
  + mkdir -p build/dependencies
 Initialized empty Git repository in /home/urbanjs/venus/V600/github/apps/la/build/dependencies/M_CLI2/.git/
 Initialized empty Git repository in /home/urbanjs/venus/V600/github/apps/la/build/dependencies/M_matrix/.git/
@@ -644,10 +170,10 @@ Initialized empty Git repository in /home/urbanjs/venus/V600/github/apps/la/buil
 [ 45%]                       M_LA.f90  done.
 [ 45%]               M_intrinsics.f90
 [ 50%]               M_intrinsics.f90  done.
-[ 50%]        M_framework__verify.F90
-[ 55%]        M_framework__verify.F90  done.
-[ 55%]       M_framework__journal.f90
-[ 60%]       M_framework__journal.f90  done.
+[ 50%]       M_framework__journal.f90
+[ 55%]       M_framework__journal.f90  done.
+[ 55%]        M_framework__verify.F90
+[ 60%]        M_framework__verify.F90  done.
 [ 60%]                  M_journal.f90
 [ 65%]                  M_journal.f90  done.
 [ 65%]        M_framework__approx.F90
@@ -676,215 +202,215 @@ Creating HTML documentation...
 Writing documentation to '/home/urbanjs/venus/V600/github/apps/la/docs/fpm-ford'...
 
 Browse the generated documentation: file:///home/urbanjs/venus/V600/github/apps/la/docs/fpm-ford/index.html
--rwxrwxrwx 1 urbanjs urbanjs 8850 May  5 14:41 lsup/app/lsup.f90
+-rwxrwxrwx 1 urbanjs urbanjs 8850 Jun 12 22:40 lsup/app/lsup.f90
  + mkdir -p build/dependencies
 Initialized empty Git repository in /home/urbanjs/venus/V600/github/apps/lsup/build/dependencies/GPF/.git/
-[  0%]                      C-getgp.c
-[  0%]                      C-getgp.c  done.
-[  0%]                       C-curl.c
-[  1%]                       C-curl.c  done.
-[  1%]                       C-pcl5.c
-[  2%]                       C-pcl5.c  done.
-[  2%]                        C-pbm.c
-[  3%]                        C-pbm.c  done.
-[  3%]                       C-attr.c
-[  4%]                       C-attr.c  done.
-[  4%]                    C-drivers.c
-[  5%]                    C-drivers.c  done.
-[  5%]                        C-rtf.c
-[  6%]                        C-rtf.c  done.
-[  6%]                 C-M_readline.c
-[  7%]                 C-M_readline.c  done.
-[  7%]                 C-M_hashkeys.c
-[  8%]                 C-M_hashkeys.c  done.
-[  8%]                       C-text.c
-[  9%]                       C-text.c  done.
-[  9%]           M_framework__msg.f90
-[ 10%]           M_framework__msg.f90  done.
-[ 10%]                  C-yobbarays.c
-[ 11%]                  C-yobbarays.c  done.
-[ 11%]                       C-xfig.c
-[ 11%]                       C-xfig.c  done.
-[ 11%]                     C-aspect.c
-[ 12%]                     C-aspect.c  done.
-[ 12%]                      C-scale.c
-[ 13%]                      C-scale.c  done.
-[ 13%]                   C-jubiglet.c
-[ 14%]                   C-jubiglet.c  done.
-[ 14%]                     C-hvsrgb.c
-[ 15%]                     C-hvsrgb.c  done.
-[ 15%]                       C-cgmt.c
-[ 16%]                       C-cgmt.c  done.
-[ 16%]                        C-vml.c
-[ 17%]                        C-vml.c  done.
-[ 17%]                       C-draw.c
-[ 18%]                       C-draw.c  done.
-[ 18%]                    C-M_regex.c
-[ 19%]                    C-M_regex.c  done.
-[ 19%]                  C-mysignal_.c
-[ 20%]                  C-mysignal_.c  done.
-[ 20%]                     C-curves.c
-[ 21%]                     C-curves.c  done.
+[  0%]                       C-arcs.c
+[  0%]                       C-arcs.c  done.
+[  0%]                     C-aspect.c
+[  1%]                     C-aspect.c  done.
+[  1%]                       C-attr.c
+[  2%]                       C-attr.c  done.
+[  2%]                     C-buffer.c
+[  3%]                     C-buffer.c  done.
+[  3%]                     C-canvas.c
+[  4%]                     C-canvas.c  done.
+[  4%]                       C-cgmt.c
+[  5%]                       C-cgmt.c  done.
+[  5%]                       C-clip.c
+[  6%]                       C-clip.c  done.
+[  6%]                       C-curl.c
+[  7%]                       C-curl.c  done.
+[  7%]                     C-curves.c
+[  8%]                     C-curves.c  done.
+[  8%]                       C-draw.c
+[  9%]                       C-draw.c  done.
+[  9%]                    C-drivers.c
+[ 10%]                    C-drivers.c  done.
+[ 10%]                        C-fti.c
+[ 11%]                        C-fti.c  done.
+[ 11%]                      C-getgp.c
+[ 11%]                      C-getgp.c  done.
+[ 11%]                  C-getstring.c
+[ 12%]                  C-getstring.c  done.
+[ 12%]                        C-gnu.c
+[ 13%]                        C-gnu.c  done.
+[ 13%]                     C-hlsrgb.c
+[ 14%]                     C-hlsrgb.c  done.
+[ 14%]                      C-hpdxy.c
+[ 15%]                      C-hpdxy.c  done.
+[ 15%]                       C-hpgt.c
+[ 16%]                       C-hpgt.c  done.
+[ 16%]                     C-hvsrgb.c
+[ 17%]                     C-hvsrgb.c  done.
+[ 17%]                   C-jubiglet.c
+[ 18%]                   C-jubiglet.c  done.
+[ 18%]                    C-jucolor.c
+[ 19%]                    C-jucolor.c  done.
+[ 19%]                     C-macros.c
+[ 20%]                     C-macros.c  done.
+[ 20%]                    C-mapping.c
+[ 21%]                    C-mapping.c  done.
 [ 21%]                     C-matrix.c
 [ 22%]                     C-matrix.c  done.
-[ 22%]                   M_random.f90
-[ 22%]                   M_random.f90  done.
-[ 22%]                    C-mapping.c
-[ 23%]                    C-mapping.c  done.
-[ 23%]                     C-points.c
-[ 24%]                     C-points.c  done.
-[ 24%]                        C-pdf.c
-[ 25%]                        C-pdf.c  done.
-[ 25%]                    C-jucolor.c
-[ 26%]                    C-jucolor.c  done.
-[ 26%]      C-my_stopwatch_cpu_time.c
-[ 27%]      C-my_stopwatch_cpu_time.c  done.
-[ 27%]                       C-arcs.c
-[ 28%]                       C-arcs.c  done.
-[ 28%]                     C-buffer.c
-[ 29%]                     C-buffer.c  done.
+[ 22%]                 C-M_drawplus.c
+[ 22%]                 C-M_drawplus.c  done.
+[ 22%]                   C-M_getkey.c
+[ 23%]                   C-M_getkey.c  done.
+[ 23%]                 C-M_hashkeys.c
+[ 24%]                 C-M_hashkeys.c  done.
+[ 24%]                        C-mif.c
+[ 25%]                        C-mif.c  done.
+[ 25%]                       C-move.c
+[ 26%]                       C-move.c  done.
+[ 26%]                 C-M_readline.c
+[ 27%]                 C-M_readline.c  done.
+[ 27%]                    C-M_regex.c
+[ 28%]                    C-M_regex.c  done.
+[ 28%]                   C-M_sqlite.c
+[ 29%]                   C-M_sqlite.c  done.
 [ 29%]                   C-M_system.c
 [ 30%]                   C-M_system.c  done.
-[ 30%]                  C-read_line.c
-[ 31%]                  C-read_line.c  done.
-[ 31%]                     C-valloc.c
-[ 32%]                     C-valloc.c  done.
-[ 32%]                     C-usemap.c
-[ 33%]                     C-usemap.c  done.
-[ 33%]                      C-viewp.c
-[ 33%]                      C-viewp.c  done.
-[ 33%]                     C-rgbhvs.c
-[ 34%]                     C-rgbhvs.c  done.
-[ 34%]                 C-M_drawplus.c
-[ 35%]                 C-M_drawplus.c  done.
-[ 35%]                        C-nil.c
-[ 36%]                        C-nil.c  done.
-[ 36%]                        C-ppm.c
-[ 37%]                        C-ppm.c  done.
-[ 37%]                       C-move.c
-[ 38%]                       C-move.c  done.
-[ 38%]                     cntcrv.f90
-[ 39%]                     cntcrv.f90  done.
-[ 39%]                     C-verror.c
-[ 40%]                     C-verror.c  done.
-[ 40%]                    C-patches.c
-[ 41%]                    C-patches.c  done.
-[ 41%]                      C-hpdxy.c
-[ 42%]                      C-hpdxy.c  done.
-[ 42%]                        C-fti.c
-[ 43%]                        C-fti.c  done.
-[ 43%]                     M_list.f90
-[ 44%]                     M_list.f90  done.
-[ 44%]                        C-mif.c
-[ 44%]                        C-mif.c  done.
-[ 44%]                       C-pref.c
-[ 45%]                       C-pref.c  done.
-[ 45%]                       C-clip.c
-[ 46%]                       C-clip.c  done.
-[ 46%]                     C-tensor.c
-[ 47%]                     C-tensor.c  done.
-[ 47%]                    C-objects.c
-[ 48%]                    C-objects.c  done.
-[ 48%]                  dparanoia.f90
-[ 49%]                  dparanoia.f90  done.
-[ 49%]                        C-tek.c
-[ 50%]                        C-tek.c  done.
-[ 50%]                   C-polygons.c
-[ 51%]                   C-polygons.c  done.
-[ 51%]                       M_LA.f90
-[ 52%]                       M_LA.f90  done.
-[ 52%]                     C-hlsrgb.c
-[ 53%]                     C-hlsrgb.c  done.
-[ 53%]                      M_msg.f90
-[ 54%]                      M_msg.f90  done.
-[ 54%]                     C-rgbhls.c
-[ 55%]                     C-rgbhls.c  done.
-[ 55%]                    C-rgbmono.c
-[ 55%]                    C-rgbmono.c  done.
-[ 55%]                   C-M_sqlite.c
-[ 56%]                   C-M_sqlite.c  done.
-[ 56%]                 M_anything.f90
-[ 57%]                 M_anything.f90  done.
-[ 57%]                  C-newtokens.c
-[ 58%]                  C-newtokens.c  done.
-[ 58%]                  M_process.f90
-[ 59%]                  M_process.f90  done.
-[ 59%]                  C-getstring.c
-[ 60%]                  C-getstring.c  done.
-[ 60%]                     C-macros.c
-[ 61%]                     C-macros.c  done.
-[ 61%]                        C-X11.c
-[ 62%]                        C-X11.c  done.
-[ 62%]                     C-canvas.c
-[ 63%]                     C-canvas.c  done.
-[ 63%]                        C-gnu.c
-[ 64%]                        C-gnu.c  done.
-[ 64%]        my_stopwatch_cpu_time.c
-[ 65%]        my_stopwatch_cpu_time.c  done.
-[ 65%]                        C-vog.c
-[ 66%]                        C-vog.c  done.
-[ 66%]                        C-svg.c
-[ 66%]                        C-svg.c  done.
-[ 66%]                      C-trans.c
-[ 67%]                      C-trans.c  done.
-[ 67%]                   C-M_getkey.c
-[ 68%]                   C-M_getkey.c  done.
+[ 30%]                  C-mysignal_.c
+[ 31%]                  C-mysignal_.c  done.
+[ 31%]      C-my_stopwatch_cpu_time.c
+[ 32%]      C-my_stopwatch_cpu_time.c  done.
+[ 32%]                  C-newtokens.c
+[ 33%]                  C-newtokens.c  done.
+[ 33%]                        C-nil.c
+[ 33%]                        C-nil.c  done.
+[ 33%]                     cntcrv.f90
+[ 34%]                     cntcrv.f90  done.
+[ 34%]                    C-objects.c
+[ 35%]                    C-objects.c  done.
+[ 35%]                    C-patches.c
+[ 36%]                    C-patches.c  done.
+[ 36%]                        C-pbm.c
+[ 37%]                        C-pbm.c  done.
+[ 37%]                       C-pcl5.c
+[ 38%]                       C-pcl5.c  done.
+[ 38%]                        C-pdf.c
+[ 39%]                        C-pdf.c  done.
+[ 39%]                     C-points.c
+[ 40%]                     C-points.c  done.
+[ 40%]                   C-polygons.c
+[ 41%]                   C-polygons.c  done.
+[ 41%]                        C-ppm.c
+[ 42%]                        C-ppm.c  done.
+[ 42%]                       C-pref.c
+[ 43%]                       C-pref.c  done.
+[ 43%]                         C-ps.c
+[ 44%]                         C-ps.c  done.
+[ 44%]                  C-read_line.c
+[ 44%]                  C-read_line.c  done.
+[ 44%]                       C-rect.c
+[ 45%]                       C-rect.c  done.
+[ 45%]                     C-rgbhls.c
+[ 46%]                     C-rgbhls.c  done.
+[ 46%]                     C-rgbhvs.c
+[ 47%]                     C-rgbhvs.c  done.
+[ 47%]                    C-rgbmono.c
+[ 48%]                    C-rgbmono.c  done.
+[ 48%]                     C-rgbval.c
+[ 49%]                     C-rgbval.c  done.
+[ 49%]                        C-rtf.c
+[ 50%]                        C-rtf.c  done.
+[ 50%]                      C-scale.c
+[ 51%]                      C-scale.c  done.
+[ 51%]                        C-svg.c
+[ 52%]                        C-svg.c  done.
+[ 52%]                        C-tek.c
+[ 53%]                        C-tek.c  done.
+[ 53%]                     C-tensor.c
+[ 54%]                     C-tensor.c  done.
+[ 54%]                       C-text.c
+[ 55%]                       C-text.c  done.
+[ 55%]                      C-trans.c
+[ 55%]                      C-trans.c  done.
+[ 55%]                   C-unixplot.c
+[ 56%]                   C-unixplot.c  done.
+[ 56%]                     C-usemap.c
+[ 57%]                     C-usemap.c  done.
+[ 57%]                     C-valloc.c
+[ 58%]                     C-valloc.c  done.
+[ 58%]                     C-verror.c
+[ 59%]                     C-verror.c  done.
+[ 59%]                    C-viewing.c
+[ 60%]                    C-viewing.c  done.
+[ 60%]                      C-viewp.c
+[ 61%]                      C-viewp.c  done.
+[ 61%]                        C-vml.c
+[ 62%]                        C-vml.c  done.
+[ 62%]                        C-vog.c
+[ 63%]                        C-vog.c  done.
+[ 63%]                        C-X11.c
+[ 64%]                        C-X11.c  done.
+[ 64%]                       C-xfig.c
+[ 65%]                       C-xfig.c  done.
+[ 65%]                  C-yobbarays.c
+[ 66%]                  C-yobbarays.c  done.
+[ 66%]                  dparanoia.f90
+[ 66%]                  dparanoia.f90  done.
+[ 66%]                 M_anything.f90
+[ 67%]                 M_anything.f90  done.
+[ 67%]           M_framework__msg.f90
+[ 68%]           M_framework__msg.f90  done.
 [ 68%]               M_intrinsics.f90
 [ 69%]               M_intrinsics.f90  done.
-[ 69%]                  M_ncurses.f90
-[ 70%]                  M_ncurses.f90  done.
-[ 70%]                  sparanoia.f90
-[ 71%]                  sparanoia.f90  done.
-[ 71%]                     C-rgbval.c
-[ 72%]                     C-rgbval.c  done.
-[ 72%]                       C-hpgt.c
-[ 73%]                       C-hpgt.c  done.
-[ 73%]                   C-unixplot.c
-[ 74%]                   C-unixplot.c  done.
-[ 74%]                     M_sort.f90
-[ 75%]                     M_sort.f90  done.
-[ 75%]                    C-viewing.c
-[ 76%]                    C-viewing.c  done.
-[ 76%]                         C-ps.c
-[ 77%]                         C-ps.c  done.
-[ 77%]                       C-rect.c
-[ 77%]                       C-rect.c  done.
-[ 77%]        M_framework__verify.f90
-[ 78%]        M_framework__verify.f90  done.
-[ 78%]              nc_errmessage.f90
-[ 79%]              nc_errmessage.f90  done.
-[ 79%]            nc_printunicode.f90
-[ 80%]            nc_printunicode.f90  done.
-[ 80%]               nc_printhtml.f90
-[ 81%]               nc_printhtml.f90  done.
-[ 81%]              nc_printplain.f90
-[ 82%]              nc_printplain.f90  done.
-[ 82%]       M_framework__journal.f90
-[ 83%]       M_framework__journal.f90  done.
-[ 83%]             nc_printescape.f90
-[ 84%]             nc_printescape.f90  done.
-[ 84%]                  M_journal.f90
-[ 85%]                  M_journal.f90  done.
+[ 69%]                       M_LA.f90
+[ 70%]                       M_LA.f90  done.
+[ 70%]                     M_list.f90
+[ 71%]                     M_list.f90  done.
+[ 71%]                      M_msg.f90
+[ 72%]                      M_msg.f90  done.
+[ 72%]                  M_ncurses.f90
+[ 73%]                  M_ncurses.f90  done.
+[ 73%]                  M_process.f90
+[ 74%]                  M_process.f90  done.
+[ 74%]                   M_random.f90
+[ 75%]                   M_random.f90  done.
+[ 75%]                     M_sort.f90
+[ 76%]                     M_sort.f90  done.
+[ 76%]        my_stopwatch_cpu_time.c
+[ 77%]        my_stopwatch_cpu_time.c  done.
+[ 77%]                  sparanoia.f90
+[ 77%]                  sparanoia.f90  done.
+[ 77%]       M_framework__journal.f90
+[ 78%]       M_framework__journal.f90  done.
+[ 78%]        M_framework__verify.f90
+[ 79%]        M_framework__verify.f90  done.
+[ 79%]                  M_journal.f90
+[ 80%]                  M_journal.f90  done.
+[ 80%]              nc_errmessage.f90
+[ 81%]              nc_errmessage.f90  done.
+[ 81%]             nc_printescape.f90
+[ 82%]             nc_printescape.f90  done.
+[ 82%]               nc_printhtml.f90
+[ 83%]               nc_printhtml.f90  done.
+[ 83%]              nc_printplain.f90
+[ 84%]              nc_printplain.f90  done.
+[ 84%]            nc_printunicode.f90
+[ 85%]            nc_printunicode.f90  done.
 [ 85%]        M_framework__approx.f90
 [ 86%]        M_framework__approx.f90  done.
 [ 86%]                     M_math.f90
 [ 87%]                     M_math.f90  done.
-[ 87%]                   paranoia.f90
-[ 88%]                   paranoia.f90  done.
-[ 88%]                  M_strings.f90
+[ 87%]                  M_strings.f90
 [ 88%]                  M_strings.f90  done.
 [ 88%]                   M_verify.f90
-[ 89%]                   M_verify.f90  done.
+[ 88%]                   M_verify.f90  done.
+[ 88%]                   paranoia.f90
+[ 89%]                   paranoia.f90  done.
 [ 89%]                     M_args.f90
 [ 90%]                     M_args.f90  done.
 [ 90%]                     M_time.f90
 [ 91%]                     M_time.f90  done.
 [ 91%]                  M_kracken.f90
 [ 92%]                  M_kracken.f90  done.
-[ 92%]                     M_uuid.f90
-[ 93%]                     M_uuid.f90  done.
-[ 93%]                   M_system.f90
-[ 94%]                   M_system.f90  done.
+[ 92%]                   M_system.f90
+[ 93%]                   M_system.f90  done.
+[ 93%]                     M_uuid.f90
+[ 94%]                     M_uuid.f90  done.
 [ 94%]                       M_io.f90
 [ 95%]                       M_io.f90  done.
 [ 95%]                       lsup.f90
@@ -909,7 +435,7 @@ Creating HTML documentation...
 Writing documentation to '/home/urbanjs/venus/V600/github/apps/lsup/docs/fpm-ford'...
 
 Browse the generated documentation: file:///home/urbanjs/venus/V600/github/apps/lsup/docs/fpm-ford/index.html
--rw-rw-r-- 1 urbanjs urbanjs 70044 May  5 14:42 nd/app/nd.f90
+-rw-rw-r-- 1 urbanjs urbanjs 70044 Jun 12 22:41 nd/app/nd.f90
  + mkdir -p build/dependencies
 Initialized empty Git repository in /home/urbanjs/venus/V600/github/apps/nd/build/dependencies/M_CLI2/.git/
 Initialized empty Git repository in /home/urbanjs/venus/V600/github/apps/nd/build/dependencies/M_framework/.git/
@@ -919,10 +445,10 @@ Initialized empty Git repository in /home/urbanjs/venus/V600/github/apps/nd/buil
 [ 20%]           M_framework__msg.F90  done.
 [ 20%]       M_framework__utility.f90
 [ 30%]       M_framework__utility.f90  done.
-[ 30%]        M_framework__verify.F90
-[ 40%]        M_framework__verify.F90  done.
-[ 40%]       M_framework__journal.f90
-[ 50%]       M_framework__journal.f90  done.
+[ 30%]       M_framework__journal.f90
+[ 40%]       M_framework__journal.f90  done.
+[ 40%]        M_framework__verify.F90
+[ 50%]        M_framework__verify.F90  done.
 [ 50%]        M_framework__approx.F90
 [ 60%]        M_framework__approx.F90  done.
 [ 60%]                M_framework.f90
@@ -946,7 +472,7 @@ Creating HTML documentation...
 Writing documentation to '/home/urbanjs/venus/V600/github/apps/nd/docs/fpm-ford'...
 
 Browse the generated documentation: file:///home/urbanjs/venus/V600/github/apps/nd/docs/fpm-ford/index.html
--rw-rw-r-- 1 urbanjs urbanjs 10096 May  5 14:43 playground/app/playground.f90
+-rw-rw-r-- 1 urbanjs urbanjs 10096 Jun 12 22:42 playground/app/playground.f90
  + mkdir -p build/dependencies
 Initialized empty Git repository in /home/urbanjs/venus/V600/github/apps/playground/build/dependencies/M_strings/.git/
 Initialized empty Git repository in /home/urbanjs/venus/V600/github/apps/playground/build/dependencies/M_io/.git/
@@ -965,7 +491,7 @@ Initialized empty Git repository in /home/urbanjs/venus/V600/github/apps/playgro
 [100%]                     playground  done.
 [100%] Project compiled successfully.
 # Update: build/gfortran_E167FD2A985B468F/app/playground -> /home/urbanjs/venus/V600/.local/bin
--rw-rw-r-- 1 urbanjs urbanjs 12827 May  5 14:43 sub/app/sub.f90
+-rw-rw-r-- 1 urbanjs urbanjs 12827 Jun 12 22:42 sub/app/sub.f90
  + mkdir -p build/dependencies
 Initialized empty Git repository in /home/urbanjs/venus/V600/github/apps/sub/build/dependencies/M_CLI2/.git/
 Initialized empty Git repository in /home/urbanjs/venus/V600/github/apps/sub/build/dependencies/M_strings/.git/
@@ -1002,7 +528,7 @@ Creating HTML documentation...
 Writing documentation to '/home/urbanjs/venus/V600/github/apps/sub/docs/fpm-ford'...
 
 Browse the generated documentation: file:///home/urbanjs/venus/V600/github/apps/sub/docs/fpm-ford/index.html
--rw-rw-r-- 1 urbanjs urbanjs 5137 May  5 14:44 xpand/app/xpand.f90
+-rw-rw-r-- 1 urbanjs urbanjs 7284 Jun 12 22:42 xpand/app/xpand.f90
  + mkdir -p build/dependencies
 Initialized empty Git repository in /home/urbanjs/venus/V600/github/apps/xpand/build/dependencies/M_CLI2/.git/
 Initialized empty Git repository in /home/urbanjs/venus/V600/github/apps/xpand/build/dependencies/M_io/.git/

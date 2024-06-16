@@ -10,8 +10,8 @@ character(len=IPvalue),allocatable :: names(:)    ! assuming names not greater t
 character(len=:),allocatable       :: avalue
 !-----------------------------------------------------------------------------------------------------------------------------------
    call kracken('printenv',' -C .F. -B .F. -help .F. -version .F. ')        ! crack command line arguments
-   call help_usage(lget('printenv-help'))                                   ! display help if -help specified and stop
-   call help_version(lget('printenv-version'))                              ! display version if -version specified and stop
+   call help_usage(lget('printenv_help'))                                   ! display help if -help specified and stop
+   call help_version(lget('printenv_version'))                              ! display version if -version specified and stop
    Csyntax=lget('printenv_C')                                               ! if -C specified write output for csh(1)
    Bsyntax=lget('printenv_B')                                               ! if -B specified write output for sh(1)
    printedsome=.false.                                                      ! flag if nothing else printed to print all values

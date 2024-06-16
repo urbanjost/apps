@@ -59,19 +59,19 @@ help_text=[ CHARACTER(LEN=128) :: &
 '   cprint(1f) - [FILE FILTER] filter prints specified columns                     ',&
 '   (LICENSE:PD)                                                                   ',&
 'SYNOPSIS                                                                          ',&
-'   cprint [ columns ][ -delimiters delim] |-help|-version                         ',&
+'   cprint [ columns ][ --delimiters delim] |--help|--version                      ',&
 '                                                                                  ',&
 'DESCRIPTION                                                                       ',&
 '   cprint is a filter that prints the specified columns.                          ',&
 '                                                                                  ',&
 'OPTIONS                                                                           ',&
-'    columns      numbers indicating which columns to print.                       ',&
+'   columns       numbers indicating which columns to print.                       ',&
 '                 A negative value denotes the end of a range.                     ',&
 '                 A value must be from 1 to 1000.                                  ',&
-'    -delimiters  input column delimiter character(s) (default: whitespace)        ',&
+'   --delimiters  input column delimiter character(s) (default: whitespace)        ',&
 '                 Delimiters are changed to spaces on outout.                      ',&
-'    -help        display command help and exit                                    ',&
-'    -version     display command metadata and exit                                ',&
+'   --help        display command help and exit                                    ',&
+'   --version     display command metadata and exit                                ',&
 'EXAMPLES                                                                          ',&
 '  Sample usage:                                                                   ',&
 '                                                                                  ',&
