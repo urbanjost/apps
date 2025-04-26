@@ -81,7 +81,7 @@ character(len=256)              :: cmdmsg
             select case(basename(pathname))
             case('.','..','')
             case default
-               if(system_access(pathname,X_OK))then
+               if( system_access(pathname,X_OK) .or. system_access(pathname//'.exe',X_OK) )then
                   do k=1,size(cmds)
                      if(cmds(k).eq.'')then
                         if(tstfor)then
