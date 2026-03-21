@@ -63,7 +63,35 @@ corresponding to hexadecimal U+2500 to U+257F.
 ## Locate and Display wide characters
 
 ### find any lines with non-ASCII7 characters
+```bash
    uni -W The_Crow_and_the_Fox.utf8
+```
+#### output
+```text
+       1 [“The Crow and the Fox” by Jean de la Fontaine]
+         [\u201CThe Crow and the Fox\u201D by Jean de la Fontaine]
+       5 [   Maître Corbeau, sur un arbre perché,]
+         [   Ma\xEEtre Corbeau, sur un arbre perch\xE9,]
+       7 [   Maître Renard, par l’odeur alléché,]
+         [   Ma\xEEtre Renard, par l\u2019odeur all\xE9ch\xE9,]
+       8 [   Lui tint à peu près ce langage :]
+         [   Lui tint \xE0 peu pr\xE8s ce langage :]
+       9 [   «Hé ! bonjour, Monsieur du Corbeau.]
+         [   \xABH\xE9 ! bonjour, Monsieur du Corbeau.]
+      10 [   Que vous êtes joli ! que vous me semblez beau !]
+         [   Que vous \xEAtes joli ! que vous me semblez beau !]
+      12 [   Se rapporte à votre plumage,]
+         [   Se rapporte \xE0 votre plumage,]
+      13 [   Vous êtes le Phénix des hôtes de ces bois.»]
+         [   Vous \xEAtes le Ph\xE9nix des h\xF4tes de ces bois.\xBB]
+      17 [   Le Renard s’en saisit, et dit : «Mon bon Monsieur,]
+         [   Le Renard s\u2019en saisit, et dit : \xABMon bon Monsieur,]
+      19 [   Vit aux dépens de celui qui l’écoute :]
+         [   Vit aux d\xE9pens de celui qui l\u2019\xE9coute :]
+      20 [   Cette leçon vaut bien un fromage, sans doute.»]
+         [   Cette le\xE7on vaut bien un fromage, sans doute.\xBB]
+      22 [   Jura, mais un peu tard, qu’on ne l’y prendrait plus.]
+         [   Jura, mais un peu tard, qu\u2019on ne l\u2019y prendrait plus.]
 ```
 #### Escape-style translation
 ```bash
