@@ -1,0 +1,10 @@
+! logical :: glob
+! character(len=*)  :: tame       ! A string without wildcards
+! character(len=*)  :: wild       ! A (potentially) corresponding string with wildcards
+! character(len=len(tame)+1) :: tametext
+! character(len=len(wild)+1) :: wildtext
+! character(len=1),parameter :: NULL=char(0)
+! integer  :: wlen
+! integer  :: ti, wi
+! integer  :: i
+! character(len=:),allocatable :: tbookmark, wbookmark

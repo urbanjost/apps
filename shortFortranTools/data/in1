@@ -1,0 +1,34 @@
+
+ character(len=:),allocatable :: tbookmark, wbookmark
+LOGICAL :: GLOB
+CHARACTER(LEN=*)  ::        TAME       ! A STRING WITHOUT WILDCARDS
+ CHARACTER(LEN=*)  :: WILD       ! A (POTENTIALLY) CORRESPONDING STRING WITH WILDCARDS
+CHARACTER(LEN=LEN(TAME)+1) :: TAMETEXT
+
+logical :: glob
+character(len=*)  ::        tame       ! a string without wildcards
+character(len=*)  :: wild       ! a (potentially) corresponding string with wildcards
+character(len=len(tame)+1) :: tametext
+character(len=len(wild)+1):: wildtext
+character(len=1),parameter::null=char(0)
+integer  ::wlen
+integer  :: ti, wi
+integer:: i
+character(len=:),allocatable :: tbookmark, wbookmark
+  character(len=len(wild)+1):: wildtext
+character(len=1),parameter::null=char(0)
+integer  ::wlen
+  integer  :: ti, wi
+integer:: i
+ character(len=:),allocatable :: tbookmark, wbookmark
+
+logical :: glob
+character(len=*)  ::        tame       ! a string without wildcards
+character(len=*)  :: wild       ! a (potentially) corresponding string with wildcards
+character(len=len(tame)+1) :: tametext
+character(len=len(wild)+1):: wildtext
+character(len=1),parameter::null=char(0)
+integer  ::wlen
+integer  :: ti, wi
+integer:: i
+character(len=:),allocatable :: tbookmark, wbookmark

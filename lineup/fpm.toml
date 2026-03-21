@@ -1,0 +1,38 @@
+# TOML file for fpm as described at https://fpm.fortran-lang.org/en/spec/manifest.html
+name = "lineup"
+version = "0.1.0"
+license = "license"
+author = "John S. Urban"
+maintainer = "urbanjost@comcast.net"
+copyright = "Copyright 2024, John S. Urban"
+description = "lineup Fortran lines with double colons"
+categories  = ["Fortran"]
+keywords    = ["fortran", "format"]
+homepage    = "https://github.com/urbanjost/apps.git"
+[build]
+   auto-executables = true
+   auto-tests = true
+   auto-examples = true
+   module-naming = false
+[install]
+   library = false
+[fortran]
+   implicit-typing = false
+   implicit-external = false
+   source-form = "free"
+[[executable]]
+   name="lineup"
+   source-dir="app"
+   main="lineup.f90"
+   [executable.dependencies]
+      #M_io       = { path      = "GLINKS/M_io"                                }
+      #M_strings  = { path      = "GLINKS/M_strings"                           }
+      #M_CLI2     = { path      = "GLINKS/M_CLI2"                              }
+   
+      #M_io      = { namespace = "GPF"                                        }
+      #M_strings = { namespace = "GPF"                                        }
+      #M_CLI2    = { namespace = "GPF"                                        }
+   
+      M_io      = { git       = "https://github.com/urbanjost/M_io.git"      }
+      M_strings = { git       = "https://github.com/urbanjost/M_strings.git" }
+      M_CLI2    = { git       = "https://github.com/urbanjost/M_CLI2.git"    }

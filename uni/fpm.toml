@@ -1,0 +1,19 @@
+name = "uni"
+version = "1.0.0"
+license = "MIT"
+author = "John S. Urban"
+maintainer = "urbanjost@comcast.net"
+copyright = "Copyright 2025,2026 John S. Urban"
+description = "UTF-8 encoded file to ASCII-7 and C-style escape sequences"
+categories = ["strings"]
+keywords = ["UTF-8", "C-style escape sequences","Unicode" ]
+homepage = "https://github.com/urbanjost/apps/uni"
+
+[[executable]]
+   name="uni"
+   source-dir="app"
+   main="uni.f90"
+
+[dependencies]
+M_unicode = { git = "https://github.com/urbanjost/M_unicode.git" }
+M_CLI2    = { git = "https://github.com/urbanjost/M_CLI2.git" }

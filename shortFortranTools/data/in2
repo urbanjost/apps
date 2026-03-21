@@ -1,0 +1,120 @@
+&' ''''''',' "" "" ',' ::
+&' ',' "" "" ',' ::
+&' ',' ',' ::
+mesg=trim(mesg)// ' ::
+' &meter ::
+101 format('*',a,'*::
+allocate (t2 ::
+complex ::
+complex,allocatable ::
+complex,allocatable,intent(out) ::
+complex,intent(in) ::
+complex,intent(inout) ::
+complex, parameter ::
+double precision ::
+double precision ,intent(in) ::
+double precision,intent(in) ::
+double precision,intent(inout) ::
+double precision,intent(out) ::
+enumerator ::
+generic ::
+import ::
+intrinsic ::
+module procedure ::
+optional ::
+private ::
+procedure ::
+procedure(func), pointer ::
+procedure(handler), optional ::
+procedure(juown1_interface),pointer ::
+procedure, nopass ::
+procedure,private ::
+procedure,public ::
+procedure(usersub_interface) ::
+procedure(usersub_interface),pointer ::
+public ::
+pure function ::
+stop 'get_many::
+stop "*M_process::
+type ::
+type(axis),public ::
+type, bind(c) ::
+type, bind(C) ::
+type,BIND(C) ::
+type(boxlist), pointer ::
+type(boxnode), pointer ::
+type(called),save ::
+type(c_funptr) ::
+type(c_funptr), intent(in),target ::
+type(c_funptr), value, intent(in) ::
+type (clocks) ::
+type(complex(kind=cd)) ::
+type(complex(kind=cd)), intent(inout) ::
+type(complex(kind=cs)) ::
+type(complex(kind=cs)), intent(inout) ::
+type (c_ptr) ::
+type(c_ptr) ::
+type(c_ptr)::
+type(C_ptr) ::
+type (C_PTR) ::
+type(C_PTR) ::
+type(C_PTR)::
+TYPE(c_ptr) ::
+type (C_PTR), bind(C,name='sp') ::
+' type(c_ptr),intent(in) ::
+type(c_ptr), intent(in) ::
+type(C_PTR),intent(in) ::
+type(c_ptr), intent(in), value ::
+type(C_ptr), intent(in), value ::
+type(C_ptr),intent(in),value ::
+' type(c_ptr), intent(out) ::
+type(c_ptr),intent(out) ::
+type(C_ptr), intent(out) ::
+type(C_PTR),save ::
+type (c_ptr), value ::
+type(c_ptr), value ::
+type(c_ptr),value ::
+type (C_PTR), value ::
+type(C_PTR) ,value::
+type(C_PTR), value ::
+type(C_PTR),value ::
+TYPE(c_ptr), value ::
+type(curl_version), pointer ::
+type(dictionary),public,save ::
+type(disp_settings) ::
+type(disp_settings), intent(in) ::
+type(disp_settings), save ::
+type(Empty_t), intent(in) ::
+type(force_keywd_hack), optional, intent(in) ::
+type(force_keywd_hack),optional,intent(in) ::
+type(force_kwargs_hack), optional, intent(in) ::
+type(getopt_option_type), intent(in), target, optional ::
+type(getopt_option_type), pointer ::
+type(getopt_string_type), allocatable ::
+type(getopt_type), pointer ::
+type(gif89_type), public ::
+type(gif_screen_type), public ::
+type(handler_pointer), dimension(no_of_signals) ::
+type(MATRIX) ::
+type(MATRIX),intent(in) ::
+type(MATRIX),intent(inout) ::
+type(MATRIX),intent(out) ::
+type(MEVENT) ::
+type(MEVENT)::
+type(MEVENT),optional ::
+type(mtprng_state), intent(inout) ::
+type(mtprng_state), intent(out) ::
+type(mtprng_state), save ::
+type(option_s), intent(in) ::
+type(option_s), intent(in), optional ::
+type(path) ::
+type(pen),public ::
+type, private ::
+type, public ::
+type(rall),parameter,public ::
+type(settings) ::
+type(SQLITE_COLUMN), dimension(:) ::
+type(SQLITE_COLUMN), dimension(:), pointer ::
+type(SQLITE_COLUMN), dimension(:), target ::
+use, non_intrinsic ::
+write( lun_,gen) 'Elapsed time (sec) ::

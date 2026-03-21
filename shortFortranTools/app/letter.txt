@@ -1,0 +1,32 @@
+```fortran
+program demo_trailz
+implicit none
+   call printit(3*1365+1)
+   call printit(3*37+1)
+contains
+subroutine printit(ii)
+integer,intent(in) :: ii
+integer            :: nz, kz
+character(len=*),parameter :: show32 = '(1x,"value=",i4,", value(bits)=",b32.32,1x,", trailz=",i3)'
+   print '(a)', repeat('-',80)
+   print  show32, ii, ii, trailz(ii)
+   call trimz(ii,nz,kz)
+   print  show32,  kz, kz, trailz(kz)
+end subroutine printit
+subroutine trimz(v,nz,kz)
+integer,intent(in)  :: v
+integer,intent(out) :: nz
+integer,intent(out) :: kz
+  nz=trailz(v)
+  kz=shiftr(v,nz)
+end subroutine trimz
+end program demo_trailz
+```
+```text
+--------------------------------------------------------------------------------
+ value=4096, value(bits)=00000000000000000001000000000000 , trailz= 12
+ value=   1, value(bits)=00000000000000000000000000000001 , trailz=  0
+--------------------------------------------------------------------------------
+ value= 112, value(bits)=00000000000000000000000001110000 , trailz=  4
+ value=   7, value(bits)=00000000000000000000000000000111 , trailz=  0
+```

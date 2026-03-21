@@ -24,7 +24,7 @@ Most require being built in a POSIX environment.
 + [**dw**](https://github.com/urbanjost/apps/blob/main/dw/README.md) - 
   find adjacent repeated words in an ASCII file
 + [**f90split**](https://github.com/urbanjost/apps/blob/main/f90split/README.md) - 
-  Michel Olagnons's version that splits Fortran source file into individual files
+  Michel Olagnon's version that splits Fortran source file into individual files
 + [**fcmd**](https://github.com/urbanjost/apps/blob/main/fcmd/README.md) - 
   find the pathname of commands and optionally perform commands on them
 + [**flower**](https://github.com/urbanjost/apps/blob/main/flower/README.md) - 
