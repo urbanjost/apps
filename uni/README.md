@@ -33,7 +33,7 @@ It can
 ```bash
    uni --start 880 --finish 1023
 ```
-##### output sample
+#### output sample
 ```text
    .
    .
@@ -60,11 +60,12 @@ corresponding to hexadecimal U+2500 to U+257F.
 ```bash
    uni -S 9472 -F 9599
 ```
-### Locate and Display wide characters
-   # find any lines with non-ASCII7 characters
+## Locate and Display wide characters
+
+### find any lines with non-ASCII7 characters
    uni -W The_Crow_and_the_Fox.utf8
 ```
-### Escape-style translation
+#### Escape-style translation
 ```bash
 # convert a file with wide characters to C-style escape codes
 # (that can be used with M_unicode module, C, C++, ...).
