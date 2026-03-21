@@ -48,6 +48,8 @@ Most require being built in a POSIX environment.
   generate an HTML page that lists and downloads a list of Fortran source files to "Fortran Playground"
 + [**sub**](https://github.com/urbanjost/apps/blob/main/sub/README.md) -
   replace fixed strings in a file
++ [**uni**](https://github.com/urbanjost/apps/blob/main/uni/README.md) -
+  UTF-8 processing example utility
 + [**xpand**](https://github.com/urbanjost/apps/blob/main/xpand/README.md) -
   expand tabs,remove trailing white space and adjacent blank lines somewhat like expand(1)
 
