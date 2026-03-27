@@ -59,14 +59,14 @@ character(len=256)           :: iomsg
             ! @(#) generate Fortran statements using KIND='iso_10464' that represents the lines
             if(line.eq.'')then
                write(stdout,g0)'! ISO-10646 ENCODING:',ch(line)
-               write(stdout,g0)'ch(len=*,kind=ucs4),parameter :: line',linenum,'= ucs4_""'
+               write(stdout,g0)'character(len=*,kind=ucs4),parameter :: line',linenum,'= ucs4_""'
                write(stdout,g0)
             elseif(isascii(line))then
-               write(stdout,g0)'ch(len=*,kind=ucs4),parameter :: line',linenum,'= ucs4_"&'
-               write(stdout,g0) ch(line%replace('"','""')),'"'
+               write(stdout,g0)'character(len=*,kind=ucs4),parameter :: line',linenum,'= ucs4_"&'
+               write(stdout,g0)ch(line%replace('"','""')),'"'
             else
-               write(stdout,g0) '! ISO-10646 ENCODING:',ch(line)
-               write(stdout,g0) 'ch(len=*,kind=ucs4),parameter :: line',linenum,'= &'
+               write(stdout,g0)'! ISO-10646 ENCODING:',ch(line)
+               write(stdout,g0)'character(len=*,kind=ucs4),parameter :: line',linenum,'= &'
                write(stdout,form2,advance='no')(line%codepoint(j,j),j=1,len(line))
                write(stdout,g0)'],kind=ucs4)'
                write(stdout,g0)
@@ -307,9 +307,11 @@ version_text=[ CHARACTER(LEN=128) :: &
    call get_args('wide',    wide )
    call get_args('code',    code )
    call get_args('kind',    knd )
-   call get_args('box',     style )
-   call get_args('border',  style )
+   call get_args('box',   style )
+   call get_args('border', style )
    if(specified('border')) border=.TRUE.
+   if( specified('box') .and. style==' ') style='bold'
+   if( specified('border') .and. style==' ') style='bold'
    if(size(files).eq.0)then
       filenames=["-"]
    else

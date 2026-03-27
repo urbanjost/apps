@@ -4,7 +4,7 @@ use, intrinsic :: iso_fortran_env, only: stdin => input_unit, stderr => error_un
 use, intrinsic :: iso_fortran_env, only: iostat_end, iostat_eor
 use M_unicode, only : readline, split, lower, upper, len, trim, isascii
 use M_unicode, only : add_backslash, remove_backslash
-use M_unicode, only : isascii, slurp, repeat, pound_to_box
+use M_unicode, only : isascii, slurp, repeat, pound_to_box, add_border
 use M_unicode, only : ut => unicode_type, assignment(=), ch=>character
 use M_unicode, only : operator(==), operator(//)
 implicit none
@@ -15,8 +15,9 @@ integer                      :: linenum
 integer,allocatable          :: ints(:)
 integer                      :: knd
 type(ut)                     :: line
+type(ut),allocatable         :: text(:)
 logical                      :: verbose, debug, length, escape, noescape, ucase, lcase, wide
-logical                      :: code, allascii
+logical                      :: code, allascii, border
 character(len=:),allocatable :: filenames(:)
 character(len=:),allocatable :: style
 character(len=*),parameter   :: g0='(*(g0))'
@@ -28,18 +29,24 @@ character(len=256)           :: iomsg
    call setup()
    DATUM: do i=1,size(filenames)
       if(style.ne.'')then
-         call boxes(trim(filenames(i)))
+         if(border)then
+            text=add_border(get_text(filenames(i)),style=style)
+            call print_text(text)
+         else
+            text=pound_to_box(get_text(filenames(i)),style=style)
+            call print_text(text)
+         endif
          cycle
       endif
       if(filenames(i).eq.'-'.or.filenames(i).eq.'')then
          lun=stdin
       else
-	open(newunit=lun,file=filenames(i),action='read',pad='yes',iostat=iostat,iomsg=iomsg)
-	if(iostat.ne.0)then
-	   write(stderr,g0)'<ERROR>*uni*:',trim(iomsg)
-	   iomsg=''
-	   cycle
-	endif
+        open(newunit=lun,file=filenames(i),action='read',pad='yes',iostat=iostat,iomsg=iomsg)
+        if(iostat.ne.0)then
+           write(stderr,g0)'<ERROR>*uni*:',trim(iomsg)
+           iomsg=''
+           cycle
+        endif
       endif
       linenum=0
       INFINITE: do ilength=1,huge(0)-1
@@ -51,20 +58,20 @@ character(len=256)           :: iomsg
          if(code.and.knd==2) then
             ! @(#) generate Fortran statements using KIND='iso_10464' that represents the lines
             if(line.eq.'')then
-               write(stdout,g0) '! ISO-10646 ENCODING:',ch(line)
-               write(stdout,g0) 'character(len=*,kind=ucs4),parameter :: line',linenum,'= ucs4_""'
+               write(stdout,g0)'! ISO-10646 ENCODING:',ch(line)
+               write(stdout,g0)'character(len=*,kind=ucs4),parameter :: line',linenum,'= ucs4_""'
                write(stdout,g0)
             elseif(isascii(line))then
-               write(stdout,g0) 'character(len=*,kind=ucs4),parameter :: line',linenum,'= ucs4_"&'
-               write(stdout,g0) ch(line%replace('"','""')),'"'
+               write(stdout,g0)'character(len=*,kind=ucs4),parameter :: line',linenum,'= ucs4_"&'
+               write(stdout,g0)ch(line%replace('"','""')),'"'
             else
-               write(stdout,g0) '! ISO-10646 ENCODING:',ch(line)
-               write(stdout,g0) 'character(len=*,kind=ucs4),parameter :: line',linenum,'= &'
+               write(stdout,g0)'! ISO-10646 ENCODING:',ch(line)
+               write(stdout,g0)'character(len=*,kind=ucs4),parameter :: line',linenum,'= &'
                write(stdout,form2,advance='no')(line%codepoint(j,j),j=1,len(line))
                write(stdout,g0)'],kind=ucs4)'
                write(stdout,g0)
             endif
-	    cycle
+            cycle
          elseif(code) then
             ! @(#) generate Fortran statements using KIND='iso_10464' that represents the lines
             if(line.eq.'')then
@@ -80,24 +87,24 @@ character(len=256)           :: iomsg
                write(stdout,formu)(line%codepoint(j,j),j=1,len(line))
                write(stdout,g0)
             endif
-	    cycle
-	 endif
+            cycle
+         endif
          if(escape)   line=add_backslash(line)
          if(noescape) line=remove_backslash(line)
          if(length)then
             ulen=len(line)
             alen=len(line%character())
-   	    allascii=isascii(line)
+            allascii=isascii(line)
             write(stdout,'(i0.5,1x,i0,1x,a,1x,i0,": ",a)') &
-   	 & ilength,ulen,merge('==','/=',allascii),alen,line%character()
+         & ilength,ulen,merge('==','/=',allascii),alen,line%character()
          elseif(wide)then
             ! write and identify lines not composed entirely of ASCII-7
             ints=line
             if(maxval(ints).gt.127)then
-               ! write the line number line in brackets 
-               write(*,'(i8,1x,a)')linenum,'['//ch(line)//']'
+               ! write the line number line in brackets
+               write(stdout,'(i8,1x,a)')linenum,'['//ch(line)//']'
                ! write the line with all but ASCII7 replaced with escape codes
-               write(*,'(9x,a)')'['//add_backslash(line)//']'
+               write(stdout,'(9x,a)')'['//add_backslash(line)//']'
             endif
          else
             write(stdout,g0)line%character()
@@ -122,22 +129,24 @@ character(len=*),parameter   :: &
    & form_html = '(1x,*(:"&#",i0,";"))'
 
 type(ut)                     :: ustr
-
 $!==============================================================================
 $BLOCK variable --varname help_text -width 80
 NAME
    uni(1f) - [CONVERSION] Unicode-related text operations such as
-   translating UTF-8 to ASCII-7 with C-style escape sequences, changing
-   case, ...
+   converting between UTF-8 and ASCII-7 C-style escape sequences, changing
+   case of multi-byte characters, drawing box characters, displaying
+   ranges of Unicode characters, locating multi-byte characters in what
+   should be an ASCII file, ...
    (LICENSE:PD)
 
 SYNOPSIS
-    uni [--escape|--noescape] [--lcase|--ucase] | --code | --boxes STYLE |
+    uni [--escape|--noescape] [--lcase|--ucase] | --code |
+    --box STYLE | --border STYLE |
     [--start|--finish] | --wide | --length infile(s)
 
 DESCRIPTION
    uni(1) is a handy filter for converting UTF-8 encoded text to and
-   from ASCII-7 and C-style escape sequences, converting the case of
+   from ASCII-7 C-style escape sequences, converting the case of
    multi-byte text, converting pound characters to box characters,
    and identifying sundry properties of lines of UTF-8 encoded text.
 
@@ -154,11 +163,7 @@ DESCRIPTION
 
        uni --start 880 --finish 1023
 
-   Note the largest valid Unicode codepoint is U+10FFFF (or 1,114,111 in
-   decimal). This limit was established to ensure compatibility with the
-   UTF-16 encoding, which uses surrogate pairs to represent characters
-   beyond the Basic Multilingual Plane (BMP). Key details about the
-   Unicode codespace:
+   Key details about the Unicode codespace:
 
    Valid vs. Assigned: Not all code points within this range are assigned
    to characters or are valid for use. Some ranges are reserved for
@@ -167,14 +172,19 @@ DESCRIPTION
    As of January 2024, only a small fraction (fewer than 4%) of the
    possible code points had assigned meanings.
 
-   Encoding Limits: The limit U+10FFFF was intentionally set because it
-   is the highest value that can be represented using a single or a pair
-   of 16-bit code units in the UTF-16 encoding.
+   Encoding Limits:
 
-   UTF-8: While the UTF-8 encoding scheme is theoretically capable
-   of representing much larger codepoints (up to 0x7FFFFFFF), it was
-   restricted by RFC 3629 to stop at U+10FFFF to match the Unicode
-   standard's UTF-16 constraint.
+   While the UTF-8 encoding scheme is theoretically capable of
+   representing much larger codepoints (up to 0x7FFFFFFF), it was
+   restricted by RFC 3629 to stop at U+10FFFF (1,114,111 in decimal)
+   to match the Unicode standard's UTF-16 constraint.
+
+   This limit ensures compatibility with the UTF-16 encoding, which uses
+   surrogate pairs to represent characters beyond the Basic Multilingual
+   Plane (BMP).
+
+   That is, 1,114,111 is the highest value that can be represented using
+   a single or a pair of 16-bit code units in the UTF-16 encoding.
 
 OPTIONS
    CONVERSION
@@ -187,10 +197,18 @@ OPTIONS
 
    --code,C      write as Fortran code using KIND=ISO_10646
 
-   --boxes,B     box style choice from set {"light","bold","double"}. 
-		 Causes pound character to be used to construct boxes
-		 using box characters. If specified other options are
-		 ignored.
+   --box,B       box style choice from set {"light","bold","double"}.
+                 Causes pound character to be used to construct boxes
+                 using box characters. If specified other options are
+                 ignored.
+
+                 Input characters are assumed to be monospaced.
+
+   --border,b    place box around text, choosing  box style from set
+                 {"light","bold","double"}. If specified other options
+                 are ignored.
+
+                 Input characters are assumed to be monospaced.
 
    RANGE
    --start,S     starting codepoint to generate a list of glyphs from.
@@ -243,7 +261,7 @@ EXAMPLE
    >\u304F\u3058\u3051\u305A\u306B\u524D\u3092\u5411\u3044\u3066
    \u6B69\u3044\u3066\u3044\u3053\u3046\u3002
 
-   uni --boxes bold <<\end_of_data
+   uni --box bold <<\end_of_data
    #################################
    # Warning: proceed with caution #
    #################################
@@ -254,7 +272,8 @@ EXAMPLE
    ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
    ┃ Warning: proceed with caution ┃
    ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
-
+SEE ALSO
+   dos2unix(1)/unix2dos(1), iconv(1)
 
 $ENDBLOCK
 $!==============================================================================
@@ -269,13 +288,15 @@ $!==============================================================================
    call set_mode([character(len=20) :: 'strict','ignorecase'])
    ! a single call to set_args can define the options and their defaults, set help
    ! text and version information, and crack command line.
+   border=.FALSE.
    call set_args( '&
     & --escape:E F --noescape:N F &
     & --lcase:L F --ucase:U F &
     & --start:S 0 --finish:F 1114111 &
     & --length:l F &
     & --wide:W F &
-    & --boxes:B " " &
+    & --box:B " " &
+    & --border:b " " &
     & --code:C F &
     & --kind:K 1 &
     & --debug:D F', &
@@ -289,7 +310,11 @@ $!==============================================================================
    call get_args('wide',    wide )
    call get_args('code',    code )
    call get_args('kind',    knd )
-   call get_args('boxes',   style )
+   call get_args('box',   style )
+   call get_args('border', style )
+   if(specified('border')) border=.TRUE.
+   if( specified('box') .and. style==' ') style='bold'
+   if( specified('border') .and. style==' ') style='bold'
    if(size(files).eq.0)then
       filenames=["-"]
    else
@@ -314,23 +339,29 @@ $!==============================================================================
       stop
    endif
 end subroutine setup
-subroutine boxes(filename)
+
+function get_text(filename) result(text)
 character(len=*),intent(in)  :: filename
 type(ut),allocatable         :: text(:)
-type(ut),allocatable         :: textout(:)
-integer                      :: i
 character(len=:),allocatable :: iomsg
 
-   text=slurp(filename,iomsg=iomsg)
+   text=slurp(trim(filename),iomsg=iomsg)
 
    if(iomsg.ne.'')then
-      write(*,*)'*demo_slurp* failed to load file '//filename
-      write(*,*) iomsg
-   else
-      textout=pound_to_box(text,style=style)
-      write(*,'(*(a:))',advance='no')(textout(i)%character(),new_line('a'),i=1,size(textout))
+      write(stderr,*)'*uni* failed to load file '//filename
+      write(stderr,*) iomsg
    endif
 
-end subroutine boxes
+   if(.not.allocated(text))text=['']
+
+end function get_text
+
+subroutine print_text(text)
+type(ut),intent(in),allocatable :: text(:)
+integer                         :: i
+
+   write(stdout,'(*(a:))',advance='no')(text(i)%character(),new_line('a'),i=1,size(text))
+
+end subroutine print_text
 
 end program uni
