@@ -8,18 +8,13 @@ use M_unicode, only : isascii, slurp, repeat, pound_to_box, add_border
 use M_unicode, only : ut => unicode_type, assignment(=), ch=>character
 use M_unicode, only : operator(==), operator(//)
 implicit none
-integer                      :: i, j, ilength
-integer                      :: ulen, alen
-integer                      :: iostat, lun
-integer                      :: linenum
+integer                      :: i, j, ulen, alen, iostat, lun, linenum, knd
 integer,allocatable          :: ints(:)
-integer                      :: knd
 type(ut)                     :: line
 type(ut),allocatable         :: text(:)
 logical                      :: verbose, debug, length, escape, noescape, ucase, lcase, wide
 logical                      :: code, allascii, border
-character(len=:),allocatable :: filenames(:)
-character(len=:),allocatable :: style
+character(len=:),allocatable :: filenames(:), style, styles(:)
 character(len=*),parameter   :: g0='(*(g0))'
 character(len=*),parameter   :: formu= '("char(int(z''",z0,"''),kind=ucs4)":,"// &")'
 character(len=*),parameter   :: form2= '("char([",*(i0:,","))'
@@ -48,9 +43,7 @@ character(len=256)           :: iomsg
            cycle
         endif
       endif
-      linenum=0
-      INFINITE: do ilength=1,huge(0)-1
-         linenum=linenum+1
+      INFINITE: do linenum=1,huge(0)-1
          line=readline(lun,iostat=iostat)
          if(iostat.ne.0)exit
          if(lcase)line=lower(line)
@@ -96,7 +89,7 @@ character(len=256)           :: iomsg
             alen=len(line%character())
             allascii=isascii(line)
             write(stdout,'(i0.5,1x,i0,1x,a,1x,i0,": ",a)') &
-         & ilength,ulen,merge('==','/=',allascii),alen,line%character()
+         & linenum,ulen,merge('==','/=',allascii),alen,line%character()
          elseif(wide)then
             ! write and identify lines not composed entirely of ASCII-7
             ints=line
@@ -111,13 +104,13 @@ character(len=256)           :: iomsg
          endif
       enddo INFINITE
       if(iostat /= iostat_end)then
-         write(stdout,g0)'<ERROR> failed on read of input line ',ilength,':',line%character()
+         write(stdout,g0)'<ERROR> failed on read of input line ',linenum,':',line%character()
       endif
    enddo DATUM
 contains
 subroutine setup()
 !! Put everything to do with command parsing here
-use M_CLI2,  only : set_mode, set_args, get_args, specified, files=>unnamed
+use M_CLI2,  only : set_mode, set_args, get_args, sgets, specified, files=>unnamed
 character(len=:),allocatable :: help_text(:), version_text(:)
 integer                      :: startrange, endrange
 integer                      :: i
@@ -139,9 +132,13 @@ help_text=[ CHARACTER(LEN=128) :: &
 '   (LICENSE:PD)                                                                 ',&
 '                                                                                ',&
 'SYNOPSIS                                                                        ',&
-'    uni [--escape|--noescape] [--lcase|--ucase] | --code |                      ',&
+'    uni [--escape|--noescape] [--lcase|--ucase] |                               ',&
 '    --box STYLE | --border STYLE |                                              ',&
-'    [--start|--finish] | --wide | --length infile(s)                            ',&
+'    [--start STARTCODE --finish ENDCODE [--styles NAME] ] |                     ',&
+'    --code |                                                                    ',&
+'    --wide | --length infile(s)                                                 ',&
+'                                                                                ',&
+'To see short names and defaults enter "uni --usage"                             ',&
 '                                                                                ',&
 'DESCRIPTION                                                                     ',&
 '   uni(1) is a handy filter for converting UTF-8 encoded text to and            ',&
@@ -175,14 +172,14 @@ help_text=[ CHARACTER(LEN=128) :: &
 '                                                                                ',&
 '   While the UTF-8 encoding scheme is theoretically capable of                  ',&
 '   representing much larger codepoints (up to 0x7FFFFFFF), it was               ',&
-'   restricted by RFC 3629 to stop at U+10FFFF (1,114,111 in decimal)            ',&
+'   restricted by RFC 3629 to stop at U+10FFFF (1 114 111, in decimal)           ',&
 '   to match the Unicode standard''s UTF-16 constraint.                          ',&
 '                                                                                ',&
 '   This limit ensures compatibility with the UTF-16 encoding, which uses        ',&
 '   surrogate pairs to represent characters beyond the Basic Multilingual        ',&
 '   Plane (BMP).                                                                 ',&
 '                                                                                ',&
-'   That is, 1,114,111 is the highest value that can be represented using        ',&
+'   That is, 1 114 111, is the highest value that can be represented using       ',&
 '   a single or a pair of 16-bit code units in the UTF-16 encoding.              ',&
 '                                                                                ',&
 'OPTIONS                                                                         ',&
@@ -203,7 +200,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '                                                                                ',&
 '                 Input characters are assumed to be monospaced.                 ',&
 '                                                                                ',&
-'   --border,b    place box around text, choosing  box style from set            ',&
+'   --border,b    place box around text, choosing box style from set             ',&
 '                 {"light","bold","double"}. If specified other options          ',&
 '                 are ignored.                                                   ',&
 '                                                                                ',&
@@ -214,25 +211,73 @@ help_text=[ CHARACTER(LEN=128) :: &
 '                 If specified conversion options are ignored.                   ',&
 '   --finish,F    ending codepoint to generate a list of glyphs from             ',&
 '                 If specified conversion options are ignored.                   ',&
+'   --styles,s    Display style name(s). Default is all styles. The              ',&
+'                 "test" style just streams the UTF-8 values of the              ',&
+'                 specified values. For other allowed names ("decimal",          ',&
+'                 "utf8", "c", "standard", "htmlx", "htmld", "ucs4",             ',&
+'                 "codex", "hex") see the following section "STYLES".            ',&
 '                                                                                ',&
 '   INFORMATIVE                                                                  ',&
 '   --length,L    prefix lines with line number, glyph and byte count            ',&
 '                 of input line.                                                 ',&
+'                                                                                ',&
 '   --wide,W      identify and write lines not composed entirely of ASCII-7      ',&
 '                                                                                ',&
 '   MODES                                                                        ',&
-'   --usage       display state of command options and exit                      ',&
 '   --verbose     echo the input as well as the computed values                  ',&
 '                                                                                ',&
 '   INFORMATION                                                                  ',&
 '   --help        display this help and exit                                     ',&
+'   --usage       display state of command options and exit                      ',&
 '   --version     output version information and exit                            ',&
+'                                                                                ',&
+'STYLES                                                                          ',&
+'                                                                                ',&
+'Unicode codepoints are primarily written in hexadecimal, often prefixed         ',&
+'with "U+" followed by four to six digits (e.g., U+0041, U+1F600). They          ',&
+'represent abstract characters (not glyphs!) across 17 planes, with              ',&
+'the Basic Multilingual Plane (BMP) covering most modern text. They are          ',&
+'encoded in storage as UTF-8, UTF-16, or UTF-32.                                 ',&
+'                                                                                ',&
+'The available style names ("decimal", "utf8", "c", "standard", "htmlx",         ',&
+'"htmld", "ucs4", "codex", "hex") for the --styles switch, based on common       ',&
+'ways to represent Unicode Codepoints.                                           ',&
+'                                                                                ',&
+'+ DECIMAL                                                                       ',&
+'    + the codepoint value in decimal                                            ',&
+'+ UTF8                                                                          ',&
+'    + The Unicode codepoint value encoded as UTF-8 data                         ',&
+'+ STANDARD                                                                      ',&
+'    + The standard format is U+ followed by the hexadecimal value.              ',&
+'                 Examples: U+0041 (letter ''A''), U+1F600 (😀 emoji).         ',&
+'+ C,J,HTMLD,HTMLX,UCS4,CODEX                                                    ',&
+'    + Programming Escapes:                                                      ',&
+'       + C: Python/C++/Java: \u0041 (4-digit format) or \U0001F600 (8-digit     ',&
+'          format).                                                              ',&
+'       + J: JavaScript: \u{1F600} (ES6+).                                       ',&
+'       + HTMLD,HTMLD: CSS/HTML forms \0041 or &#x1F600;.                        ',&
+'       + UCS4: Fortran UCS4 Hex: char(int(''z1f600'',kind=ucs4)                 ',&
+'       + CODEX: int(''z1f600'')                                                 ',&
+'+ HEX                                                                           ',&
+'    + hexadecimal value of codepoint                                            ',&
+'+ Other (not supported)                                                         ',&
+'    + Normalization Forms:                                                      ',&
+'      The same character might be represented as a single code point            ',&
+'      (e.g., ñ U+00F1) or via normalization forms (NFC, NFD) which             ',&
+'      break it into a base letter (n) and a combining mark (~).                 ',&
+'    + UTF-16: 2-byte or 4-byte (surrogate pair) sequences.                      ',&
+'    + UTF-32: Fixed 4-byte representation.                                      ',&
+'    + UTF-8: 1–4 byte sequences, often seen as 0x byte values                 ',&
+'      (e.g., 0xD0A4).                                                           ',&
 '                                                                                ',&
 'EXAMPLE                                                                         ',&
 '  Sample runs:                                                                  ',&
 '                                                                                ',&
 '   # basic Greek alphabet                                                       ',&
 '   uni --start 880 --finish 1023                                                ',&
+'                                                                                ',&
+'   # test current font                                                          ',&
+'   uni --start 32 --finish 1114111 --test                                       ',&
 '                                                                                ',&
 '   # box characters                                                             ',&
 '   # The majority of Unicode box-drawing characters are in the Box              ',&
@@ -289,7 +334,8 @@ version_text=[ CHARACTER(LEN=128) :: &
    call set_args( '&
     & --escape:E F --noescape:N F &
     & --lcase:L F --ucase:U F &
-    & --start:S 0 --finish:F 1114111 &
+    & --start:S 0 --finish:F 1114111 --styles:s &
+    & "decimal,utf8,c,standard,htmlx,htmld,ucs4,codex,hex"&
     & --length:l F &
     & --wide:W F &
     & --box:B " " &
@@ -309,6 +355,7 @@ version_text=[ CHARACTER(LEN=128) :: &
    call get_args('kind',    knd )
    call get_args('box',   style )
    call get_args('border', style )
+   styles=sgets('styles')
    if(specified('border')) border=.TRUE.
    if( specified('box') .and. style==' ') style='bold'
    if( specified('border') .and. style==' ') style='bold'
@@ -321,18 +368,32 @@ version_text=[ CHARACTER(LEN=128) :: &
    ! process --start and --finish
    if( specified('start')  .and. (.not.specified('finish')) ) endrange=startrange
    if( specified('start') .or. specified('finish') )then
-      do i=startrange,endrange
-         ustr=i
-         write(stdout,'(1x,i0)',advance='no') i          ! codepoint
-         write(stdout,'(1x,a)',advance='no')ch(ustr)     ! character
-         write(stdout,'(1x,''\U'',z8.8)',advance='no')i  ! U\00000064
-         write(stdout,'(1x,''U\'',z8.8)',advance='no')i  ! U\00000064
-         write(stdout,form_zhtml,advance='no')i          ! &#x4EBA;
-         write(stdout,form_html,advance='no')i           ! &#20154;
-         write(stdout,form,advance='no')i                ! char(int(z'nnn',kind=ucs4))
-         write(stdout,form_M,advance='no')i              ! int(z'nnn')
+      styles=to_lower(styles)
+      if(any(styles.eq.'test'))then
+         do i=startrange,max(min(endrange,1114111),0)
+            ustr=i
+            write(stdout,'(1x,a)',advance='no')ch(ustr) ! character
+         enddo
          write(stdout,*)
-      enddo
+      else
+         do i=startrange,max(min(endrange,1114111),0)
+            ustr=i
+            do j=1,size(styles)
+             select case(styles(j))
+              case('decimal'); write(stdout,'(1x,i0)',advance='no') i    ! codepoint
+              case('utf8'); write(stdout,'(1x,a)',advance='no')ch(ustr)  ! character
+              case('c') ;write(stdout,'(1x,''\U'',z8.8)',advance='no')i  ! \U00000064
+              case('hex') ;write(stdout,'(1x,z0)',advance='no')i         ! 64
+              case('standard') ;write(stdout,'(1x,''U+'',z0.4)',advance='no')i  ! U+64
+              case('htmlx')  ;write(stdout,form_zhtml,advance='no')i     ! &#x4EBA;
+              case('htmld')  ;write(stdout,form_html,advance='no')i      ! &#20154;
+              case('ucs4')   ;write(stdout,form,advance='no')i           ! char(int(z'nnn',kind=ucs4))
+              case('codex')  ;write(stdout,form_M,advance='no')i         ! int(z'nnn')
+             end select
+            enddo
+            write(stdout,*)
+         enddo
+      endif
       stop
    endif
 end subroutine setup
@@ -360,5 +421,21 @@ integer                         :: i
    write(stdout,'(*(a:))',advance='no')(text(i)%character(),new_line('a'),i=1,size(text))
 
 end subroutine print_text
+
+elemental pure function to_lower(str) result (string)
+character(*), intent(in)    :: str
+character(len(str))         :: string
+integer                     :: i
+integer,parameter           :: diff = iachar('A')-iachar('a')
+   string = str
+   ! step thru each letter in the string in specified range
+   do concurrent (i = 1:len_trim(str))
+      select case (str(i:i))
+      case ('A':'Z')
+         string(i:i) = achar(iachar(str(i:i))-diff)   ! change letter to miniscule
+      case default
+      end select
+   enddo
+end function to_lower
 
 end program uni
