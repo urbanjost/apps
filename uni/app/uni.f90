@@ -3,7 +3,8 @@ program uni
 use, intrinsic :: iso_fortran_env, only: stdin => input_unit, stderr => error_unit, stdout => output_unit
 use, intrinsic :: iso_fortran_env, only: iostat_end, iostat_eor
 use M_unicode, only : readline, split, lower, upper, len, trim, isascii
-use M_unicode, only : add_backslash, remove_backslash
+use M_unicode, only : expand_html
+use M_unicode, only : add_backslash, remove_backslash=>escape
 use M_unicode, only : isascii, slurp, repeat, pound_to_box, add_border
 use M_unicode, only : ut => unicode_type, assignment(=), ch=>character
 use M_unicode, only : operator(==), operator(//)
@@ -13,7 +14,7 @@ integer,allocatable          :: ints(:)
 type(ut)                     :: line
 type(ut),allocatable         :: text(:)
 logical                      :: verbose, debug, length, escape, noescape, ucase, lcase, wide
-logical                      :: code, allascii, border
+logical                      :: code, allascii, border, html, entities
 character(len=:),allocatable :: filenames(:), style, styles(:)
 character(len=*),parameter   :: g0='(*(g0))'
 character(len=*),parameter   :: formu= '("char(int(z''",z0,"''),kind=ucs4)":,"// &")'
@@ -46,6 +47,7 @@ character(len=256)           :: iomsg
       INFINITE: do linenum=1,huge(0)-1
          line=readline(lun,iostat=iostat)
          if(iostat.ne.0)exit
+         if(html)line=expand_html(line)
          if(lcase)line=lower(line)
          if(ucase)line=upper(line)
          if(code.and.knd==2) then
@@ -132,8 +134,8 @@ help_text=[ CHARACTER(LEN=128) :: &
 '   (LICENSE:PD)                                                                 ',&
 '                                                                                ',&
 'SYNOPSIS                                                                        ',&
-'    uni [--escape|--noescape] [--lcase|--ucase] |                               ',&
-'    --box STYLE | --border STYLE |                                              ',&
+'    uni [--escape|--noescape] [--lcase|--ucase] [-html] |                       ',&
+'    --box STYLE | --border STYLE | --entities |                                 ',&
 '    [--start STARTCODE --finish ENDCODE [--styles NAME] ] |                     ',&
 '    --code |                                                                    ',&
 '    --wide | --length infile(s)                                                 ',&
@@ -187,6 +189,11 @@ help_text=[ CHARACTER(LEN=128) :: &
 '                                                                                ',&
 '   --escape,E    convert non-ASCII7 characters to C-style escape sequences      ',&
 '   --noescape,N  convert C-style escape sequences to UTF8 encoded data          ',&
+'                                                                                ',&
+'   --html,H      expand HTML character entities of the form &NAME; and          ',&
+'                 &#NNNNN;.                                                      ',&
+'   --entities,e  display table of HTML character entities and stop.             ',&
+'                 Other parameters are ignored.                                  ',&
 '                                                                                ',&
 '   --lcase,L     convert uppercase to lowercase                                 ',&
 '   --ucase,U     convert lowercase to uppercase                                 ',&
@@ -333,6 +340,8 @@ version_text=[ CHARACTER(LEN=128) :: &
    border=.FALSE.
    call set_args( '&
     & --escape:E F --noescape:N F &
+    & --html:H F &
+    & --entities:e F &
     & --lcase:L F --ucase:U F &
     & --start:S 0 --finish:F 1114111 --styles:s &
     & "decimal,utf8,c,standard,htmlx,htmld,ucs4,codex,hex"&
@@ -344,21 +353,27 @@ version_text=[ CHARACTER(LEN=128) :: &
     & --kind:K 1 &
     & --debug:D F', &
     & help_text, version_text)
-   call get_args('verbose', verbose )
-   call get_args('debug',   debug )
-   call get_args('lcase',   lcase,      'ucase',    ucase    )
-   call get_args('escape',  escape,     'noescape', noescape )
-   call get_args('start',   startrange, 'finish',   endrange )
-   call get_args('length',  length )
-   call get_args('wide',    wide )
-   call get_args('code',    code )
-   call get_args('kind',    knd )
-   call get_args('box',   style )
-   call get_args('border', style )
+   call get_args('verbose',  verbose )
+   call get_args('debug',    debug )
+   call get_args('lcase',    lcase,      'ucase',    ucase    )
+   call get_args('escape',   escape,     'noescape', noescape )
+   call get_args('start',    startrange, 'finish',   endrange )
+   call get_args('html',     html )
+   call get_args('entities', entities )
+   call get_args('length',   length )
+   call get_args('wide',     wide )
+   call get_args('code',     code )
+   call get_args('kind',     knd )
+   call get_args('box',      style )
+   call get_args('border',   style )
    styles=sgets('styles')
    if(specified('border')) border=.TRUE.
    if( specified('box') .and. style==' ') style='bold'
    if( specified('border') .and. style==' ') style='bold'
+   if(entities)then
+      line=expand_html()
+      stop
+   endif
    if(size(files).eq.0)then
       filenames=["-"]
    else
