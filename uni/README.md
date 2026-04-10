@@ -24,7 +24,9 @@ It can
 
 + identify lines in files that contain non-ASCII characters
 
-+ give line lengths as Unicode glyphs
++ give line lengths in units of Unicode glyphs instead of just bytes
+
++ render HTML character entities (ie. "&NAME;" and "&#NNNN;") to UTF-8
 
 ## EXAMPLES
 

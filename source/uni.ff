@@ -14,7 +14,7 @@ integer,allocatable          :: ints(:)
 type(ut)                     :: line
 type(ut),allocatable         :: text(:)
 logical                      :: verbose, debug, length, escape, noescape, ucase, lcase, wide
-logical                      :: code, allascii, border, html, entities
+logical                      :: code, allascii, border, html, entities, example
 character(len=:),allocatable :: filenames(:), style, styles(:)
 character(len=*),parameter   :: g0='(*(g0))'
 character(len=*),parameter   :: formu= '("char(int(z''",z0,"''),kind=ucs4)":,"// &")'
@@ -140,6 +140,7 @@ SYNOPSIS
     --entities |
     --start STARTCODE --finish ENDCODE |
     --code |
+    --sample |
     --wide | --length infile(s)
 
 To see short names and defaults enter "uni --usage"
@@ -194,7 +195,10 @@ OPTIONS
 
    --html,H      expand HTML character entities of the form &NAME; and
                  &#NNNNN;.
+
    --entities,e  display table of HTML character entities and stop.
+                 Other parameters are ignored.
+   --example,x   display sample input file and stop.
                  Other parameters are ignored.
 
    --lcase,L     convert uppercase to lowercase
@@ -345,6 +349,7 @@ $!==============================================================================
    call set_args( '&
     & --escape:E F --noescape:N F &
     & --html:H F &
+    & --example:x F &
     & --entities:e F &
     & --lcase:L F --ucase:U F &
     & --start:S 0 --finish:F 1114111 --styles:s &
@@ -357,19 +362,20 @@ $!==============================================================================
     & --kind:K 1 &
     & --debug:D F', &
     & help_text, version_text)
-   call get_args('verbose',  verbose )
-   call get_args('debug',    debug )
-   call get_args('lcase',    lcase,      'ucase',    ucase    )
-   call get_args('escape',   escape,     'noescape', noescape )
-   call get_args('start',    startrange, 'finish',   endrange )
-   call get_args('html',     html )
-   call get_args('entities', entities )
-   call get_args('length',   length )
-   call get_args('wide',     wide )
-   call get_args('code',     code )
-   call get_args('kind',     knd )
-   call get_args('box',      style )
    call get_args('border',   style )
+   call get_args('box',      style )
+   call get_args('code',     code )
+   call get_args('debug',    debug )
+   call get_args('entities', entities )
+   call get_args('escape',   escape,     'noescape', noescape )
+   call get_args('example',  example )
+   call get_args('html',     html )
+   call get_args('kind',     knd )
+   call get_args('lcase',    lcase,      'ucase',    ucase    )
+   call get_args('length',   length )
+   call get_args('start',    startrange, 'finish',   endrange )
+   call get_args('verbose',  verbose )
+   call get_args('wide',     wide )
    styles=sgets('styles')
    if(specified('border')) border=.TRUE.
    if( specified('box') .and. style==' ') style='bold'
@@ -385,6 +391,9 @@ $!==============================================================================
    endif
    if(size(filenames).eq.0)filenames=['-']
    ! process --start and --finish
+   if(example)then
+      call example_file()
+   endif
    if( specified('start')  .and. (.not.specified('finish')) ) endrange=startrange
    if( specified('start') .or. specified('finish') )then
       styles=to_lower(styles)
@@ -416,6 +425,44 @@ $!==============================================================================
       stop
    endif
 end subroutine setup
+
+subroutine example_file()
+integer                                                              :: i
+character(len=128),parameter :: example_data(*)=[ CHARACTER(LEN=128) :: &
+'The Greek alphabet consists of 24 letters, from Alpha to Omega, widely',&
+'used in mathematics, science, and engineering. The letters are        ',&
+'                                                                      ',&
+'   Alpha (Αα), Beta (Ββ), Gamma (Γγ), Delta (Δδ), Epsilon (Εε), Zeta',&
+'   (Ζζ), Eta (Ηη), Theta (Θθ), Iota (Ιι), Kappa (Κκ), Lambda        ',&
+'   (Λλ), Mu (Μμ), Nu (Νν), Xi (Ξξ), Omicron (Οο), Pi (Ππ), Rho    ',&
+'   (Ρρ), Sigma (Σσ/ς), Tau (Ττ), Upsilon (Υυ), Phi (Φφ), Chi       ',&
+'   (Χχ), Psi (Ψψ), and Omega (Ωω).                                      ',&
+'                                                                              ',&
+'Sigma (Σ, σ/ς) (Note: ς is used only at the end of words)                 ',&
+'                                                                              ',&
+'## As C++ escape sequences                                                                                                ',&
+'   Alpha (\u0391\u03B1), Beta (\u0392\u03B2), Gamma (\u0393\u03B3), Delta (\u0394\u03B4), Epsilon (\u0395\u03B5), Zeta    ',&
+'   (\u0396\u03B6), Eta (\u0397\u03B7), Theta (\u0398\u03B8), Iota (\u0399\u03B9), Kappa (\u039A\u03BA), Lambda            ',&
+'   (\u039B\u03BB), Mu (\u039C\u03BC), Nu (\u039D\u03BD), Xi (\u039E\u03BE), Omicron (\u039F\u03BF), Pi (\u03A0\u03C0), Rho',&
+'   (\u03A1\u03C1), Sigma (\u03A3\u03C3/\u03C2), Tau (\u03A4\u03C4), Upsilon (\u03A5\u03C5), Phi (\u03A6\u03C6), Chi       ',&
+'   (\u03A7\u03C7), Psi (\u03A8\u03C8), and Omega (\u03A9\u03C9).                                                          ',&
+'                                                                                                                          ',&
+'Sigma (\u03A3, \u03C3/\u03C2) (Note: \u03C2 is used only at the end of words)                                             ',&
+'                                                                                                                          ',&
+'## As HTML character entities                                                                                             ',&
+'&Alpha;,&alpha;, &Beta;,&beta;, &Gamma;,&gamma;,                                                                          ',&
+'&Delta;,&delta;, &Epsilon;,&epsilon;, &Zeta;,&zeta;,                                                                      ',&
+'&Eta;,&eta;, &Theta;,&theta;, &Iota;,&iota;,                                                                              ',&
+'&Kappa;,&kappa;, &Lambda;,&lambda;, &Mu;,&mu;,                                                                            ',&
+'&Nu;,&nu;, &Xi;,&xi;, &Omicron;,&omicron;,                                                                                ',&
+'&Pi;,&pi;, &Rho;,&rho;, &Sigma;,&sigma;,                                                                                  ',&
+'&Tau;,&tau;, &Upsilon;,&upsilon;, &Phi;,&phi;,                                                                            ',&
+'&Chi;,&chi;, &Psi;,&psi;, &Omega;&omega;                                                                                  ',&
+'                                                                                                                          ',&
+'']
+   write(stdout,'(a)')(trim(example_data(i)),i=1,size(example_data))
+   stop
+end subroutine example_file
 
 function get_text(filename) result(text)
 character(len=*),intent(in)  :: filename
