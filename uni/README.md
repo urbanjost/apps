@@ -10,7 +10,9 @@ and data, allowing UTF-8 encoded strings to be processed as easily as
 ASCII-7 encoded strings, without depending on the compiler supporting
 the optional ISO_10646 extension.
 
-It can 
+"uni --help"  displays a description of all the command options.
+
+The uni(1) command can 
 
 + convert UTF-8 files to ASCII-7 with C-style escape sequences
   and vice-versa
@@ -19,7 +21,7 @@ It can
 
 + display a range of Unicode characters in multiple formats
 
-+ convert boxes defined with the pound character as the appropriate
++ convert boxes defined with the pound character to the appropriate
   box characters
 
 + identify lines in files that contain non-ASCII characters
@@ -27,6 +29,9 @@ It can
 + give line lengths in units of Unicode glyphs instead of just bytes
 
 + render HTML character entities (ie. "&NAME;" and "&#NNNN;") to UTF-8
+
++ revert the glyphs on a line
+
 
 ## EXAMPLES
 

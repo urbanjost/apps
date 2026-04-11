@@ -3,7 +3,7 @@ program uni
 use, intrinsic :: iso_fortran_env, only: stdin => input_unit, stderr => error_unit, stdout => output_unit
 use, intrinsic :: iso_fortran_env, only: iostat_end, iostat_eor
 use M_unicode, only : readline, split, lower, upper, len, trim, isascii
-use M_unicode, only : expand_html
+use M_unicode, only : expand_html, reverse_line=>reverse
 use M_unicode, only : add_backslash, remove_backslash=>escape
 use M_unicode, only : isascii, slurp, repeat, pound_to_box, add_border
 use M_unicode, only : ut => unicode_type, assignment(=), ch=>character
@@ -14,7 +14,7 @@ integer,allocatable          :: ints(:)
 type(ut)                     :: line
 type(ut),allocatable         :: text(:)
 logical                      :: verbose, debug, length, escape, noescape, ucase, lcase, wide
-logical                      :: code, allascii, border, html, entities, example
+logical                      :: code, allascii, border, html, entities, example, reverse
 character(len=:),allocatable :: filenames(:), style, styles(:)
 character(len=*),parameter   :: g0='(*(g0))'
 character(len=*),parameter   :: formu= '("char(int(z''",z0,"''),kind=ucs4)":,"// &")'
@@ -47,9 +47,12 @@ character(len=256)           :: iomsg
       INFINITE: do linenum=1,huge(0)-1
          line=readline(lun,iostat=iostat)
          if(iostat.ne.0)exit
-         if(html)line=expand_html(line)
-         if(lcase)line=lower(line)
-         if(ucase)line=upper(line)
+         if(html)     line=expand_html(line)
+         if(lcase)    line=lower(line)
+         if(ucase)    line=upper(line)
+         if(noescape) line=remove_backslash(line)
+         if(reverse)  line=reverse_line(line)
+         if(escape)   line=add_backslash(line)
          if(code.and.knd==2) then
             ! @(#) generate Fortran statements using KIND='iso_10464' that represents the lines
             if(line.eq.'')then
@@ -66,7 +69,6 @@ character(len=256)           :: iomsg
                write(stdout,g0)'],kind=ucs4)'
                write(stdout,g0)
             endif
-            cycle
          elseif(code) then
             ! @(#) generate Fortran statements using KIND='iso_10464' that represents the lines
             if(line.eq.'')then
@@ -82,11 +84,7 @@ character(len=256)           :: iomsg
                write(stdout,formu)(line%codepoint(j,j),j=1,len(line))
                write(stdout,g0)
             endif
-            cycle
-         endif
-         if(escape)   line=add_backslash(line)
-         if(noescape) line=remove_backslash(line)
-         if(length)then
+         elseif(length)then
             ulen=len(line)
             alen=len(line%character())
             allascii=isascii(line)
@@ -134,7 +132,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '   (LICENSE:PD)                                                                 ',&
 '                                                                                ',&
 'SYNOPSIS                                                                        ',&
-'    uni [--escape|--noescape] [--lcase|--ucase] --html |                        ',&
+'    uni [--escape|--noescape] [--lcase|--ucase] --html --reverse |              ',&
 '    [ [--box STYLE | --border STYLE] --styles NAME] |                           ',&
 '    --entities |                                                                ',&
 '    --start STARTCODE --finish ENDCODE |                                        ',&
@@ -195,10 +193,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '   --html,H      expand HTML character entities of the form &NAME; and          ',&
 '                 &#NNNNN;.                                                      ',&
 '                                                                                ',&
-'   --entities,e  display table of HTML character entities and stop.             ',&
-'                 Other parameters are ignored.                                  ',&
-'   --example,x   display sample input file and stop.                            ',&
-'                 Other parameters are ignored.                                  ',&
+'   --reverse,R   reverse the glyphs on a line                                   ',&
 '                                                                                ',&
 '   --lcase,L     convert uppercase to lowercase                                 ',&
 '   --ucase,U     convert lowercase to uppercase                                 ',&
@@ -239,6 +234,11 @@ help_text=[ CHARACTER(LEN=128) :: &
 '   --verbose     echo the input as well as the computed values                  ',&
 '                                                                                ',&
 '   INFORMATION                                                                  ',&
+'                                                                                ',&
+'   --entities,e  display table of HTML character entities and stop.             ',&
+'                 Other parameters are ignored.                                  ',&
+'   --example,x   display sample input file and stop.                            ',&
+'                 Other parameters are ignored.                                  ',&
 '   --help        display this help and exit                                     ',&
 '   --usage       display state of command options and exit                      ',&
 '   --version     output version information and exit                            ',&
@@ -344,19 +344,23 @@ version_text=[ CHARACTER(LEN=128) :: &
    ! text and version information, and crack command line.
    border=.FALSE.
    call set_args( '&
-    & --escape:E F --noescape:N F &
-    & --html:H F &
-    & --example:x F &
-    & --entities:e F &
-    & --lcase:L F --ucase:U F &
-    & --start:S 0 --finish:F 1114111 --styles:s &
-    & "decimal,utf8,c,standard,htmlx,htmld,ucs4,codex,hex"&
-    & --length:l F &
-    & --wide:W F &
-    & --box:B " " &
     & --border:b " " &
+    & --box:B " " &
     & --code:C F &
+    & --entities:e F &
+    & --escape:E F &
+    & --noescape:N F &
+    & --example:x F &
+    & --html:H F &
     & --kind:K 1 &
+    & --lcase:L F &
+    & --ucase:U F &
+    & --length:l F &
+    & --reverse:R F &
+    & --start:S 0 &
+    & --finish:F 1114111 &
+    & --styles:s "decimal,utf8,c,standard,htmlx,htmld,ucs4,codex,hex" &
+    & --wide:W F &
     & --debug:D F', &
     & help_text, version_text)
    call get_args('border',   style )
@@ -370,6 +374,7 @@ version_text=[ CHARACTER(LEN=128) :: &
    call get_args('kind',     knd )
    call get_args('lcase',    lcase,      'ucase',    ucase    )
    call get_args('length',   length )
+   call get_args('reverse',  reverse )
    call get_args('start',    startrange, 'finish',   endrange )
    call get_args('verbose',  verbose )
    call get_args('wide',     wide )
@@ -387,10 +392,10 @@ version_text=[ CHARACTER(LEN=128) :: &
       filenames=files
    endif
    if(size(filenames).eq.0)filenames=['-']
-   ! process --start and --finish
    if(example)then
       call example_file()
    endif
+   ! process --start and --finish
    if( specified('start')  .and. (.not.specified('finish')) ) endrange=startrange
    if( specified('start') .or. specified('finish') )then
       styles=to_lower(styles)
