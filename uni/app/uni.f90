@@ -14,7 +14,7 @@ integer,allocatable          :: ints(:)
 type(ut)                     :: line
 type(ut),allocatable         :: text(:)
 logical                      :: verbose, debug, length, escape, noescape, ucase, lcase, wide
-logical                      :: code, allascii, border, html, entities, example, reverse
+logical                      :: code, allascii, border, html, entities, example, reverse, nofile
 character(len=:),allocatable :: filenames(:), style, styles(:)
 character(len=*),parameter   :: g0='(*(g0))'
 character(len=*),parameter   :: formu= '("char(int(z''",z0,"''),kind=ucs4)":,"// &")'
@@ -32,9 +32,11 @@ character(len=256)           :: iomsg
             text=pound_to_box(get_text(filenames(i)),style=style)
             call print_text(text)
          endif
-         cycle
+         cycle DATUM
       endif
-      if(filenames(i).eq.'-'.or.filenames(i).eq.'')then
+      if(nofile)then
+         lun=-1
+      elseif(filenames(i).eq.'-'.or.filenames(i).eq.'')then
          lun=stdin
       else
         open(newunit=lun,file=filenames(i),action='read',pad='yes',iostat=iostat,iomsg=iomsg)
@@ -45,8 +47,13 @@ character(len=256)           :: iomsg
         endif
       endif
       INFINITE: do linenum=1,huge(0)-1
-         line=readline(lun,iostat=iostat)
-         if(iostat.ne.0)exit
+         if(nofile)then
+            if(linenum.gt.size(filenames))exit DATUM
+            line=filenames(linenum)
+         else
+            line=readline(lun,iostat=iostat)
+            if(iostat.ne.0)exit
+         endif
          if(html)     line=expand_html(line)
          if(lcase)    line=lower(line)
          if(ucase)    line=upper(line)
@@ -137,27 +144,32 @@ help_text=[ CHARACTER(LEN=128) :: &
 '    --entities |                                                                ',&
 '    --start STARTCODE --finish ENDCODE |                                        ',&
 '    --code |                                                                    ',&
-'    --sample |                                                                  ',&
+'    --example |                                                                 ',&
 '    --wide | --length infile(s)                                                 ',&
 '                                                                                ',&
 'To see short names and defaults enter "uni --usage"                             ',&
 '                                                                                ',&
 'DESCRIPTION                                                                     ',&
-'   uni(1) is a handy filter for converting UTF-8 encoded text to and            ',&
-'   from ASCII-7 C-style escape sequences, converting the case of                ',&
-'   multi-byte text, converting pound characters to box characters,              ',&
-'   and identifying sundry properties of lines of UTF-8 encoded text.            ',&
+'   uni(1) is a handy filter for converting UTF-8 encoded text to and from       ',&
+'   ASCII-7 C-style escape sequences, converting the case of multi-byte          ',&
+'   text, converting pound characters to box characters, and identifying         ',&
+'   sundry properties of lines of UTF-8 encoded text.                            ',&
 '                                                                                ',&
 '   In addition when given a range of codepoint values uni(1) displays           ',&
 '   the characters in several common formats for use in generating code          ',&
 '   or text or HTML.                                                             ',&
 '                                                                                ',&
-'   For example, the primary Unicode block for the Greek alphabet is             ',&
-'   the Greek and Coptic section (U+0370–U+03FF; standard letters,             ',&
-'   numbers, and symbols) which contains most modern monotonic Greek             ',&
-'   letters while the Greek Extended block (U+1F00–U+1FFF; additional          ',&
-'   characters with diacritics). is used for polytonic Greek. So to see          ',&
-'   the basic Greek alphabet enter                                               ',&
+'   uni(1) defaults to displaying only lines containing a wide                   ',&
+'   (ie. multi-byte) character along with the line number; with each line        ',&
+'   as-is and then with wide characters converted to C++-style escape            ',&
+'   sequences. That is, the default is "uni --wide".                             ',&
+'                                                                                ',&
+'   For example, the primary Unicode block for the Greek alphabet is the         ',&
+'   Greek and Coptic section (U+0370–U+03FF; standard letters, numbers,        ',&
+'   and symbols) which contains most modern monotonic Greek letters while        ',&
+'   the Greek Extended block (U+1F00–U+1FFF; additional characters with        ',&
+'   diacritics). is used for polytonic Greek. So to see the basic Greek          ',&
+'   alphabet enter                                                               ',&
 '                                                                                ',&
 '       uni --start 880 --finish 1023                                            ',&
 '                                                                                ',&
@@ -228,7 +240,8 @@ help_text=[ CHARACTER(LEN=128) :: &
 '   --length,L    prefix lines with line number, glyph and byte count            ',&
 '                 of input line.                                                 ',&
 '                                                                                ',&
-'   --wide,W      identify and write lines not composed entirely of ASCII-7      ',&
+'   --wide,W      identify and write lines not composed entirely of ASCII-7.     ',&
+'                 If no other parameters are specified this is the default.      ',&
 '                                                                                ',&
 '   MODES                                                                        ',&
 '   --verbose     echo the input as well as the computed values                  ',&
@@ -356,6 +369,7 @@ version_text=[ CHARACTER(LEN=128) :: &
     & --lcase:L F &
     & --ucase:U F &
     & --length:l F &
+    & --text:t F &
     & --reverse:R F &
     & --start:S 0 &
     & --finish:F 1114111 &
@@ -378,8 +392,9 @@ version_text=[ CHARACTER(LEN=128) :: &
    call get_args('start',    startrange, 'finish',   endrange )
    call get_args('verbose',  verbose )
    call get_args('wide',     wide )
+   call get_args('text',     nofile )
    styles=sgets('styles')
-   if(specified('border')) border=.TRUE.
+   if( specified('border') ) border=.TRUE.
    if( specified('box') .and. style==' ') style='bold'
    if( specified('border') .and. style==' ') style='bold'
    if(entities)then
@@ -387,11 +402,10 @@ version_text=[ CHARACTER(LEN=128) :: &
       stop
    endif
    if(size(files).eq.0)then
-      filenames=["-"]
+      filenames=[" "]
    else
       filenames=files
    endif
-   if(size(filenames).eq.0)filenames=['-']
    if(example)then
       call example_file()
    endif
@@ -426,6 +440,19 @@ version_text=[ CHARACTER(LEN=128) :: &
       endif
       stop
    endif
+   ! if no actions specified default to --wide
+   if( .not.any(specified([ character(len=20) :: 'border', 'box', 'code', 'entities', &
+   & 'escape', 'noescape', 'example', 'html', 'kind', 'lcase', 'ucase', 'length', &
+   & 'reverse', 'start', 'finish', 'styles', 'wide'])))then
+      wide=.true.
+   endif
+   if(debug)then
+      write(stderr,'(*(g0))')'nofile=',nofile
+      write(stderr,'(*(g0))')'size(filenames)=',size(filenames)
+      do i=1,size(filenames)
+         write(stderr,'(*(g0))')'[',filenames(i),']'
+      enddo
+   endif
 end subroutine setup
 
 subroutine example_file()
@@ -459,26 +486,42 @@ character(len=128),parameter :: example_data(*)=[ CHARACTER(LEN=128) :: &
 '&Nu;,&nu;, &Xi;,&xi;, &Omicron;,&omicron;,                                                                                ',&
 '&Pi;,&pi;, &Rho;,&rho;, &Sigma;,&sigma;,                                                                                  ',&
 '&Tau;,&tau;, &Upsilon;,&upsilon;, &Phi;,&phi;,                                                                            ',&
-'&Chi;,&chi;, &Psi;,&psi;, &Omega;&omega;                                                                                  ',&
+'&Chi;,&chi;, &Psi;,&psi;, &Omega;,&omega;                                                                                  ',&
 '                                                                                                                          ',&
 '']
    write(stdout,'(a)')(trim(example_data(i)),i=1,size(example_data))
    stop
 end subroutine example_file
 
-function get_text(filename) result(text)
-character(len=*),intent(in)  :: filename
-type(ut),allocatable         :: text(:)
+function get_text(fname) result(text_out)
+character(len=*),intent(in)  :: fname
+type(ut),allocatable         :: text_out(:)
+type(ut),allocatable         :: line
 character(len=:),allocatable :: iomsg
+integer                      :: i
 
-   text=slurp(trim(filename),iomsg=iomsg)
+   if(nofile)then
+      text_out=[fname]
+   else
+      text_out=slurp(trim(fname),iomsg=iomsg)
 
-   if(iomsg.ne.'')then
-      write(stderr,*)'*uni* failed to load file '//filename
-      write(stderr,*) iomsg
+      if(iomsg.ne.'')then
+         write(stderr,*)'*uni* failed to load file '//fname
+         write(stderr,*) iomsg
+      endif
    endif
 
-   if(.not.allocated(text))text=['']
+   if(.not.allocated(text_out))text_out=['']
+   do i=1,size(text_out)
+      line=text_out(i)
+      if(html)     line=expand_html(line)
+      if(lcase)    line=lower(line)
+      if(ucase)    line=upper(line)
+      if(noescape) line=remove_backslash(line)
+      if(reverse)  line=reverse_line(line)
+      if(escape)   line=add_backslash(line)
+      text_out(i)=line
+   enddo
 
 end function get_text
 

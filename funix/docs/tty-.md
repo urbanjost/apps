@@ -1,24 +1,20 @@
-NAME
-====
+# NAME
 
-tty-(1f) - \[FUNIX:FILESYSTEM\] print information about the
-file/terminal connected to standard input (LICENSE:PD)
+**tty-(1f)** - \[FUNIX:FILESYSTEM\] print information about the
+file/terminal **connected to standard input** **(LICENSE:PD)**
 
-SYNOPSIS
-========
+# SYNOPSIS
 
-tty- \[OPTION\]\`\`\`
+    tty- [OPTION]...
 
-DESCRIPTION
-===========
+# DESCRIPTION
 
-Call INQUIRE(3f) and print information about the file name of the
+Call **INQUIRE(3f) and print information about the file name of the**
 terminal connected to standard input. The results are dependent on the
 programming environment used, as some of the behavior is system
 dependent.
 
-OPTIONS
-=======
+# OPTIONS
 
 ****--help****
 
@@ -28,14 +24,13 @@ OPTIONS
 
 :   output version information and exit
 
-EXAMPLE
-=======
+# EXAMPLE
 
 The standard leaves quite a bit as system dependent. It is always
 interesting. For example, on CygWin using gfortran V5.4
 
-If I just type in the command at a prompt the INPUT\_UNIT of 5 is
-returned as unit 0. But if I call the tty- from within vim(1) it is
+If I just type in the command at a prompt the INPUT_UNIT of 5 is
+returned as unit 0. But if I call the tty- from within **vim(1) it is**
 returned as 5.
 
             tty-
@@ -66,22 +61,18 @@ Try these:
             tty- < `tty`      # reading the pathname of your terminal
             tty- < /dev/pty08 # some TTY not assigned to your ID
 
-REPORTING BUGS
-==============
+# REPORTING BUGS
 
 Report \_yes bugs to \<http://www.urbanjost.altervista.org/index.html\>
 
-SEE ALSO
-========
+# SEE ALSO
 
-isatty(3c),tty(1), ttyname(3)
+**isatty(3c),tty(1), ttyname(3)**
 
-AUTHOR
-======
+# AUTHOR
 
 John S. Urban
 
-LICENSE
-=======
+# LICENSE
 
 Public Domain

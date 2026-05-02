@@ -1,28 +1,23 @@
-NAME
-====
+# NAME
 
-touch-(1f) - \[FUNIX:FILESYSTEM\] change file access and modify
-timestamps to current time, creating file if necessary (LICENSE:PD)
+**touch-(1f)** - \[FUNIX:FILESYSTEM\] change file access and modify
+timestamps to current time, creating file if necessary **(LICENSE:PD)**
 
-SYNOPSIS
-========
+# SYNOPSIS
 
-touch- \[FILE\`\`\` \[ **-date** DATE\]\]\|\[
-**--help**\|**--version**\|**--verbose**\]
+    touch- [FILE... [ -date DATE]]|[ --help|--version|--verbose]
 
-DESCRIPTION
-===========
+# DESCRIPTION
 
 Make sure specified filenames exist (by creating them as empty files)
 and change file access time to current time or specified time.
 
-OPTIONS
-=======
+# OPTIONS
 
 ****-date****
 
 :   Change the file timestamps to the specified date instead of the
-    current time. Uses guessdate(3f) to read the date.
+    current time. Uses **guessdate(3f) to read the date.**
 
 ****--verbose****
 
@@ -36,20 +31,17 @@ OPTIONS
 
 :   Display version information and exit
 
-EXAMPLES
-========
+# EXAMPLES
 
 Sample commands
 
        touch- *.f90
        touch- * -date 2000-01-02 10:20:30
 
-AUTHOR
-======
+# AUTHOR
 
 John S. Urban
 
-LICENSE
-=======
+# LICENSE
 
 Public Domain

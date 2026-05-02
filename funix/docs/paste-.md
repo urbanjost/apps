@@ -1,17 +1,15 @@
-NAME
-====
+# NAME
 
-paste(1f) - \[FILE FILTER\] merge lines of files (LICENSE:PD)
+**paste(1f)** - \[FILE FILTER\] merge lines of files **(LICENSE:PD)**
 
-SYNOPSIS
-========
+# SYNOPSIS
 
-paste \[OPTIONS\] \[filenames\] \|**--version**\|**--help** (LICENSE:PD)
+    paste [OPTIONS] [filenames] |--version|--help
+    ((LICENSE:PD))
 
-DESCRIPTION
-===========
+# DESCRIPTION
 
-paste(1f) writes to standard output lines consisting of sequentially
+**paste(1f) writes to standard output lines consisting of sequentially**
 corresponding lines of each given file, separated by a TAB character.
 Standard input is used for a file name of '-' or if no input files are
 given.
@@ -24,27 +22,26 @@ zero-length list will be treated as a blank; and if a blank is a member
 of the set it cannot be at the end of the delimiters list.
 
 Standard Fortran does not currently support the same file being opened
-multiple times simultaneously so repeating filenames is not supported
-but may work, depending on the compiler.
+multiple times simultaneously so repeating *filenames* **is not
+supported** but may work, depending on the compiler.
 
-OPTIONS
-=======
+# OPTIONS
 
-****-d**, **--delimiters**=LIST**
+****-d,** **--delimiters=LIST****
 
 :   Consecutively use the characters in LIST to separate merged lines.
     When LIST is exhausted, start again at its beginning.
 
-****-s**, **--serial****
+****-s,** **--serial****
 
-:   paste one file at a time instead of in parallel
+:   **paste one file at a time instead of in parallel**
 
-****-z**, **--zero-terminated****
+****-z,** **--zero-terminated****
 
 :   line delimiter is NUL, not newline Delimit items with a zero byte
     rather than a newline (ASCII LF). I.E., treat input as items
     separated by ASCII NUL and terminate output items with ASCII NUL.
-    This option can be useful in conjunction with 'perl **-0**' or
+    This option can be useful in conjunction with 'perl **-0' or**
 
 same in order to reliably handle arbitrary file names (even those
 containing blanks or other special characters).
@@ -61,8 +58,7 @@ containing blanks or other special characters).
 
 :   Display table of commandline parameters
 
-EXAMPLES
-========
+# EXAMPLES
 
 For example, with:
 
@@ -99,12 +95,10 @@ Intermix lines from stdin:
                  b
                  c
 
-AUTHOR
-======
+# AUTHOR
 
 John S. Urban
 
-LICENSE
-=======
+# LICENSE
 
 Public Domain

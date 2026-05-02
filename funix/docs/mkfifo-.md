@@ -1,21 +1,17 @@
-NAME
-====
+# NAME
 
-mkfifo-(1f) - \[FUNIX:FILESYSTEM\] make a FIFO pipe by calling
-mkfifo(3c) (LICENSE:PD)
+**mkfifo-(1f)** - \[FUNIX:FILESYSTEM\] make a FIFO pipe by calling
+**mkfifo**(3c) **(LICENSE:PD)**
 
-SYNOPSIS
-========
+# SYNOPSIS
 
-mkfifo- file(s)
+    mkfifo- file(s)
 
-DESCRIPTION
-===========
+# DESCRIPTION
 
 Create named pipes (FIFOs) with the given NAMEs.
 
-OPTIONS
-=======
+# OPTIONS
 
 **files**
 
@@ -29,15 +25,12 @@ OPTIONS
 
 :   output version information and exit
 
-EXAMPLE
-=======
+# EXAMPLE
 
-AUTHOR
-======
+# AUTHOR
 
 John S. Urban
 
-LICENSE
-=======
+# LICENSE
 
 Public Domain

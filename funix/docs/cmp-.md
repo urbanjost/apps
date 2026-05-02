@@ -1,26 +1,21 @@
-NAME
-====
+# NAME
 
-cmp-(1f) - \[FUNIX\] compare two files byte by byte (LICENSE:PD)
+**cmp-(1f)** - \[FUNIX\] compare two files byte by byte **(LICENSE:PD)**
 
-SYNOPSIS
-========
+# SYNOPSIS
 
-cmp- file1 file2 \[ **-quiet**\] \[ **-show**\]\| \[ \[ **-help**\] \[
-**-version**\] \]
+    cmp- file1 file2 [ -quiet] [ -show]| [ [ -help] [ -version] ]
 
-DESCRIPTION
-===========
+# DESCRIPTION
 
-The cmp-(1) utility compares two files byte by byte and returns true if
-no differences are found, or false otherwise
+The **cmp-(1) utility compares two files byte by byte and returns** true
+if no differences are found, or false otherwise
 
-OPTIONS
-=======
+# OPTIONS
 
 The following options are supported:
 
-**file1,file2**
+***file1***,***file2***
 
 :   names of files to compare
 
@@ -41,11 +36,10 @@ The following options are supported:
 
 :   Print version information for this program
 
-EXAMPLES
-========
+# EXAMPLES
 
 Given files "x1" and "x2" are identical, and file "x3" is the same
-except one line is uppercase instead of lowercase \`\`\`
+except one line is uppercase instead of lowercase ...
 
        $ cmp- x1 x2
          x1 x2  are identical
@@ -84,11 +78,12 @@ except one line is uppercase instead of lowercase \`\`\`
        $ echo $?
          3
 
-EXIT STATUS
-===========
+# EXIT STATUS
 
 The following exit values are returned:
 
+> 
+>
 > **0**
 >
 > :   no differences were found
@@ -96,13 +91,11 @@ The following exit values are returned:
 > **1**
 >
 > :   differences were found
->
-AUTHOR
-======
+
+# AUTHOR
 
 John S. Urban
 
-LICENSE
-=======
+# LICENSE
 
 Public Domain

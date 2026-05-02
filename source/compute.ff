@@ -158,7 +158,7 @@ DESCRIPTION:    line mode calculator program (that calls CALCULATOR(3f))
 VERSION:        23.1 20160618
 AUTHOR:         John S. Urban
 HOME PAGE:      http://www.urbanjost.altervista.org/index.html
-$BLOCK END
+$ENDBLOCK
 $!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 end program compute
 $!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@

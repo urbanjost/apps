@@ -221,7 +221,7 @@ AUTHOR
    John S. Urban
 LICENSE
    Public Domain
-$BLOCK END
+$ENDBLOCK
 $!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 function scratch(prefix) result(tname)
 

@@ -1,32 +1,26 @@
-NAME
-====
+# NAME
 
-showumask-(1f) - \[FUNIX\] show umask in decimal, octal, hex, and binary
-(LICENSE:PD)
+**showumask-(1f)** - \[FUNIX\] show umask in decimal, octal, hex, and
+binary **(LICENSE:PD)**
 
-SYNOPSIS
-========
+# SYNOPSIS
 
-showumask- \[ **-help**\|**-version**\]
+    showumask- [ -help|-version]
 
-DESCRIPTION
-===========
+# DESCRIPTION
 
-example program calling system\_getumask(3f) to get umask value.
+example program calling **system_getumask(3f) to get umask value.**
 
-EXAMPLE
-=======
+# EXAMPLE
 
 showumask-
 
         18 O'0022' Z'12' B'000000010010'
 
-AUTHOR
-======
+# AUTHOR
 
 John S. Urban
 
-LICENSE
-=======
+# LICENSE
 
 Public Domain

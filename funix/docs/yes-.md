@@ -1,27 +1,23 @@
-NAME
-====
+# NAME
 
-yes-(1f) - \[FUNIX\] output a string repeatedly until killed or limit is
-reached (LICENSE:PD)
+**yes-(1f)** - \[FUNIX\] output a string repeatedly until killed or
+limit is reached **(LICENSE:PD)**
 
-SYNOPSIS
-========
+# SYNOPSIS
 
-yes- \[STRING\[ **-repeat** N\]\]\|\[ **--help**\| **--version**\]
+    yes- [STRING[ -repeat N]]|[ --help| --version]
 
-DESCRIPTION
-===========
+# DESCRIPTION
 
-yes-(1) prints the command line arguments, separated by spaces and
-followed by a newline until the repeat count is reached or endlessly
+**yes-(1) prints the command line arguments, separated by spaces and
+followed** by a newline until the repeat count is reached or endlessly
 until it is killed. If no arguments are given, it prints "y" followed by
-a newline endlessly until killed. Upon a write error, yes-(1) exits with
-status "1".
+a newline endlessly until killed. Upon a write error, **yes-(1) exits
+with status "1".**
 
-OPTIONS
-=======
+# OPTIONS
 
-****-repeat** N**
+****-repeat** *N***
 
 :   specify number of times to display string
 
@@ -33,30 +29,25 @@ OPTIONS
 
 :   output version information and exit
 
-EXAMPLES
-========
+# EXAMPLES
 
 Sample commands
 
            # repeat a command 20 times, pausing and clearing:
            yes-  date --repeat 20  |xargs -iXX  sh -c 'XX;sleep 2;clear'
 
-REPORTING BUGS
-==============
+# REPORTING BUGS
 
 Report yes- bugs to \<http://www.urbanjost.altervista.org/index.html\>
 
-SEE ALSO
-========
+# SEE ALSO
 
-yes(1), repeat(1), xargs(1)
+**yes(1), repeat(1), xargs(1)**
 
-AUTHOR
-======
+# AUTHOR
 
 John S. Urban
 
-LICENSE
-=======
+# LICENSE
 
 Public Domain

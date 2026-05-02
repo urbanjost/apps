@@ -1,35 +1,32 @@
-NAME
-====
+# NAME
 
-ln-(1f) - \[FUNIX:FILESYSTEM\] create hard links to a file (LICENSE:PD)
+**ln-(1f)** - \[FUNIX:FILESYSTEM\] create hard links to a file
+**(LICENSE:PD)**
 
-SYNOPSIS
-========
+# SYNOPSIS
 
-Formats:
+    Formats:
 
        ln- TARGET LINK_NAME     #  create a link to TARGET with the name LINK_NAME.
        ln- TARGET               #  create a link to TARGET in the current directory.
-       ln- TARGET``` DIRECTORY  #  create links to each TARGET in DIRECTORY.
+       ln- TARGET... DIRECTORY  #  create links to each TARGET in DIRECTORY.
 
-DESCRIPTION
-===========
+# DESCRIPTION
 
 Create hard links (not symbolic links) each destination (name of new
 link) should not already exist. When creating hard links, each TARGET
 must exist. Symbolic links can hold arbitrary text; if later resolved, a
 relative link is interpreted in relation to its parent directory.
 
-OPTIONS
-=======
+# OPTIONS
 
 **TARGET**
 
 :   name of existing file
 
-**LINK\_NAME**
+**LINK_NAME**
 
-:   if LINK\_NAME follows TARGET create a link called LINK\_NAME that
+:   if LINK_NAME follows TARGET create a link called LINK_NAME that
     points to TARGET
 
 **DIRECTORY**
@@ -45,12 +42,10 @@ OPTIONS
 
 :   output version information and exit
 
-AUTHOR
-======
+# AUTHOR
 
 John S. Urban
 
-LICENSE
-=======
+# LICENSE
 
 Public Domain

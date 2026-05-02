@@ -1,24 +1,20 @@
-NAME
-====
+# NAME
 
-mkdir-(1f) - \[FUNIX:FILESYSTEM\] call mkdir(3c) to make directories
-(LICENSE:PD)
+**mkdir-(1f)** - \[FUNIX:FILESYSTEM\] call **mkdir**(3c) to make
+directories **(LICENSE:PD)**
 
-SYNOPSIS
-========
+# SYNOPSIS
 
-mkdir- DIRECTORY \`\`\` \[OPTION\]...
+    mkdir- DIRECTORY ... [OPTION]...
 
-DESCRIPTION
-===========
+# DESCRIPTION
 
-Create the DIRECTORY(ies), if they do not already exist. The file
+Create the **DIRECTORY(ies), if they do not already exist.** The file
 permission mode by default is "a=rxw-umask".
 
-OPTIONS
-=======
+# OPTIONS
 
-**DIRECTORY**
+***DIRECTORY***
 
 :   directory pathnames. Limited to 4096 characters per pathname.
 
@@ -38,8 +34,7 @@ OPTIONS
 
 :   output version information and exit
 
-EXAMPLE
-=======
+# EXAMPLE
 
 Samples:
 
@@ -49,12 +44,10 @@ Samples:
        # show creation of three directories
        mkdir- A B C
 
-AUTHOR
-======
+# AUTHOR
 
 John S. Urban
 
-LICENSE
-=======
+# LICENSE
 
 Public Domain

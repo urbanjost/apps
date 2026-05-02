@@ -1,24 +1,21 @@
-NAME
-====
+# NAME
 
-rmdir-(1f) - \[FUNIX:FILESYSTEM\] remove empty directories (LICENSE:PD)
+**rmdir-(1f)** - \[FUNIX:FILESYSTEM\] remove empty directories
+**(LICENSE:PD)**
 
-SYNOPSIS
-========
+# SYNOPSIS
 
-rmdir- DIRECTORY\`\`\` \[OPTION\]...
+    rmdir- DIRECTORY... [OPTION]...
 
-DESCRIPTION
-===========
+# DESCRIPTION
 
 given the names of empty directories remove them.
 
-OPTIONS
-=======
+# OPTIONS
 
 **DIRECTORY**
 
-:   Remove the DIRECTORY(ies) if they are empty.
+:   Remove the **DIRECTORY(ies) if they are empty.**
 
 ****--help****
 
@@ -28,19 +25,16 @@ OPTIONS
 
 :   output version information and exit
 
-EXAMPLES
-========
+# EXAMPLES
 
-Sample command lines \`\`\`
+Sample command lines ...
 
             rmdir- a/b/c /a/b /a
 
-AUTHOR
-======
+# AUTHOR
 
 John S. Urban
 
-LICENSE
-=======
+# LICENSE
 
 Public Domain

@@ -1,63 +1,58 @@
-NAME
-====
+# NAME
 
-xpand(1f) - \[FUNIX\] expand tabs,remove trailing white space and
-(optionally) adjacent blank lines
+**xpand(1f)** - \[FUNIX\] expand tabs,remove trailing white space and
+**(optionally) adjacent blank lines**
 
-SYNOPSIS
-========
+# SYNOPSIS
 
-xpand \[ **-blanks** NNN\]\[ **--width** \] FILENAME(S)
+    xpand [ -blanks NNN][ --width ] FILENAME(S)
 
-DESCRIPTION
-===========
+# DESCRIPTION
 
 Defaults to converting tabs in each FILE to spaces, writing to standard
 output. If no filename is specified standard input is read. Tab stops
 are assumed to be every eight (8) columns. Trailing spaces, carriage
 returns, and newlines are removed.
 
-OPTIONS
-=======
+# OPTIONS
 
 **FILENAMES**
 
 :   files to expand tab characters in.
 
-****--width**,**-w****
+****--width,-w****
 
 :   line width at which to produce a warning if exceeded. If less then
     or equal to 0 no warnings are produced. The default is 0. Warning
     messages appear on stderr.
 
-****--blanks**,**-b****
+****--blanks,-b****
 
-:   maximum number of adjacent blank lines to retain. Default is **-1**,
-    which is equivalent to unlimited.
+:   maximum number of adjacent blank lines to retain. Default is **-1,
+    which is equivalent to unlimited.**
 
-****--show-nonprinting**,**-c****
+****--show-nonprinting,-c****
 
 :   use \^ and M- notation, except for linefeed
 
-****--show-ends**,**-e****
+****--show-ends,-e****
 
-:   display $ at end of each line
+:   display \$ at end of each line
 
-****--number**,**-n****
+****--number,-n****
 
-:   number all output lines **--number-nonblank**,**-N** number nonempty
-    output lines, overrides **-n**
+:   number all output lines **--number-nonblank,-N number nonempty
+    output lines, overrides -n**
 
-****--uppercase**,**-U****
+****--uppercase,-U****
 
 :   convert all lowercase ASCII characters to uppercase
 
-****--lowercase**,**-l****
+****--lowercase,-l****
 
 :   convert all uppercase ASCII characters to lowercase
 
-STANDARD OPTIONS
-================
+# STANDARD OPTIONS
 
 ****--help****
 
@@ -75,8 +70,7 @@ STANDARD OPTIONS
 
 :   verbose mode
 
-EXAMPLES
-========
+# EXAMPLES
 
 Sample commands:
 

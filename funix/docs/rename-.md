@@ -1,43 +1,37 @@
-NAME
-====
+# NAME
 
-rename-(1f) - \[FUNIX:FILESYSTEM\] rename files by replacing first
-occurrence of a string in a filename with new string (LICENSE:PD)
+**rename-(1f)** - \[FUNIX:FILESYSTEM\] rename files by replacing first
+occurrence of a string in a filename with new string **(LICENSE:PD)**
 
-SYNOPSIS
-========
+# SYNOPSIS
 
-rename- old new file\`\`\` \[ **-verbose**\]\[ **-dryrun**\]\|\[
-**-help**\|**-version**\]
+    rename- old new file... [ -verbose][ -dryrun]|[ -help|-version]
 
-DESCRIPTION
-===========
+# DESCRIPTION
 
-rename-(1f) will rename the specified files by replacing the first
+**rename-(1f) will rename the specified files by replacing the** first
 occurrence of expression in their name by replacement.
 
-EXAMPLES
-========
+# EXAMPLES
 
-Given the files foo1, \`\`\`, foo9, foo10, ..., foo278, the commands
+Given the files foo1, ..., foo9, foo10, ..., foo278, the commands
 
           rename- foo foo0 foo?
           rename- foo foo0 foo??
 
-will turn them into foo001, \`\`\`, foo009, foo010, ..., foo278. And
+will turn them into foo001, ..., foo009, foo010, ..., foo278. And
 
           rename- .htm .html *.htm
 
 will fix the extension of \*.htm files.
 
-OPTIONS
-=======
+# OPTIONS
 
-**old**
+***old***
 
 :   represents a string to change in filenames
 
-**new**
+***new***
 
 :   the replacement string for EXPRESSION.
 
@@ -56,14 +50,12 @@ OPTIONS
 ****--dryrun****
 
 :   Does all file operations except for moving the changed file back to
-    the original. Implies **--version**.
+    the original. Implies **--version.**
 
-AUTHOR
-======
+# AUTHOR
 
 John S. Urban
 
-LICENSE
-=======
+# LICENSE
 
 Public Domain

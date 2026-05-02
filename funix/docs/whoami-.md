@@ -1,21 +1,17 @@
-NAME
-====
+# NAME
 
-whoami-(1f) - \[FUNIX\] display login name (LICENSE:PD)
+**whoami-(1f)** - \[FUNIX\] display login name **(LICENSE:PD)**
 
-SYNOPSIS
-========
+# SYNOPSIS
 
-whoami- \[ **-help**\|**-version**\]
+    whoami- [ -help|-version]
 
-DESCRIPTION
-===========
+# DESCRIPTION
 
-Demonstrate call to system\_geteuid(3f) and system\_getpwuid(3f)
-interfaces to the corresponding C routines
+Demonstrate call to **system_geteuid(3f) and system_getpwuid(3f)
+interfaces to the corresponding C routines**
 
-OPTIONS
-=======
+# OPTIONS
 
 ****--help****
 
@@ -25,19 +21,16 @@ OPTIONS
 
 :   output version information and exit
 
-EXAMPLE
-=======
+# EXAMPLE
 
 Command usage:
 
             whoami-
 
-AUTHOR
-======
+# AUTHOR
 
 John S. Urban
 
-LICENSE
-=======
+# LICENSE
 
 Public Domain

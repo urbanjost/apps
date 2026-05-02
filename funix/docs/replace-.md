@@ -1,37 +1,32 @@
-NAME
-====
+# NAME
 
-replace-(1f) - \[FILE EDIT\] replace fixed strings in files
-(LICENSE:MIT)
+**replace-(1f)** - \[FILE EDIT\] replace fixed strings in files
+**(LICENSE:MIT)**
 
-SYNOPSIS
-========
+# SYNOPSIS
 
-replace- \[ **--ignorecase**\]\[ **--dryrun**\]\[ **--verbose**\] old
-new filename(s)
+    replace- [ --ignorecase][ --dryrun][ --verbose] old new filename(s)
 
          or
 
-replace- **--help**\| **--version**\| **--usage**
+replace- **--help\| --version\| --usage**
 
-DESCRIPTION
-===========
+# DESCRIPTION
 
-The replace-(1) utility changes strings in-place in files.
+The **replace-(1) utility changes strings in-place in files.**
 
 trailing spaces on OLD and NEW are ignored.
 
 TABS are expanded.
 
 files named on the command are modified in-place, so you may want to
-make a copy of the original before converting it. replace-(1) prints a
-message indicating any of the input files it actually modifies.
+make a copy of the original before converting it. **replace-(1) prints**
+a message indicating any of the input files it actually modifies.
 
 Do not change binary files with this program, which uses sequential
 access to read and write the files. It can corrupt binary files.
 
-OPTIONS
-=======
+# OPTIONS
 
 **old**
 
@@ -45,42 +40,39 @@ OPTIONS
 
 :   list of files to replace strings in
 
-****--ignorecase**,**-i****
+****--ignorecase,-i****
 
 :   ignore case of input
 
-****--ask**,**-a****
+****--ask,-a****
 
 :   interactively confirm each change
 
-****--dryrun**,**-d****
+****--dryrun,-d****
 
 :   does all file operations except for moving the changed file back to
-    the original. Implies **--verbose**.
+    the original. Implies **--verbose.**
 
-****--help**,**-h****
+****--help,-h****
 
 :   display a help message and exit.
 
-****--usage**,**-u****
+****--usage,-u****
 
 :   display options table
 
-****--version**,**-v****
+****--version,-v****
 
 :   display version information and exit.
 
-****--verbose**,**-V****
+****--verbose,-V****
 
 :   print information about what the program changes.
 
-AUTHOR
-======
+# AUTHOR
 
 John S. Urban
 
-LICENSE
-=======
+# LICENSE
 
-MIT
----
+## MIT

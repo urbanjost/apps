@@ -1695,7 +1695,7 @@ EXAMPLES
 
 SEE ALSO
     fsplit(1)
-$BLOCK END
+$ENDBLOCK
 $!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 $BLOCK variable -varname version_text
 PRODUCT:        GPF (General Purpose Fortran) utilities and examples
@@ -1709,7 +1709,7 @@ VERSION:        2.0.1 2022-06-25, added --odir option
 AUTHOR:         John S. Urban
 VERSION:        2.1.1 2022-06-26, allow ABSTRACT in front of INTERFACE
 AUTHOR:         John S. Urban
-$BLOCK END
+$ENDBLOCK
 $!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 end subroutine setup
 $!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@

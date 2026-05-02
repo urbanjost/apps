@@ -1,32 +1,27 @@
-NAME
-====
+# NAME
 
-cprint(1f) - \[FILE FILTER\] filter prints specified columns
-(LICENSE:PD)
+**cprint(1f)** - \[FILE FILTER\] filter prints specified columns
+**(LICENSE:PD)**
 
-SYNOPSIS
-========
+# SYNOPSIS
 
-cprint \[ columns \]\[ **--delimiters** delim\]
-\|**--help**\|**--version**
+    cprint [ columns ][ --delimiters delim] |--help|--version
 
-DESCRIPTION
-===========
+# DESCRIPTION
 
-cprint is a filter that prints the specified columns.
+**cprint is a filter that prints the specified** *columns***.**
 
-OPTIONS
-=======
+# OPTIONS
 
-**columns**
+***columns***
 
-:   numbers indicating which columns to print. A negative value denotes
-    the end of a range. A value must be from 1 to 1000.
+:   numbers indicating which *columns* **to print.** A negative value
+    denotes the end of a range. A value must be from 1 to 1000.
 
 ****--delimiters****
 
-:   input column delimiter character(s) (default: whitespace) Delimiters
-    are changed to spaces on outout.
+:   input column delimiter **character(s) (default: whitespace)**
+    Delimiters are changed to spaces on outout.
 
 ****--help****
 
@@ -36,8 +31,7 @@ OPTIONS
 
 :   display command metadata and exit
 
-EXAMPLES
-========
+# EXAMPLES
 
 Sample usage:
 
@@ -52,12 +46,10 @@ Sample usage:
           $echo d e h l o r w|cprint 3 2 4 4 5 7 5 6 4 1
           h e l l o w o r l d
 
-AUTHOR
-======
+# AUTHOR
 
 John S. Urban
 
-LICENSE
-=======
+# LICENSE
 
 Public Domain

@@ -1,26 +1,22 @@
-NAME
-====
+# NAME
 
-link-(1f) - \[FUNIX:FILESYSTEM\] call the link(3c) function to create
-the specified file link (LICENSE:PD)
+**link-(1f)** - \[FUNIX:FILESYSTEM\] call the **link**(3c) function to
+create the specified file link **(LICENSE:PD)**
 
-SYNOPSIS
-========
+# SYNOPSIS
 
-link- \[file newlink\]\[file newlink\]\[file newlink\]\`\`\` link-
-OPTION
+    link- [file newlink][file newlink][file newlink]...
+    link- OPTION
 
-DESCRIPTION
-===========
+# DESCRIPTION
 
-Call the link(3c) function to link the specified FILE.
+Call the **link(3c) function to link the specified FILE.**
 
-OPTIONS
-=======
+# OPTIONS
 
 **FILES**
 
-:   list of file pairs to link \[oldfile newfile\]\`\`\`
+:   list of *file* **pairs to link \[oldfile newfile\]...**
 
 ****--verbose****
 
@@ -34,12 +30,10 @@ OPTIONS
 
 :   output version information and exit
 
-AUTHOR
-======
+# AUTHOR
 
 John S. Urban
 
-LICENSE
-=======
+# LICENSE
 
 Public Domain

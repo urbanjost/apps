@@ -1,33 +1,30 @@
-NAME
-====
+# NAME
 
-colrm-(1f) - \[FUNIX\] remove columns from a file (LICENSE:PD)
+**colrm-(1f)** - \[FUNIX\] remove columns from a file **(LICENSE:PD)**
 
-SYNOPSIS
-========
+# SYNOPSIS
 
-colrm- \[first \[last\]\]
+    colrm- [first [last]]
 
-DESCRIPTION
-===========
+# DESCRIPTION
 
 colrm- removes selected character columns from a file. Input is taken
 from standard input. Output is sent to standard output.
 
 If called with one parameter the columns of each line will be removed
-starting with the specified first column. If called with two parameters
-the columns from the first column to the last column will be removed.
+starting with the specified *first* **column. If called with** two
+parameters the columns from the *first* **column to the** *last* column
+will be removed.
 
 Column numbering starts with column 1. Tabs are NOT expanded.
 
-OPTIONS
-=======
+# OPTIONS
 
-**first**
+***first***
 
 :   starting column number to remove
 
-**last**
+***last***
 
 :   ending column number to remove
 
@@ -39,13 +36,11 @@ OPTIONS
 
 :   Display help text and exit.
 
-HISTORY
-=======
+# HISTORY
 
-The colrm(1) command appeared in 3.0BSD.
+The **colrm(1) command appeared in 3.0BSD.**
 
-EXAMPLE
-=======
+# EXAMPLE
 
 Samples
 
@@ -54,12 +49,10 @@ Samples
            # remove first three characters in each line
            cat FILENAME|colrm- 1 3
 
-AUTHOR
-======
+# AUTHOR
 
 John S. Urban
 
-LICENSE
-=======
+# LICENSE
 
 Public Domain

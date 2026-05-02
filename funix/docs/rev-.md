@@ -1,24 +1,20 @@
-NAME
-====
+# NAME
 
-rev-(1f) - \[FUNIX\] reverse lines in a file (LICENSE:PD)
+**rev-(1f)** - \[FUNIX\] reverse lines in a file **(LICENSE:PD)**
 
-SYNOPSIS
-========
+# SYNOPSIS
 
-rev- INPUT\_FILE(S) \[ **--help**\]\[ **--version**\]
+    rev- INPUT_FILE(S) [ --help][ --version]
 
-DESCRIPTION
-===========
+# DESCRIPTION
 
 reverse lines in a file
 
-OPTIONS
-=======
+# OPTIONS
 
-**INPUT\_FILE(s)**
+****INPUT_FILE(s)****
 
-:   input file(s)
+:   input **file(s)**
 
 ****--help****
 
@@ -28,17 +24,14 @@ OPTIONS
 
 :   display version information and exit
 
-SEE ALSO
-========
+# SEE ALSO
 
-tac(1), rev(1)
+**tac(1), rev(1)**
 
-AUTHOR
-======
+# AUTHOR
 
-John S. Urban
+John *S***. Urban**
 
-LICENSE
-=======
+# LICENSE
 
 Public Domain

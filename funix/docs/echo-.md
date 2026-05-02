@@ -1,20 +1,16 @@
-NAME
-====
+# NAME
 
-echo-(1f) - \[FUNIX\] display a line of text (LICENSE:PD)
+**echo-(1f)** - \[FUNIX\] display a line of text **(LICENSE:PD)**
 
-SYNOPSIS
-========
+# SYNOPSIS
 
-echo- \[OPTION\]\`\`\` \[STRING\]...
+    echo- [OPTION]... [STRING]...
 
-DESCRIPTION
-===========
+# DESCRIPTION
 
-Echo the STRING(s) to standard output.
+Echo the **STRING(s) to standard output.**
 
-OPTIONS
-=======
+# OPTIONS
 
 ****-n****
 
@@ -54,8 +50,7 @@ Escape sequences
                 %dNNN  byte with decimal value NNN (1 to 3 digits)
                 %xHH   byte with hexadecimal value HH (1 to 2 digits)
 
-EXAMPLES
-========
+# EXAMPLES
 
 Example invocations:
 

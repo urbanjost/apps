@@ -1,21 +1,17 @@
-NAME
-====
+# NAME
 
-pwd-(1f) - \[FUNIX:FILESYSTEM\] list full pathname of current directory
-(LICENSE:PD)
+**pwd-(1f)** - \[FUNIX:FILESYSTEM\] list full pathname of current
+directory **(LICENSE:PD)**
 
-SYNOPSIS
-========
+# SYNOPSIS
 
-pwd- \[ **--version**\|**--help**\]
+    pwd- [ --version|--help]
 
-DESCRIPTION
-===========
+# DESCRIPTION
 
 list full pathname of current directory
 
-OPTIONS
-=======
+# OPTIONS
 
 ****--help****
 
@@ -25,19 +21,16 @@ OPTIONS
 
 :   output version information and exit
 
-EXAMPLES
-========
+# EXAMPLES
 
-Sample command lines \`\`\`
+Sample command lines ...
 
             pwd-
 
-AUTHOR
-======
+# AUTHOR
 
 John S. Urban
 
-LICENSE
-=======
+# LICENSE
 
 Public Domain

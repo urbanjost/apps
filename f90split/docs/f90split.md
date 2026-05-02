@@ -1,21 +1,18 @@
-NAME
-====
+# NAME
 
-f90split(1f) - \[DEVELOPER\] split Fortran source file into individual
-files at module or procedure boundaries. (LICENSE:PD)
+**f90split(1f)** - \[DEVELOPER\] split Fortran source file into
+individual **files at module or procedure boundaries.** **(LICENSE:PD)**
 
-SYNOPSIS
-========
+# SYNOPSIS
 
-f90split \[-fcase NAME\] \[-odir DIRECTORY\] largefile(s) \[ \>
-list\_file \] \| \[ **--help**\| **--version**\]
+    f90split [-fcase NAME] [-odir DIRECTORY] largefile(s) [ > list_file ] |
+    [ --help| --version]
 
-DESCRIPTION
-===========
+# DESCRIPTION
 
-f90split(1) is a utility which splits free source form Fortran code into
-multiple files, one module or procedure per file. Note that contained
-procedures are stored within their parent procedure.
+**f90split(1) is a utility which splits free source form Fortran code**
+into multiple files, one module or procedure per file. Note that
+contained procedures are stored within their parent procedure.
 
 Each output file contains a single program unit named after the unit,
 unless that filename exists.
@@ -24,14 +21,13 @@ If the initial output file name exists a file will be created named
 main0001.f90-main9999.f90, or bdta0001.f90-bdta9999.f90. If a file with
 that name already exists, it is put in dupl0001.f90-dupl9999.f90.
 
-f90split(1) also lists on stdout the USE and INCLUDE dependencies
+**f90split(1) also lists on stdout the USE and INCLUDE dependencies**
 
-f90split(1) is not aware of preprocessor directives.
+**f90split(1) is not aware of preprocessor directives.**
 
-OPTIONS
-=======
+# OPTIONS
 
-**largfile(s)**
+****largfile(***s***)****
 
 :   list of input files. Defaults to stdin.
 
@@ -57,8 +53,7 @@ OPTIONS
 
 :   output version information and exit
 
-LICENSE
-=======
+# LICENSE
 
 All rights to this code are waived, so that it may be freely distributed
 as public domain software subject to the condition that these 6 lines
@@ -67,8 +62,7 @@ are verbatim reproduced.
 Originally written by Michel Olagnon, from Ifremer, France, who would be
 pleased to receive your comments and corrections.
 
-AUTHOR
-======
+# AUTHOR
 
 -   M. Olagnon (Michel.Olagnon@ifremer.fr)
 
@@ -78,14 +72,12 @@ Improved by
 
 -   John S. Urban, added CLI
 
-EXAMPLES
-========
+# EXAMPLES
 
 Sample commands
 
            f90split  < myprogram.f90
 
-SEE ALSO
-========
+# SEE ALSO
 
-fsplit(1)
+**fsplit(1)**

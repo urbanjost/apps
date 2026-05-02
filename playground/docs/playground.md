@@ -1,17 +1,13 @@
-NAME
-====
+# NAME
 
-playground(1f) - convert Fortran file to an HTML document that uploads
-the code to "Fortran Playground"
+**playground(1f)** - convert Fortran file to an HTML document that
+uploads **the code to "Fortran Playground"**
 
-SYNOPSIS
-========
+# SYNOPSIS
 
-playground \[ **--help**\| **--version**\] \[ **--type** OUTPUT\_TYPE\]
-\*.\[fF\]90
+    playground [ --help| --version] [ --type OUTPUT_TYPE] *.[fF]90
 
-DESCRIPTION
-===========
+# DESCRIPTION
 
 create an HTML document from Fortran source files that includes a
 click-able download to the "Fortran Playground".
@@ -22,8 +18,7 @@ a limited subset of ASCII characters, replacing them with one or more
 character triplets that consist of the percent character and a two-digit
 hexadecimal value.
 
-OPTIONS
-=======
+# OPTIONS
 
 ****--type****
 
@@ -37,12 +32,11 @@ OPTIONS
 
 :   output version information and exit
 
-**filename(s)**
+****filename(s)****
 
 :   Fortran source files
 
-EXAMPLES
-========
+# EXAMPLES
 
 Sample commands
 

@@ -1,25 +1,20 @@
-NAME
-====
+# NAME
 
-tr-(1) - \[FUNIX:M\_strings\] translate or delete characters
-(LICENSE:PD)
+**tr-(1)** - \[FUNIX:M_strings\] translate or delete characters
+**(LICENSE:PD)**
 
-SYNOPSIS
-========
+# SYNOPSIS
 
-tr- \[ **-o** SET1 \[ **-n** SET2 \]\]\|**-l**\| **-u** \|\[
-**--version** \]\|\[ **--help** \]
+    tr- [ -o SET1 [ -n SET2 ]]|-l| -u |[ --version ]|[ --help ]
 
-DESCRIPTION
-===========
+# DESCRIPTION
 
 Translate, squeeze, and/or delete characters from standard input,
 writing to standard output.
 
-OPTIONS
-=======
+# OPTIONS
 
-****-o** SET1,**-n** SET2**
+****-o** *SET1***,-n** *SET2***
 
 :   old set of characters and new set of characters to replace the old
     set.
@@ -50,8 +45,7 @@ OPTIONS
 
 :   output version information and exit
 
-EXAMPLES
-========
+# EXAMPLES
 
 Sample usage
 
@@ -63,12 +57,10 @@ Sample usage
        # just leave letters
        _ tr -o '!"#$%&'"'"'()*+,-./0123456789:;<=>?@[\]^_`{|}~'
 
-AUTHOR
-======
+# AUTHOR
 
 John S. Urban
 
-LICENSE
-=======
+# LICENSE
 
 Public Domain

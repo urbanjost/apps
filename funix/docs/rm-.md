@@ -1,22 +1,18 @@
-NAME
-====
+# NAME
 
-rm-(1f) - \[FUNIX:FILESYSTEM\] remove file(s) (LICENSE:PD)
+**rm-(1f)** - \[FUNIX:FILESYSTEM\] remove **file**(s) **(LICENSE:PD)**
 
-SYNOPSIS
-========
+# SYNOPSIS
 
-rm- file(s) \| \[-**-help**\|**--version**\]
+    rm- file(s) | [--help|--version]
 
-DESCRIPTION
-===========
+# DESCRIPTION
 
-Remove file(s) by calling remove(C).
+Remove **file(***s***) by calling remove(C).**
 
-OPTIONS
-=======
+# OPTIONS
 
-**file(s)**
+****file(***s***)****
 
 :   list of files to remove
 
@@ -28,17 +24,14 @@ OPTIONS
 
 :   display version and stop
 
-EXAMPLE
-=======
+# EXAMPLE
 
 rm- \*.o
 
-AUTHOR
-======
+# AUTHOR
 
 John S. Urban
 
-LICENSE
-=======
+# LICENSE
 
 Public Domain

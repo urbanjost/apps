@@ -1,40 +1,36 @@
-NAME
-====
+# NAME
 
-basename-(1f) - \[FUNIX:FILESYSTEM\] display last component of file
-name(s) (LICENSE:PD)
+**basename-(1f)** - \[FUNIX:FILESYSTEM\] display last component of file
+**name**(s) **(LICENSE:PD)**
 
-SYNOPSIS
-========
+# SYNOPSIS
 
-syntax:
+    syntax:
 
        basename- NAME
          or
-       basename- [NAME```] [ --zero][--suffix SUFFIX]
+       basename- [NAME...] [ --zero][--suffix SUFFIX]
          or
        basename- -help|-version
 
-DESCRIPTION
-===========
+# DESCRIPTION
 
 Print NAME with any leading directory components removed. If specified,
 also remove a trailing SUFFIX.
 
 If no NAME is specified read names from stdin.
 
-OPTIONS
-=======
+# OPTIONS
 
-**NAME(S)**
+****NAME(S)****
 
 :   filenames
 
-****-s**, **--suffix**=SUFFIX**
+****-s,** **--suffix=SUFFIX****
 
 :   remove a trailing SUFFIX.
 
-****-z**, **--zero****
+****-z,** **--zero****
 
 :   end each output line with NUL, not newline
 
@@ -46,8 +42,7 @@ OPTIONS
 
     :   output version information and exit
 
-EXAMPLES
-========
+# EXAMPLES
 
 Typical usage:
 
@@ -58,7 +53,6 @@ Typical usage:
 
 or available locally via: info '(coreutils) basename invocation'
 
-SEE ALSO
-========
+# SEE ALSO
 
-basename(1), basename(1), readlink(1), realpath(1)
+**basename(1), basename(1), readlink(1), realpath(1)**

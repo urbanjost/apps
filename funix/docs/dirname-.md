@@ -1,16 +1,13 @@
-NAME
-====
+# NAME
 
-dirname-(1f) - \[FUNIX:FILESYSTEM\] strip last component from file name
-(LICENSE:PD)
+**dirname-(1f)** - \[FUNIX:FILESYSTEM\] strip last component from file
+name **(LICENSE:PD)**
 
-SYNOPSIS
-========
+# SYNOPSIS
 
-dirname- \[NAME\`\`\`\] \[ **-zero**\]\|**-help**\|**-version**\]
+    dirname- [NAME...] [ -zero]|-help|-version]
 
-DESCRIPTION
-===========
+# DESCRIPTION
 
 Output each NAME with its last non-slash component and trailing slashes
 removed. if NAME contains no /'s, output '.' (meaning the current
@@ -18,8 +15,7 @@ directory).
 
 If no NAME is specified read names from stdin.
 
-OPTIONS
-=======
+# OPTIONS
 
 ****-zero****
 
@@ -33,8 +29,7 @@ OPTIONS
 
 :   output version information and exit
 
-EXAMPLES
-========
+# EXAMPLES
 
 Sample program executions:
 
@@ -42,7 +37,6 @@ Sample program executions:
          dirname- dir1/str dir2/str  -> "dir1" followed by "dir2"
          dirname- stdio.h            -> "."
 
-SEE ALSO
-========
+# SEE ALSO
 
-dirname(1), basename(1), readlink(1), realpath(1)
+**dirname(1), basename(1), readlink(1), realpath(1)**

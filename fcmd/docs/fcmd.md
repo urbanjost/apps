@@ -1,30 +1,25 @@
-NAME
-====
+# NAME
 
-fcmd(1f) - \[FUNIX:FILESYSTEM\] find the pathname of commands and
-optionally perform commands on them. (LICENSE:MIT)
+**fcmd(1f)** - \[FUNIX:FILESYSTEM\] find the pathname of commands and
+**optionally perform commands on them.** **(LICENSE:MIT)**
 
-SYNOPSIS
-========
+# SYNOPSIS
 
-fcmd \[commands(s) \[-**-wild**\] \[
-**--first**\]\[-**-ignorecase**\]\[-**-test**\] \[ **--cmd**
-COMMAND;COMMAND,COMMAND;\`\`\` \]\|\[-**-ls**\]\|\[-**-vi**\] \[
-**--help**\|**--version**\]
+    fcmd [commands(s) [--wild] [ --first][--ignorecase][--test]
+    [ --cmd COMMAND;COMMAND,COMMAND;... ]|[--ls]|[--vi]
+    [ --help|--version]
 
-DESCRIPTION
-===========
+# DESCRIPTION
 
-fcmd(1f) takes one or more command names. For each of its arguments by
-default it prints to stdout the path of the executables that would have
-been executed when this argument had been entered at the shell prompt.
-It does this by searching for an executable or script in the directories
-listed in the environment variable PATH.
+**fcmd(1f) takes one or more command names. For each of its arguments**
+by default it prints to stdout the path of the executables that would
+have been executed when this argument had been entered at the shell
+prompt. It does this by searching for an executable or script in the
+directories listed in the environment variable PATH.
 
 Optionally, commands can be specified to act on the path names found.
 
-OPTIONS
-=======
+# OPTIONS
 
 If no options are supplied the current search path is displayed one
 directory per line.
@@ -58,8 +53,7 @@ directory per line.
         --help,-h   Print usage information on standard output then
                     exit successfully.
 
-EXAMPLE
-=======
+# EXAMPLE
 
 Sample commands
 
@@ -90,7 +84,6 @@ Sample commands
         *) echo 'no browser found';exit;;
         esac
 
-SEE ALSO
-========
+# SEE ALSO
 
-which(1), xargs(1)
+**which(1), xargs(1)**

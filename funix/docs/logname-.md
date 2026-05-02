@@ -1,20 +1,16 @@
-NAME
-====
+# NAME
 
-logname-(1f) - \[FUNIX\] display login name (LICENSE:PD)
+**logname-(1f)** - \[FUNIX\] display login name **(LICENSE:PD)**
 
-SYNOPSIS
-========
+# SYNOPSIS
 
-logname- \[ **-help**\|**-version**\]
+    logname- [ -help|-version]
 
-DESCRIPTION
-===========
+# DESCRIPTION
 
-Demonstrate call to system\_getlogin(3f) (which calls getlogin(3c)
+Demonstrate call to **system_getlogin(3f) (which calls getlogin(3c)**
 
-OPTIONS
-=======
+# OPTIONS
 
 ****--help****
 
@@ -24,8 +20,7 @@ OPTIONS
 
 :   output version information and exit
 
-EXAMPLE
-=======
+# EXAMPLE
 
 Command usage:
 

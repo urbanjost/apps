@@ -1,40 +1,37 @@
-NAME
-====
+# NAME
 
-uname-(1f) - \[FUNIX\] print system information (LICENSE:PD)
+**uname-(1f)** - \[FUNIX\] print system information **(LICENSE:PD)**
 
-SYNOPSIS
-========
+# SYNOPSIS
 
-uname- \[OPTION\]\`\`\`
+    uname- [OPTION]...
 
-DESCRIPTION
-===========
+# DESCRIPTION
 
 Print certain system information. With no OPTION, print all information,
 one value per line.
 
-****-a**, **--all****
+****-a,** **--all****
 
 :   print all information, in the following order:
 
-****-s**, **--kernel-name****
+****-s,** **--kernel-name****
 
 :   print the kernel name
 
-****-n**, **--nodename****
+****-n,** **--nodename****
 
 :   print the network node hostname
 
-****-r**, **--kernel-release****
+****-r,** **--kernel-release****
 
 :   print the kernel release
 
-****-v**, **--kernel-version****
+****-v,** **--kernel-version****
 
 :   print the kernel version
 
-****-m**, **--machine****
+****-m,** **--machine****
 
 :   print the machine hardware name
 
@@ -46,8 +43,7 @@ one value per line.
 
 :   output version information and exit
 
-EXAMPLE
-=======
+# EXAMPLE
 
 Sample usage:
 
@@ -64,12 +60,10 @@ Sample usage:
           >uname- -machine
           >x86_64
 
-AUTHOR
-======
+# AUTHOR
 
 John S. Urban
 
-LICENSE
-=======
+# LICENSE
 
 Public Domain

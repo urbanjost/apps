@@ -1,30 +1,26 @@
-NAME
-====
+# NAME
 
-flower(1f) - \[DEVELOPER\] change case of free-format Fortran file or
-remove code or remove comments (LICENSE:PD)
+**flower(1f)** - \[DEVELOPER\] change case of free-format Fortran file
+**or remove code or remove comments** **(LICENSE:PD)**
 
-SYNOPSIS
-========
+# SYNOPSIS
 
-flower \[ **--stat**\|\[ \[-**-nocomment**\|**--nocode**\]
-\[-**-toupper**\]\|\[-**-verbose**\] \] FILENAMES(s)
-\]\|\[-**-help**\|**--version**\|**--usage**\]
+    flower [ --stat|[ [--nocomment|--nocode] [--toupper]|[--verbose] ]
+    FILENAMES(s) ]|[--help|--version|--usage]
 
-DESCRIPTION
-===========
+# DESCRIPTION
 
-flower(1) depends on the input being plain standard free-format Fortran
-so the output should be carefully checked.
+**flower(1) depends on the input being plain standard free-format
+Fortran** so the output should be carefully checked.
 
-1.  flower(1) will convert free-format Fortran code to lowercase. It can
-    also convert the code to uppercase. In each case comments and quoted
-    text are left as-is.
+1.  **flower(1) will convert free-format Fortran code to lowercase.** It
+    can also convert the code to uppercase. In each case comments and
+    quoted text are left as-is.
 
-2.  flower(3f) can additionally generate simple statistics about what
-    percentage of the code is comments.
+2.  **flower(3f) can additionally generate simple statistics about**
+    what percentage of the code is comments.
 
-3.  flower(1) can strip comments from the code.
+3.  **flower(1) can strip comments from the code.**
 
 4.  Alternatively, the code can be removed so the comments can be used
     for documentation or run through utilities like spell checkers.
@@ -35,8 +31,7 @@ so the output should be carefully checked.
 >
 > Tabs should be expanded before processing the file.
 
-OPTIONS
-=======
+# OPTIONS
 
 **FILENAME**
 
@@ -57,14 +52,13 @@ OPTIONS
 ****--verbose****
 
 :   turn on verbose mode including file statistics. Note that if
-    **--nocomment** and **--nocode** are selected **--verbose** is
-    implied.
+    **--nocomment and --nocode are selected --verbose** is implied.
 
 ****--stat****
 
-:   is the same as **--nocomment** **--nocode** **--verbose**, meaning
-    no other output than file statistics will be produced. If present,
-    **--nocomment**, **--nocode**, and **--verbose** are ignored.
+:   is the same as **--nocomment --nocode --verbose, meaning** no other
+    output than file statistics will be produced. If present,
+    **--nocomment, --nocode, and --verbose are** ignored.
 
 ****--help****
 
@@ -74,8 +68,7 @@ OPTIONS
 
 :   display version text and exit
 
-EXAMPLES
-========
+# EXAMPLES
 
 Typical usage
 
@@ -91,11 +84,12 @@ Typical usage
          # grep code ignoring comments
          flower --nocomment *.f90 *.F90|grep -iw contains
 
-EXIT STATUS
-===========
+# EXIT STATUS
 
 The following exit values are returned:
 
+> 
+>
 > **0**
 >
 > :   no differences were found

@@ -1,28 +1,24 @@
-NAME
-====
+# NAME
 
-dw(1f) - \[TEXT\] find duplicate words (LICENSE:PD)
+**dw(1f)** - \[TEXT\] find duplicate words **(LICENSE:PD)**
 
-SYNOPSIS
-========
+# SYNOPSIS
 
-dw \< infile \>outfile
+    dw < infile >outfile
 
-DESCRIPTION
-===========
+# DESCRIPTION
 
-dw(1) is a handy tool for finding a common typographical error in
+**dw(1) is a handy tool for finding a common typographical error in**
 documentation.
 
-dw(1) filters its standard input, printing on standard output the
+**dw(1) filters its standard input, printing on standard output the**
 duplicated word and the line it occurs on when a word appears twice in
 succession. Each duplicate word is prefixed by its line number.
 
 A reasonable guess is made as to what constitutes a word. Letter case is
 ignored.
 
-OPTIONS
-=======
+# OPTIONS
 
 ****--help****
 
@@ -36,8 +32,7 @@ OPTIONS
 
 :   output version information and exit
 
-EXAMPLE
-=======
+# EXAMPLE
 
 Sample run:
 

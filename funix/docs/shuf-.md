@@ -1,24 +1,21 @@
-NAME
-====
+# NAME
 
-shuf- - \[FUNIX\] generate random permutations of file lines, whole
-numbers, or strings (LICENSE:PD)
+**shuf-** - \[FUNIX\] generate random permutations of file lines, whole
+**numbers, or strings** **(LICENSE:PD)**
 
-SYNOPSIS
-========
+# SYNOPSIS
 
-syntax:
+    syntax:
 
        shuf- FILES(s)   [ -n]
        shuf- STRINGS -e [ -n]
        shuf- -i LO-HI   [ -n]
 
-DESCRIPTION
-===========
+# DESCRIPTION
 
 Write a random permutation of the input lines to standard output.
 
-**FILES(s)**
+****FILES(s)****
 
 :   files to use as input
 
@@ -42,8 +39,7 @@ Write a random permutation of the input lines to standard output.
 
 :   output version information and exit
 
-EXAMPLES
-========
+# EXAMPLES
 
 Sample usage:
 
@@ -52,12 +48,10 @@ Sample usage:
        # randomly select xterm(1) color
        xterm -bg `shuf- -e green black gray blue -n 1`
 
-AUTHOR
-======
+# AUTHOR
 
 John S. Urban
 
-LICENSE
-=======
+# LICENSE
 
 Public Domain

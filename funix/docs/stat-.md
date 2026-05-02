@@ -1,20 +1,17 @@
-NAME
-====
+# NAME
 
-stat-(1f) - \[FUNIX:FILESYSTEM\] list file properties (LICENSE:PD)
+**stat-(1f)** - \[FUNIX:FILESYSTEM\] list file properties
+**(LICENSE:PD)**
 
-SYNOPSIS
-========
+# SYNOPSIS
 
-stat- pathnames\|**--version**\|**--help**
+    stat- pathnames|--version|--help
 
-DESCRIPTION
-===========
+# DESCRIPTION
 
 Given pathnames list properties
 
-OPTIONS
-=======
+# OPTIONS
 
 **pathnames**
 
@@ -28,10 +25,9 @@ OPTIONS
 
 :   output version information and exit
 
-EXAMPLES
-========
+# EXAMPLES
 
-Sample command lines \`\`\`
+Sample command lines ...
 
        stat- stat-.ff
 
@@ -48,12 +44,10 @@ Results
        Last modification time:      1507483493 2017-10-08 13:24:53
        Last status change time:     1507483494 2017-10-08 13:24:54
 
-AUTHOR
-======
+# AUTHOR
 
 John S. Urban
 
-LICENSE
-=======
+# LICENSE
 
 Public Domain

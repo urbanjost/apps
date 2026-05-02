@@ -1,34 +1,30 @@
-NAME
-====
+# NAME
 
-tac-(1f) - \[FUNIX:FILESYSTEM\] reverse or transpose lines in a file
-(LICENSE:PD)
+**tac-(1f)** - \[FUNIX:FILESYSTEM\] reverse or transpose lines in a file
+**(LICENSE:PD)**
 
-SYNOPSIS
-========
+# SYNOPSIS
 
-syntax:
+    syntax:
 
-       tac- [NAME```] [ --transpose]
+       tac- [NAME...] [ --transpose]
          or
        tac- -help|-version
 
-DESCRIPTION
-===========
+# DESCRIPTION
 
 Read file into memory and then write it out with the lines reversed or
 transposed.
 
 If no NAME is specified read data from stdin.
 
-OPTIONS
-=======
+# OPTIONS
 
-**NAME(S)**
+****NAME(S)****
 
 :   filenames
 
-****--transpose**,**-t****
+****--transpose,-t****
 
 :   transpose the file instead of reversing it
 
@@ -40,14 +36,12 @@ OPTIONS
 
 :   output version information and exit
 
-EXAMPLES
-========
+# EXAMPLES
 
 Typical usage:
 
       tac myfile.txt
 
-SEE ALSO
-========
+# SEE ALSO
 
-tac(1), cat(1)
+**tac(1), cat(1)**

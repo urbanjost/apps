@@ -1,21 +1,17 @@
-NAME
-====
+# NAME
 
-hostname-(1f) - \[FUNIX\] display hostname (LICENSE:PD)
+**hostname-(1f)** - \[FUNIX\] display hostname **(LICENSE:PD)**
 
-SYNTAX
-======
+# SYNTAX
 
-hostname- \[ **-help**\|**-version**\]
+hostname- \[ **-help\|-version\]**
 
-DESCRIPTION
-===========
+# DESCRIPTION
 
-Calls system\_gethostname(3f), which calls get\_hostname(3c) to
-determine the current host name.
+Calls **system_gethostname(3f), which calls get_hostname(3c) to
+determine** the current host name.
 
-OPTIONS
-=======
+# OPTIONS
 
 ****--help****
 
@@ -25,8 +21,7 @@ OPTIONS
 
 :   output version information and exit
 
-EXAMPLE
-=======
+# EXAMPLE
 
 Sample execution:
 

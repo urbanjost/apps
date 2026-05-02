@@ -1,21 +1,17 @@
-NAME
-====
+# NAME
 
-ls-(1f) - \[FUNIX:FILESYSTEM\] list files in a directory (LICENSE:PD)
+**ls-(1f)** - \[FUNIX:FILESYSTEM\] list files in a directory
+**(LICENSE:PD)**
 
-SYNOPSIS
-========
+# SYNOPSIS
 
-ls- \[directory\|**--version**\|**--help**\] \[ **-a**\] \[
-**-l**\|**-csv**\]
+    ls- [directory|--version|--help] [ -a] [ -l|-csv]
 
-DESCRIPTION
-===========
+# DESCRIPTION
 
 Given a directory name list files in the directory
 
-OPTIONS
-=======
+# OPTIONS
 
 **pathname**
 
@@ -32,13 +28,13 @@ OPTIONS
 
 ****-fmt****
 
-:   alternate format for date and time. Calls fmtdate(3f).
+:   alternate format for date and time. Calls **fmtdate(3f).**
 
 ****-csv****
 
 :   generate output as a CSV file. Filenames should not have ,"'
-    characters in them. Very useful for use with sqlite3(1) and making a
-    file that can be read into most spreadsheets,
+    characters in them. Very useful for use with **sqlite3(1)** and
+    making a file that can be read into most spreadsheets,
 
 ****--help****
 
@@ -48,10 +44,9 @@ OPTIONS
 
 :   output version information and exit
 
-EXAMPLES
-========
+# EXAMPLES
 
-Sample command lines \`\`\`
+Sample command lines ...
 
             ls-
             ls- . /tmp -l
@@ -62,16 +57,15 @@ Sample command lines \`\`\`
             # use the phase of the moon for the date
             # ls- -l -fmt %p %P
 
-EXTENDED SQLITE EXAMPLE
-=======================
+# EXTENDED SQLITE EXAMPLE
 
 The CSV output can often just be read by spreadsheets. Typically the
-file suffix ".csv" is required. Assuming you have bash(1), sqlite3(1)
-and column(1) on your platform this is an example script that shows how
-SQL statements can be used to generate many kinds of file reports
-(number of bytes owned by users, number of files, sorting, \`\`\` It
-assumes you or somone who will assist you is familiar with SQL and
-sqlite3(1):
+file suffix ".csv" is required. Assuming you have **bash(1),
+sqlite3(1)** and **column(1) on your platform this is an example script
+that shows** how SQL statements can be used to generate many kinds of
+file reports (number of bytes owned by users, number of files, sorting,
+... It assumes you or somone who will assist you is familiar with SQL
+and **sqlite3(1):**
 
        #!/bin/bash
        #@(#) list files accessed today in current directory
@@ -105,12 +99,10 @@ sqlite3(1):
        )| column -t -s '|'
        exit
 
-AUTHOR
-======
+# AUTHOR
 
 John S. Urban
 
-LICENSE
-=======
+# LICENSE
 
 Public Domain

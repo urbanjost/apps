@@ -1,24 +1,21 @@
-NAME
-====
+# NAME
 
-fmt-(1f) - \[FUNIX:FILE EDIT\] simple text formatter (LICENSE:PD)
+**fmt-(1f)** - \[FUNIX:FILE EDIT\] simple text formatter
+**(LICENSE:PD)**
 
-SYNOPSIS
-========
+# SYNOPSIS
 
-fmt- \[OPTION\]\`\`\`
+    fmt- [OPTION]...
 
-DESCRIPTION
-===========
+# DESCRIPTION
 
 Reformat each paragraph on standard input, writing to standard output. A
 paragraph ends when a blank line is encountered or the left margin
 changes.
 
-OPTIONS
-=======
+# OPTIONS
 
-****-w**, WIDTH**
+****-w,** WIDTH**
 
 :   maximum line width (default of 75 columns)
 
@@ -30,12 +27,10 @@ OPTIONS
 
 :   output version information and exit
 
-AUTHOR
-======
+# AUTHOR
 
 John S. Urban
 
-LICENSE
-=======
+# LICENSE
 
 Public Domain

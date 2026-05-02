@@ -1,21 +1,18 @@
-NAME
-====
+# NAME
 
-unlink-(1f) - \[FUNIX:FILESYSTEM\] call the unlink(3c) function to
-remove the specified file (LICENSE:PD)
+**unlink-(1f)** - \[FUNIX:FILESYSTEM\] call the **unlink**(3c) function
+to remove the specified file **(LICENSE:PD)**
 
-SYNOPSIS
-========
+# SYNOPSIS
 
-unlink- file(s) unlink- OPTION
+    unlink- file(s)
+    unlink- OPTION
 
-DESCRIPTION
-===========
+# DESCRIPTION
 
 Call the unlink function to remove the specified FILE.
 
-OPTIONS
-=======
+# OPTIONS
 
 **FILES**
 
@@ -29,12 +26,10 @@ OPTIONS
 
 :   output version information and exit
 
-AUTHOR
-======
+# AUTHOR
 
 John S. Urban
 
-LICENSE
-=======
+# LICENSE
 
 Public Domain

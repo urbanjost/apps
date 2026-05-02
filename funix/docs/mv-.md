@@ -1,29 +1,23 @@
-NAME
-====
+# NAME
 
-mv-(1f) - \[FUNIX:FILESYSTEM\] rename file (LICENSE:PD)
+**mv-(1f)** - \[FUNIX:FILESYSTEM\] rename file **(LICENSE:PD)**
 
-SYNOPSIS
-========
+# SYNOPSIS
 
-mv- SOURCE DEST
+    mv- SOURCE DEST
 
-DESCRIPTION
-===========
+# DESCRIPTION
 
-Rename file SOURCE to DEST
+Rename file *SOURCE* **to** *DEST*
 
-EXAMPLE
-=======
+# EXAMPLE
 
 mv- file.text /tmp/file.txt
 
-AUTHOR
-======
+# AUTHOR
 
 John S. Urban
 
-LICENSE
-=======
+# LICENSE
 
 Public Domain

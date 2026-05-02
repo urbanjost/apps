@@ -1,21 +1,17 @@
-NAME
-====
+# NAME
 
-kill-(1f) - \[FUNIX\] send signals to processes (LICENSE:PD)
+**kill-(1f)** - \[FUNIX\] send signals to processes **(LICENSE:PD)**
 
-SYNTAX
-======
+# SYNTAX
 
-kill- PIDs \[ **-s** signal\_number\] \[ **--help**\|**--version**\]
+kill- PIDs \[ **-s signal_number\] \[ --help\|--version\]**
 
-DESCRIPTION
-===========
+# DESCRIPTION
 
-Calls system\_kill(3f), which calls kill(3c) to send signals to
+Calls **system_kill(3f), which calls kill(3c) to send signals** to
 processes.
 
-OPTIONS
-=======
+# OPTIONS
 
 **PIDs**
 
@@ -33,8 +29,7 @@ OPTIONS
 
 :   output version information and exit
 
-EXAMPLE
-=======
+# EXAMPLE
 
 Sample execution:
 
@@ -45,12 +40,10 @@ Sample execution:
         > *kill*: process not found
         > *kill*: PID value of 0 is not supported
 
-AUTHOR
-======
+# AUTHOR
 
 John S. Urban
 
-LICENSE
-=======
+# LICENSE
 
 Public Domain
