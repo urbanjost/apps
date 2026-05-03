@@ -145,6 +145,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '    --start STARTCODE --finish ENDCODE |                                        ',&
 '    --code |                                                                    ',&
 '    --example |                                                                 ',&
+'    --text |                                                                    ',&
 '    --wide | --length infile(s)                                                 ',&
 '                                                                                ',&
 'To see short names and defaults enter "uni --usage"                             ',&
@@ -244,7 +245,9 @@ help_text=[ CHARACTER(LEN=128) :: &
 '                 If no other parameters are specified this is the default.      ',&
 '                                                                                ',&
 '   MODES                                                                        ',&
-'   --verbose     echo the input as well as the computed values                  ',&
+'   --verbose,V   echo the input as well as the computed values                  ',&
+'   --text,t      strings on the command that would be treated as filenames      ',&
+'                 are treated as text instead.                                   ',&
 '                                                                                ',&
 '   INFORMATION                                                                  ',&
 '                                                                                ',&
