@@ -15,11 +15,11 @@ homepage = "https://github.com/urbanjost/apps/base"
    main="base.f90"
 
 [dependencies]
-   #M_strings  =  { git        =  "https://github.com/urbanjost/M_strings.git" }
-   #M_kracken  =  { git        =  "https://github.com/urbanjost/M_kracken.git" }
+   M_strings  =  { git        =  "https://github.com/urbanjost/M_strings.git" }
+   M_kracken  =  { git        =  "https://github.com/urbanjost/M_kracken.git" }
 
    #M_strings  =  { namespace  =  "GPF"                                        }
    #M_kracken  =  { namespace  =  "GPF"                                        }
 
-   M_strings   =  { path       =  "GLINKS/M_strings"                           }
-   M_kracken   =  { path       =  "GLINKS/M_kracken"                           }
+   #M_strings   =  { path       =  "GLINKS/M_strings"                           }
+   #M_kracken   =  { path       =  "GLINKS/M_kracken"                           }
