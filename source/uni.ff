@@ -1,21 +1,23 @@
 program uni
 ! @(#) convert UTF-8 to backslash escape sequences, vice-versa, convert case, ...
-use, intrinsic :: iso_fortran_env, only: stdin => input_unit, stderr => error_unit, stdout => output_unit
-use, intrinsic :: iso_fortran_env, only: iostat_end, iostat_eor
+use,intrinsic :: iso_fortran_env, only: stdin => input_unit, stderr => error_unit, stdout => output_unit
+use,intrinsic :: iso_fortran_env, only: iostat_end, iostat_eor
 use M_unicode, only : readline, split, lower, upper, len, trim, isascii
-use M_unicode, only : expand_html, reverse_line=>reverse
-use M_unicode, only : add_backslash, remove_backslash=>escape
+use M_unicode, only : expand_html, add_html, reverse_line=>reverse
+use M_unicode, only : keyword, keyword_update, keyword_mode
+use M_unicode, only : add_backslash, remove_backslash=>escape, replace
 use M_unicode, only : isascii, slurp, repeat, pound_to_box, add_border
 use M_unicode, only : ut => unicode_type, assignment(=), ch=>character
 use M_unicode, only : operator(==), operator(//)
+use M_CLI2,    only : set_mode, set_args, get_args, sgets, specified, files=>unnamed
 implicit none
-integer                      :: i, j, ulen, alen, iostat, lun, linenum, knd
+integer                      :: i, j, icode, ulen, alen, iostat, lun, linenum, knd
 integer,allocatable          :: ints(:)
 type(ut)                     :: line
 type(ut),allocatable         :: text(:)
-logical                      :: verbose, debug, length, escape, noescape, ucase, lcase, wide
-logical                      :: code, allascii, border, html, entities, example, reverse, nofile
-character(len=:),allocatable :: filenames(:), style, styles(:)
+logical                      :: verbose, debug, length, toescape, noescape, ucase, lcase, findwide, nowide, show_keys
+logical                      :: code, allascii, border, tohtml, nohtml, entities, sample, reverse, nofile, nokeys
+character(len=:),allocatable :: filenames(:), style_box, style_border, styles(:)
 character(len=*),parameter   :: g0='(*(g0))'
 character(len=*),parameter   :: formu= '("char(int(z''",z0,"''),kind=ucs4)":,"// &")'
 character(len=*),parameter   :: form2= '("char([",*(i0:,","))'
@@ -24,42 +26,51 @@ character(len=256)           :: iomsg
    open (unit=stdin, pad='yes')
    call setup()
    DATUM: do i=1,size(filenames)
-      if(style.ne.'')then
-         if(border)then
-            text=add_border(get_text(filenames(i)),style=style)
-            call print_text(text)
-         else
-            text=pound_to_box(get_text(filenames(i)),style=style)
-            call print_text(text)
-         endif
+
+      if(specified('box'))then
+            text=pound_to_box(get_text(filenames(i)),style=style_box)
+      endif
+
+      if(specified('border'))then
+            if(specified('box'))then
+               text=add_border(text,style=style_border)
+            else
+               text=add_border(get_text(filenames(i)),style=style_border)
+            endif
+      endif
+      if(specified('border').or.specified('box'))then
+         call print_text(text)
          cycle DATUM
       endif
+
       if(nofile)then
          lun=-1
       elseif(filenames(i).eq.'-'.or.filenames(i).eq.'')then
          lun=stdin
       else
-        open(newunit=lun,file=filenames(i),action='read',pad='yes',iostat=iostat,iomsg=iomsg)
-        if(iostat.ne.0)then
-           write(stderr,g0)'<ERROR>*uni*:',trim(iomsg)
-           iomsg=''
-           cycle
-        endif
+         open(newunit=lun,file=filenames(i),action='read',pad='yes',iostat=iostat,iomsg=iomsg)
+         if(iostat.ne.0)then
+            write(stderr,g0)'<ERROR>*uni*:',trim(iomsg)
+            iomsg=''
+            cycle
+         endif
       endif
       INFINITE: do linenum=1,huge(0)-1
          if(nofile)then
             if(linenum.gt.size(filenames))exit DATUM
             line=filenames(linenum)
-	 else
+         else
             line=readline(lun,iostat=iostat)
             if(iostat.ne.0)exit
-	 endif
-         if(html)     line=expand_html(line)
+         endif
+         if(nokeys)   line=keyword(line)
+         if(nohtml)   line=expand_html(line)
          if(lcase)    line=lower(line)
          if(ucase)    line=upper(line)
          if(noescape) line=remove_backslash(line)
          if(reverse)  line=reverse_line(line)
-         if(escape)   line=add_backslash(line)
+         if(toescape) line=add_backslash(line)
+         if(tohtml)   line=add_html(line)
          if(code.and.knd==2) then
             ! @(#) generate Fortran statements using KIND='iso_10464' that represents the lines
             if(line.eq.'')then
@@ -97,15 +108,247 @@ character(len=256)           :: iomsg
             allascii=isascii(line)
             write(stdout,'(i0.5,1x,i0,1x,a,1x,i0,": ",a)') &
          & linenum,ulen,merge('==','/=',allascii),alen,line%character()
-         elseif(wide)then
+         elseif(findwide)then
             ! write and identify lines not composed entirely of ASCII-7
             ints=line
             if(maxval(ints).gt.127)then
                ! write the line number line in brackets
                write(stdout,'(i8,1x,a)')linenum,'['//ch(line)//']'
-               ! write the line with all but ASCII7 replaced with escape codes
+               ! write the line with all but ASCII-7 replaced with escape codes
                write(stdout,'(9x,a)')'['//add_backslash(line)//']'
             endif
+         elseif(nowide)then
+            ! make common conversions to nearly equivalent ASCII-7 characters
+            line=replace( line, ut([169])    ,'(C)'   )  !  Copyright   ©
+            line=replace( line, ut([174])    ,'(R)'   )  !  Registered  ®
+            line=replace( line, ut([8482])   ,'(TM)'  )  !  Trademark   ™
+            line=replace( line, ut([8212])   ,'--'    )  !  replace em dash with two dashes —
+            line=replace( line, ut([10003])  ,'[x]'   )  !  √ checkmark
+
+            line=replace( line, ut([185])    ,'^1'    )  !  ¹
+            line=replace( line, ut([178])    ,'^2'    )  !  ²
+            line=replace( line, ut([179])    ,'^3'    )  !  ³
+            line=replace( line, ut([64257])  ,'fi'    )  !  ﬁ
+            line=replace( line, ut([64258])  ,'fl'    )  !  ﬂ
+            line=replace( line, ut([64256])  ,'ff'    )  !  ﬀ
+            line=replace( line, ut([64259])  ,'ffi'   )  !  ﬃ
+            line=replace( line, ut([64260])  ,'ffl'   )  !  ﬄ
+
+            line=replace( line, ut([171])     ,'<<'   )  !  «
+            line=replace( line, ut([187])     ,'>>'   )  !  »
+            line=replace( line, ut([10214])   ,'[['   )  !  ⟦
+            line=replace( line, ut([10215])   ,']]'   )  !  ⟧
+            line=replace( line, ut([10216])   ,'<'    )  !  ⟨
+            line=replace( line, ut([10217])   ,'>'    )  !  ⟩
+            line=replace( line, ut([10218])   ,'<<'   )  !  ⟪
+            line=replace( line, ut([10219])   ,'>>'   )  !  ⟫
+            line=replace( line, ut([8252])    ,'!!'   )  !  ‼
+            line=replace( line, ut([8214])    ,'||'   )  !  ‖
+            line=replace( line, ut([449])     ,'||'   )  !  ǁ
+            line=replace( line, ut([177])     ,'+-'   )  !  ±
+            line=replace( line, ut([8723])    ,'-+'   )  !  ∓
+            line=replace( line, ut([8804])    ,'<='   )  !  ≤
+            line=replace( line, ut([8805])    ,'>='   )  !  ≥
+            ! words
+            line=replace( line, ut([176])    ,'degrees' ) ! °
+            line=replace( line, ut([165])    ,'Yen' )     ! ¥ JYP
+            line=replace( line, ut([163])    ,'Pound' )   ! £ GBP
+            line=replace( line, ut([162])    ,'Cent' )    ! ¢
+            line=replace( line, ut([8364])   ,'Euro' )    ! € EUR
+            line=replace( line, ut([960])    ,'pi' )      ! π
+            !fractions
+            line=replace( line, ut([8585])   ,'0/3'   )  !  ↉
+            line=replace( line, ut([189])    ,'1/2'   )  !  ½
+            line=replace( line, ut([8531])   ,'1/3'   )  !  ⅓
+            line=replace( line, ut([188])    ,'1/4'   )  !  ¼
+            line=replace( line, ut([8533])   ,'1/5'   )  !  ⅕
+            line=replace( line, ut([8537])   ,'1/6'   )  !  ⅙
+            line=replace( line, ut([8528])   ,'1/7'   )  !  ⅐
+            line=replace( line, ut([8539])   ,'1/8'   )  !  ⅛
+            line=replace( line, ut([8529])   ,'1/9'   )  !  ⅑
+            line=replace( line, ut([8530])   ,'1/10'  )  !  ⅒
+            line=replace( line, ut([8532])   ,'2/3'   )  !  ⅔
+            line=replace( line, ut([8534])   ,'2/5'   )  !  ⅖
+            line=replace( line, ut([190])    ,'3/4'   )  !  ¾
+            line=replace( line, ut([8535])   ,'3/5'   )  !  ⅗
+            line=replace( line, ut([8540])   ,'3/8'   )  !  ⅜
+            line=replace( line, ut([8536])   ,'4/5'   )  !  ⅘
+            line=replace( line, ut([8538])   ,'5/6'   )  !  ⅚
+            line=replace( line, ut([8541])   ,'5/8'   )  !  ⅝
+            line=replace( line, ut([8542])   ,'7/8'   )  !  ⅞
+            line=replace( line, ut([8543])   ,'1/'    )  !  ⅟
+            !Roman numerals
+            line=replace( line, ut([8544])  ,'I'    )
+            line=replace( line, ut([8545])  ,'II'   )
+            line=replace( line, ut([8546])  ,'III'  )
+            line=replace( line, ut([8547])  ,'IV'   )
+            line=replace( line, ut([8548])  ,'V'    )
+            line=replace( line, ut([8549])  ,'VI'   )
+            line=replace( line, ut([8550])  ,'VII'  )
+            line=replace( line, ut([8551])  ,'VIII' )
+            line=replace( line, ut([8552])  ,'IX'   )
+            line=replace( line, ut([8553])  ,'X'    )
+            line=replace( line, ut([8554])  ,'XI'   )
+            line=replace( line, ut([8555])  ,'XII'  )
+            line=replace( line, ut([8556])  ,'L'    )
+            line=replace( line, ut([8557])  ,'C'    )
+            line=replace( line, ut([8558])  ,'D'    )
+            line=replace( line, ut([8559])  ,'M'    )
+            line=replace( line, ut([8560])  ,'i'    )
+            line=replace( line, ut([8561])  ,'ii'   )
+            line=replace( line, ut([8562])  ,'iii'  )
+            line=replace( line, ut([8563])  ,'iv'   )
+            line=replace( line, ut([8564])  ,'v'    )
+            line=replace( line, ut([8565])  ,'vi'   )
+            line=replace( line, ut([8566])  ,'vii'  )
+            line=replace( line, ut([8567])  ,'viii' )
+            line=replace( line, ut([8568])  ,'ix'   )
+            line=replace( line, ut([8569])  ,'x'    )
+            line=replace( line, ut([8570])  ,'xi'   )
+            line=replace( line, ut([8571])  ,'xii'  )
+            line=replace( line, ut([8572])  ,'l'    )
+            line=replace( line, ut([8573])  ,'c'    )
+            line=replace( line, ut([8574])  ,'d'    )
+            line=replace( line, ut([8575])  ,'m'    )
+            ! ae
+            line=replace( line, ut([482])    ,'AE'  )  !  Ǣ
+            line=replace( line, ut([483])    ,'ae'  )  !  ǣ
+            line=replace( line, ut([198])    ,'AE'  )  !  Æ
+            line=replace( line, ut([508])    ,'AE'  )  !  Ǽ
+            line=replace( line, ut([7425])   ,'AE'  )  !  ᴁ
+            line=replace( line, ut([230])    ,'ae'  )  !  æ
+            line=replace( line, ut([509])    ,'ae'  )  !  ǽ
+
+               ints=line
+
+               do j=1,size(ints)
+                  icode=ints(j)
+                  select case(icode)
+                  case(120782:120791) ! 𝟎 𝟏 𝟐 𝟑 𝟒 𝟓 𝟔 𝟕 𝟖 𝟗
+                        icode=icode-120782+ichar('0')
+                  case(120792:120801) ! 𝟘 𝟙 𝟚 𝟛 𝟜 𝟝 𝟞 𝟟 𝟠 𝟡
+                        icode=icode-120792+ichar('0')
+                  case(120802:120811) ! 𝟢 𝟣 𝟤 𝟥 𝟦 𝟧 𝟨 𝟩 𝟪 𝟫
+                        icode=icode-120802+ichar('0')
+                  case(120812:120821) ! 𝟬 𝟭 𝟮 𝟯 𝟰 𝟱 𝟲 𝟳 𝟴 𝟵
+                        icode=icode-120812+ichar('0')
+                  case(120822:120831) ! 𝟶 𝟷 𝟸 𝟹 𝟺 𝟻 𝟼 𝟽 𝟾 𝟿
+                        icode=icode-120822+ichar('0')
+                  case(65281:65374) ! ！＂＃＄％＆＇（）＊＋，－．／０１２３４５６７８９：；＜＝＞＠
+                                    ! ＡＢＣＤＥＦＧＨＩＪＫＬＭＮＯＰＱＲＳＴＵＶＷＸＹＺ［＼］＾＿｀
+                                    ! ａｂｃｄｅｆｇｈｉｊｋｌｍｎｏｐｑｒｓｔｕｖｗｘｙｚ｛｜｝～
+                        icode=icode-65281+ichar('!')
+                  case(119808:119833) !  𝐀 𝐁 𝐂 𝐃 𝐄 𝐅 𝐆 𝐇 𝐈 𝐉 𝐊 𝐋 𝐌 𝐍 𝐎 𝐏 𝐐 𝐑 𝐒 𝐓 𝐔 𝐕 𝐖 𝐗 𝐘 𝐙
+                        icode=icode-119808+ichar('A')
+                  case(119834:119859) !  𝐚 𝐛 𝐜 𝐝 𝐞 𝐟 𝐠 𝐡 𝐢 𝐣 𝐤 𝐥 𝐦 𝐧 𝐨 𝐩 𝐪 𝐫 𝐬 𝐭 𝐮 𝐯 𝐰 𝐱 𝐲 𝐳
+                        icode=icode-119834+ichar('a')
+                  case(119860:119885) !  𝐴 𝐵 𝐶 𝐷 𝐸 𝐹 𝐺 𝐻 𝐼 𝐽 𝐾 𝐿 𝑀 𝑁 𝑂 𝑃 𝑄 𝑅 𝑆 𝑇 𝑈 𝑉 𝑊 𝑋 𝑌 𝑍
+                        icode=icode-119860+ichar('A')
+                  case(119886:119911) !  𝑎 𝑏 𝑐 𝑑 𝑒 𝑓 𝑔   𝑖 𝑗 𝑘 𝑙 𝑚 𝑛 𝑜 𝑝 𝑞 𝑟 𝑠 𝑡 𝑢 𝑣 𝑤 𝑥 𝑦 𝑧
+                        icode=icode-119886+ichar('a')
+                  case(119912:119937) !  𝑨 𝑩 𝑪 𝑫 𝑬 𝑭 𝑮 𝑯 𝑰 𝑱 𝑲 𝑳 𝑴 𝑵 𝑶 𝑷 𝑸 𝑹 𝑺 𝑻 𝑼 𝑽 𝑾 𝑿 𝒀 𝒁
+                        icode=icode-119912+ichar('A')
+                  case(119938:119963) !  𝒂 𝒃 𝒄 𝒅 𝒆 𝒇 𝒈 𝒉 𝒊 𝒋 𝒌 𝒍 𝒎 𝒏 𝒐 𝒑 𝒒 𝒓 𝒔 𝒕 𝒖 𝒗 𝒘 𝒙 𝒚 𝒛
+                        icode=icode-119938+ichar('a')
+                  case(119964:119989) !  𝒜 𝒝 𝒞 𝒟 𝒠 𝒡 𝒢 𝒣 𝒤 𝒥 𝒦 𝒧 𝒨 𝒩 𝒪 𝒫 𝒬 𝒭 𝒮 𝒯 𝒰
+
+                        icode=icode-119964+ichar('a')
+                  case(119990:120015) !  𝒶 𝒷 𝒸 𝒹 𝒺 𝒻 𝒼 𝒽 𝒾 𝒿 𝓀 𝓁 𝓂 𝓃 𝓄 𝓅 𝓆 𝓇 𝓈 𝓉 𝓊 𝓋 𝓌 𝓍
+                        icode=icode-119990+ichar('a')
+                  case(120016:120041) !  𝓐 𝓑 𝓒 𝓓 𝓔 𝓕 𝓖 𝓗 𝓘 𝓙 𝓚 𝓛 𝓜 𝓝 𝓞 𝓟 𝓠 𝓡 𝓢 𝓣 𝓤 𝓥 𝓦 𝓧 𝓨 𝓩
+                        icode=icode-120016+ichar('A')
+                  case(120042:120067) !  𝓪 𝓫 𝓬 𝓭 𝓮 𝓯 𝓰 𝓱 𝓲 𝓳 𝓴 𝓵 𝓶 𝓷 𝓸 𝓹 𝓺 𝓻 𝓼 𝓽 𝓾 𝓿 𝔀 𝔁 𝔂 𝔃
+                        icode=icode-120042+ichar('a')
+                  case(120068:120093) !  𝔄 𝔅 𝔆 𝔇 𝔈 𝔉 𝔊 𝔋 𝔌 𝔍 𝔎 𝔏 𝔐 𝔑 𝔒 𝔓 𝔔 𝔕 𝔖 𝔗 𝔘 𝔙 𝔚 𝔛
+                        icode=icode-120068+ichar('A')
+                  case(120094:120119) !  𝔞 𝔟 𝔠 𝔡 𝔢 𝔣 𝔤 𝔥 𝔦 𝔧 𝔨 𝔩 𝔪 𝔫 𝔬 𝔭 𝔮 𝔯 𝔰 𝔱 𝔲 𝔳 𝔴 𝔵 𝔶 𝔷
+                        icode=icode-120094+ichar('a')
+                  case(120120:120144) !  𝔸 𝔹 𝔺 𝔻 𝔼 𝔽 𝔾 𝔿 𝕀 𝕁 𝕂 𝕃 𝕄 𝕅 𝕆 𝕇 𝕈 𝕉 𝕊 𝕋 𝕌 𝕍
+                        icode=icode-120120+ichar('A')
+                  case(120146:120171) !  𝕒 𝕓 𝕔 𝕕 𝕖 𝕗 𝕘 𝕙 𝕚 𝕛 𝕜 𝕝 𝕞 𝕟 𝕠 𝕡 𝕢 𝕣 𝕤 𝕥 𝕦 𝕧 𝕨 𝕩 𝕪 𝕫
+                        icode=icode-120146+ichar('a')
+                  case(120172:120197) !  𝕬 𝕭 𝕮 𝕯 𝕰 𝕱 𝕲 𝕳 𝕴 𝕵 𝕶 𝕷 𝕸 𝕹 𝕺 𝕻 𝕼 𝕽 𝕾 𝕿 𝖀 𝖁 𝖂 𝖃 𝖄 𝖅
+                        icode=icode-120172+ichar('A')
+                  case(120198:120223) !  𝖆 𝖇 𝖈 𝖉 𝖊 𝖋 𝖌 𝖍 𝖎 𝖏 𝖐 𝖑 𝖒 𝖓 𝖔 𝖕 𝖖 𝖗 𝖘 𝖙 𝖚 𝖛 𝖜 𝖝 𝖞 𝖟
+                        icode=icode-120198+ichar('a')
+                  case(120224:120249) !  𝖠 𝖡 𝖢 𝖣 𝖤 𝖥 𝖦 𝖧 𝖨 𝖩 𝖪 𝖫 𝖬 𝖭 𝖮 𝖯 𝖰 𝖱 𝖲 𝖳 𝖴 𝖵 𝖶 𝖷 𝖸 𝖹
+                        icode=icode-120224+ichar('A')
+                  case(120250:120275) !  𝖺 𝖻 𝖼 𝖽 𝖾 𝖿 𝗀 𝗁 𝗂 𝗃 𝗄 𝗅 𝗆 𝗇 𝗈 𝗉 𝗊 𝗋 𝗌 𝗍 𝗎 𝗏 𝗐 𝗑 𝗒 𝗓
+                        icode=icode-120250+ichar('a')
+                  case(120276:120301) !  𝗔 𝗕 𝗖 𝗗 𝗘 𝗙 𝗚 𝗛 𝗜 𝗝 𝗞 𝗟 𝗠 𝗡 𝗢 𝗣 𝗤 𝗥 𝗦 𝗧 𝗨 𝗩 𝗪 𝗫 𝗬 𝗭
+                        icode=icode-120276+ichar('A')
+                  case(120302:120327) !  𝗮 𝗯 𝗰 𝗱 𝗲 𝗳 𝗴 𝗵 𝗶 𝗷 𝗸 𝗹 𝗺 𝗻 𝗼 𝗽 𝗾 𝗿 𝘀 𝘁 𝘂 𝘃 𝘄 𝘅 𝘆 𝘇
+                        icode=icode-120302+ichar('a')
+                  case(120328:120353) !  𝘈 𝘉 𝘊 𝘋 𝘌 𝘍 𝘎 𝘏 𝘐 𝘑 𝘒 𝘓 𝘔 𝘕 𝘖 𝘗 𝘘 𝘙 𝘚 𝘛 𝘜 𝘝 𝘞 𝘟 𝘠 𝘡
+                        icode=icode-120328+ichar('A')
+                  case(120354:120379) !  𝘢 𝘣 𝘤 𝘥 𝘦 𝘧 𝘨 𝘩 𝘪 𝘫 𝘬 𝘭 𝘮 𝘯 𝘰 𝘱 𝘲 𝘳 𝘴 𝘵 𝘶 𝘷 𝘸 𝘹 𝘺 𝘻
+                        icode=icode-120354+ichar('a')
+                  case(120380:120405) !  𝘼 𝘽 𝘾 𝘿 𝙀 𝙁 𝙂 𝙃 𝙄 𝙅 𝙆 𝙇 𝙈 𝙉 𝙊 𝙋 𝙌 𝙍 𝙎 𝙏 𝙐 𝙑 𝙒 𝙓 𝙔 𝙕
+                        icode=icode-120380+ichar('A')
+                  case(120406:120431) !  𝙖 𝙗 𝙘 𝙙 𝙚 𝙛 𝙜 𝙝 𝙞 𝙟 𝙠 𝙡 𝙢 𝙣 𝙤 𝙥 𝙦 𝙧 𝙨 𝙩 𝙪 𝙫 𝙬 𝙭 𝙮 𝙯
+                        icode=icode-120406+ichar('a')
+                  case(120432:120457) !  𝙰 𝙱 𝙲 𝙳 𝙴 𝙵 𝙶 𝙷 𝙸 𝙹 𝙺 𝙻 𝙼 𝙽 𝙾 𝙿 𝚀 𝚁 𝚂 𝚃 𝚄 𝚅 𝚆 𝚇 𝚈 𝚉
+                        icode=icode-120432+ichar('A')
+                  case(120458:120483) !  𝚊 𝚋 𝚌 𝚍 𝚎 𝚏 𝚐 𝚑 𝚒 𝚓 𝚔 𝚕 𝚖 𝚗 𝚘 𝚙 𝚚 𝚛 𝚜 𝚝 𝚞 𝚟 𝚠 𝚡 𝚢 𝚣
+                        icode=icode-120458+ichar('a')
+                  case(127280:127305) !  🄰 🄱 🄲 🄳 🄴 🄵 🄶 🄷 🄸 🄹 🄺 🄻 🄼 🄽 🄾 🄿 🅀 🅁 🅂 🅃 🅄 🅅 🅆 🅇 🅈 🅉
+                        icode=icode-127280+ichar('A')
+                  end select
+                  ints(j)=icode
+               enddo
+
+               ints=merge(  ichar('x'), ints, ints ==  10799) ! ⨯
+               ints=merge(  ichar('('), ints, ints ==  10088) ! ❨
+               ints=merge(  ichar(')'), ints, ints ==  10089) ! ❩
+               ints=merge(  ichar('('), ints, ints ==  10090) ! ❪
+               ints=merge(  ichar(')'), ints, ints ==  10091) ! ❫
+               ints=merge(  ichar('<'), ints, ints ==  10092) ! ❬
+               ints=merge(  ichar('>'), ints, ints ==  10093) ! ❭
+               ints=merge(  ichar('<'), ints, ints ==  10094) ! ❮
+               ints=merge(  ichar('>'), ints, ints ==  10095) ! ❯
+               ints=merge(  ichar('<'), ints, ints ==  10096) ! ❰
+               ints=merge(  ichar('>'), ints, ints ==  10097) ! ❱
+               ints=merge(  ichar('['), ints, ints ==  10098) ! ❲
+               ints=merge(  ichar('['), ints, ints ==  10099) ! ❳
+               ints=merge(  ichar('{'), ints, ints ==  10100) ! ❴
+               ints=merge(  ichar('}'), ints, ints ==  10101) ! ❵
+               ints=merge(  34, ints, ints ==  8220)  ! “ "
+               ints=merge(  34, ints, ints ==  8221)  ! ” "
+               ints=merge(  39, ints, ints ==  8216)  ! ‘ '
+               ints=merge(  39, ints, ints ==  8217)  ! ’ '
+               ints=merge(  42, ints, ints ==  8727)  ! ∗ *
+               ints=merge(  47, ints, ints ==   247)  ! ÷ / QUESTIONABLE
+               ints=merge(  61, ints, ints ==  8208)  ! ‐ -
+               ints=merge(  61, ints, ints ==  8211)  ! ‐ - en dash
+               ints=merge(  61, ints, ints ==  8722)  ! − -
+               ints=merge(  94, ints, ints ==   710)  ! ˆ ^
+               ints=merge(  94, ints, ints ==  8743)  ! ∧ ^
+               ints=merge(  94, ints, ints ==   581)  ! Ʌ ^
+               ints=merge(  86, ints, ints ==  8744)  ! ∨ V
+               ints=merge( 111, ints, ints ==  8226)  ! • o
+               ints=merge( 120, ints, ints ==   215)  ! × x
+               ints=merge( 126, ints, ints ==   732)  ! ˜ ~
+               ints=merge( 124, ints, ints ==  8739)  ! ∣ |
+               ! spaces
+               ints=merge(  32, ints, ints ==   160)
+               ints=merge(  32, ints, ints ==  8192)
+               ints=merge(  32, ints, ints ==  8193)
+               ints=merge(  32, ints, ints ==  8194)
+               ints=merge(  32, ints, ints ==  8195)
+               ints=merge(  32, ints, ints ==  8196)
+               ints=merge(  32, ints, ints ==  8197)
+               ints=merge(  32, ints, ints ==  8198)
+               ints=merge(  32, ints, ints ==  8199)
+               ints=merge(  32, ints, ints ==  8200)
+               ints=merge(  32, ints, ints ==  8201)
+               ints=merge(  32, ints, ints ==  8202)
+               ints=merge(  32, ints, ints ==  8239)
+               ints=merge(  32, ints, ints ==  8287)
+               ints=merge(  32, ints, ints == 12288)
+
+               line=ints
+               ! write the line with all but ASCII-7 replaced with HTML escape codes
+               write(stdout,'(a)')add_html(line)
          else
             write(stdout,g0)line%character()
          endif
@@ -114,10 +357,1413 @@ character(len=256)           :: iomsg
          write(stdout,g0)'<ERROR> failed on read of input line ',linenum,':',line%character()
       endif
    enddo DATUM
+$!==============================================================================
+! candidates
+! 180  ´
+! 168  ¨
+! 166 ¦ |
+! 448 ǀ
+! 451  ǃ
+! 8725  ∕
+! 750 894  ˮ ;
+! 8209 8210 8213 173  ‑ ‒ ― ­
+! 8218 8219  ‚ ‛
+! 161 ¡ !
+! 170 ª a
+! 172 ¬ !
+! 173 ­ -
+
+
+! 180 ´ '
+! 181 µ u
+! 183 · .
+! 184 ¸ ,
+! 186 º o
+! 192 À A
+! 193 Á A
+! 194 Â A
+! 195 Ã A
+! 196 Ä A
+! 197 Å A
+! 199 Ç C
+! 200 È E
+! 201 É E
+! 202 Ê E
+! 203 Ë E
+! 204 Ì I
+! 205 Í I
+! 206 Î I
+! 207 Ï I
+! 208 Ð D
+! 209 Ñ N
+! 210 Ò O
+! 211 Ó O
+! 212 Ô O
+! 213 Õ O
+! 214 Ö O
+! 215 × x
+! 216 Ø O
+! 217 Ù U
+! 218 Ú U
+! 219 Û U
+! 220 Ü U
+! 221 Ý Y
+! 224 à a
+! 225 á a
+! 226 â a
+! 227 ã a
+! 228 ä a
+! 229 å a
+! 231 ç c
+! 232 è e
+! 233 é e
+! 234 ê e
+! 235 ë e
+! 236 ì i
+! 237 í i
+! 238 î i
+! 239 ï i
+! 240 ð d
+! 241 ñ n
+! 242 ò o
+! 243 ó o
+! 244 ô o
+! 245 õ o
+! 246 ö o
+! 247 ÷ /
+! 248 ø o
+! 249 ù u
+! 250 ú u
+! 251 û u
+! 252 ü u
+! 253 ý y
+! 255 ÿ y
+! 256 Ā A
+! 257 ā a
+! 258 Ă A
+! 259 ă a
+! 260 Ą A
+! 261 ą a
+! 262 Ć C
+! 263 ć c
+! 264 Ĉ C
+! 265 ĉ c
+! 266 Ċ C
+! 267 ċ c
+! 268 Č C
+! 269 č c
+! 270 Ď D
+! 271 ď d
+! 272 Đ D
+! 273 đ d
+! 274 Ē E
+! 275 ē e
+! 276 Ĕ E
+! 277 ĕ e
+! 278 Ė E
+! 279 ė e
+! 280 Ę E
+! 281 ę e
+! 282 Ě E
+! 283 ě e
+! 284 Ĝ G
+! 285 ĝ g
+! 286 Ğ G
+! 287 ğ g
+! 288 Ġ G
+! 289 ġ g
+! 290 Ģ G
+! 291 ģ g
+! 292 Ĥ H
+! 293 ĥ h
+! 294 Ħ H
+! 295 ħ h
+! 296 Ĩ I
+! 297 ĩ i
+! 298 Ī I
+! 299 ī i
+! 300 Ĭ I
+! 301 ĭ i
+! 302 Į I
+! 303 į i
+! 304 İ I
+! 305 ı i
+! 308 Ĵ J
+! 309 ĵ j
+! 310 Ķ K
+! 311 ķ k
+! 312 ĸ q
+! 313 Ĺ L
+! 314 ĺ l
+! 315 Ļ L
+! 316 ļ l
+! 317 Ľ L
+! 318 ľ l
+! 319 Ŀ L
+! 320 ŀ l
+! 321 Ł L
+! 322 ł l
+! 323 Ń N
+! 324 ń n
+! 325 Ņ N
+! 326 ņ n
+! 327 Ň N
+! 328 ň n
+! 330 Ŋ N
+! 331 ŋ n
+! 332 Ō O
+! 333 ō o
+! 334 Ŏ O
+! 335 ŏ o
+! 336 Ő O
+! 337 ő o
+! 340 Ŕ R
+! 341 ŕ r
+! 342 Ŗ R
+! 343 ŗ r
+! 344 Ř R
+! 345 ř r
+! 346 Ś S
+! 347 ś s
+! 348 Ŝ S
+! 349 ŝ s
+! 350 Ş S
+! 351 ş s
+! 352 Š S
+! 353 š s
+! 354 Ţ T
+! 355 ţ t
+! 356 Ť T
+! 357 ť t
+! 358 Ŧ T
+! 359 ŧ t
+! 360 Ũ U
+! 361 ũ u
+! 362 Ū U
+! 363 ū u
+! 364 Ŭ U
+! 365 ŭ u
+! 366 Ů U
+! 367 ů u
+! 368 Ű U
+! 369 ű u
+! 370 Ų U
+! 371 ų u
+! 372 Ŵ W
+! 373 ŵ w
+! 374 Ŷ Y
+! 375 ŷ y
+! 376 Ÿ Y
+! 377 Ź Z
+! 378 ź z
+! 379 Ż Z
+! 380 ż z
+! 381 Ž Z
+! 382 ž z
+! 383 ſ s
+! 384 ƀ b
+! 385 Ɓ B
+! 386 Ƃ B
+! 387 ƃ b
+! 391 Ƈ C
+! 392 ƈ c
+! 393 Ɖ D
+! 394 Ɗ D
+! 395 Ƌ D
+! 396 ƌ d
+! 400 Ɛ E
+! 401 Ƒ F
+! 402 ƒ f
+! 403 Ɠ G
+! 406 Ɩ I
+! 407 Ɨ I
+! 408 Ƙ K
+! 409 ƙ k
+! 410 ƚ l
+! 413 Ɲ N
+! 414 ƞ n
+! 416 Ơ O
+! 417 ơ o
+! 420 Ƥ P
+! 421 ƥ p
+! 427 ƫ t
+! 428 Ƭ T
+! 429 ƭ t
+! 430 Ʈ T
+! 431 Ư U
+! 432 ư u
+! 434 Ʋ V
+! 435 Ƴ Y
+! 436 ƴ y
+! 437 Ƶ Z
+! 438 ƶ z
+! 461 Ǎ A
+! 462 ǎ a
+! 463 Ǐ I
+! 464 ǐ i
+! 465 Ǒ O
+! 466 ǒ o
+! 467 Ǔ U
+! 468 ǔ u
+! 469 Ǖ U
+! 470 ǖ u
+! 471 Ǘ U
+! 472 ǘ u
+! 473 Ǚ U
+! 474 ǚ u
+! 475 Ǜ U
+! 476 ǜ u
+! 478 Ǟ A
+! 479 ǟ a
+! 480 Ǡ A
+! 481 ǡ a
+! 484 Ǥ G
+! 485 ǥ g
+! 486 Ǧ G
+! 487 ǧ g
+! 488 Ǩ K
+! 489 ǩ k
+! 490 Ǫ O
+! 491 ǫ o
+! 492 Ǭ O
+! 493 ǭ o
+! 496 ǰ j
+! 500 Ǵ G
+! 501 ǵ g
+! 504 Ǹ N
+! 505 ǹ n
+! 506 Ǻ A
+! 507 ǻ a
+! 510 Ǿ O
+! 511 ǿ o
+! 512 Ȁ A
+! 513 ȁ a
+! 514 Ȃ A
+! 515 ȃ a
+! 516 Ȅ E
+! 517 ȅ e
+! 518 Ȇ E
+! 519 ȇ e
+! 520 Ȉ I
+! 521 ȉ i
+! 522 Ȋ I
+! 523 ȋ i
+! 524 Ȍ O
+! 525 ȍ o
+! 526 Ȏ O
+! 527 ȏ o
+! 528 Ȑ R
+! 529 ȑ r
+! 530 Ȓ R
+! 531 ȓ r
+! 532 Ȕ U
+! 533 ȕ u
+! 534 Ȗ U
+! 535 ȗ u
+! 536 Ș S
+! 537 ș s
+! 538 Ț T
+! 539 ț t
+! 542 Ȟ H
+! 543 ȟ h
+! 545 ȡ d
+! 548 Ȥ Z
+! 549 ȥ z
+! 550 Ȧ A
+! 551 ȧ a
+! 552 Ȩ E
+! 553 ȩ e
+! 554 Ȫ O
+! 555 ȫ o
+! 556 Ȭ O
+! 557 ȭ o
+! 558 Ȯ O
+! 559 ȯ o
+! 560 Ȱ O
+! 561 ȱ o
+! 562 Ȳ Y
+! 563 ȳ y
+! 564 ȴ l
+! 565 ȵ n
+! 566 ȶ t
+! 567 ȷ j
+! 570 Ⱥ A
+! 571 Ȼ C
+! 572 ȼ c
+! 573 Ƚ L
+! 574 Ⱦ T
+! 575 ȿ s
+! 576 ɀ z
+! 579 Ƀ B
+! 580 Ʉ U
+! 582 Ɇ E
+! 583 ɇ e
+! 584 Ɉ J
+! 585 ɉ j
+! 588 Ɍ R
+! 589 ɍ r
+! 590 Ɏ Y
+! 591 ɏ y
+! 595 ɓ b
+! 597 ɕ c
+! 598 ɖ d
+! 599 ɗ d
+! 603 ɛ e
+! 607 ɟ j
+! 608 ɠ g
+! 609 ɡ g
+! 610 ɢ G
+! 614 ɦ h
+! 615 ɧ h
+! 616 ɨ i
+! 618 ɪ I
+! 619 ɫ l
+! 620 ɬ l
+! 621 ɭ l
+! 625 ɱ m
+! 626 ɲ n
+! 627 ɳ n
+! 628 ɴ N
+! 636 ɼ r
+! 637 ɽ r
+! 638 ɾ r
+! 640 ʀ R
+! 642 ʂ s
+! 648 ʈ t
+! 649 ʉ u
+! 651 ʋ v
+! 655 ʏ Y
+! 656 ʐ z
+! 657 ʑ z
+! 665 ʙ B
+! 667 ʛ G
+! 668 ʜ H
+! 669 ʝ j
+! 671 ʟ L
+! 672 ʠ q
+! 688 ʰ h
+! 690 ʲ j
+! 691 ʳ r
+! 695 ʷ w
+! 696 ʸ y
+! 700 ʼ '
+! 710 ˆ ^
+! 712 ˈ '
+! 715 ˋ `
+! 717 ˍ _
+! 720 ː :
+! 732 ˜ ~
+! 737 ˡ l
+! 738 ˢ s
+! 739 ˣ x
+! 894 ; ;
+! 956 μ u
+
+! 7424 ᴀ A
+! 7427 ᴃ B
+! 7428 ᴄ C
+! 7429 ᴅ D
+! 7430 ᴆ D
+! 7431 ᴇ E
+! 7434 ᴊ J
+! 7435 ᴋ K
+! 7436 ᴌ L
+! 7437 ᴍ M
+! 7439 ᴏ O
+! 7448 ᴘ P
+! 7451 ᴛ T
+! 7452 ᴜ U
+! 7456 ᴠ V
+! 7457 ᴡ W
+! 7458 ᴢ Z
+
+! 7468 ᴬ A
+! 7470 ᴮ B
+! 7472 ᴰ D
+! 7473 ᴱ E
+! 7475 ᴳ G
+! 7476 ᴴ H
+! 7477 ᴵ I
+! 7478 ᴶ J
+! 7479 ᴷ K
+! 7480 ᴸ L
+! 7481 ᴹ M
+! 7482 ᴺ N
+! 7484 ᴼ O
+! 7486 ᴾ P
+! 7487 ᴿ R
+! 7488 ᵀ T
+! 7489 ᵁ U
+! 7490 ᵂ W
+
+! 7491 ᵃ a
+! 7495 ᵇ b
+! 7496 ᵈ d
+! 7497 ᵉ e
+! 7501 ᵍ g
+! 7503 ᵏ k
+! 7504 ᵐ m
+! 7506 ᵒ o
+! 7510 ᵖ p
+! 7511 ᵗ t
+! 7512 ᵘ u
+! 7515 ᵛ v
+! 7522 ᵢ i
+! 7523 ᵣ r
+! 7524 ᵤ u
+! 7525 ᵥ v
+! 7532 ᵬ b
+! 7533 ᵭ d
+! 7534 ᵮ f
+! 7535 ᵯ m
+! 7536 ᵰ n
+! 7537 ᵱ p
+! 7538 ᵲ r
+! 7539 ᵳ r
+! 7540 ᵴ s
+! 7541 ᵵ t
+! 7542 ᵶ z
+! 7547 ᵻ I
+! 7549 ᵽ p
+! 7550 ᵾ U
+! 7552 ᶀ b
+! 7553 ᶁ d
+! 7554 ᶂ f
+! 7555 ᶃ g
+! 7556 ᶄ k
+! 7557 ᶅ l
+! 7558 ᶆ m
+! 7559 ᶇ n
+! 7560 ᶈ p
+! 7561 ᶉ r
+! 7562 ᶊ s
+! 7564 ᶌ v
+! 7565 ᶍ x
+! 7566 ᶎ z
+
+! 7567 ᶏ a
+! 7569 ᶑ d
+! 7570 ᶒ e
+! 7571 ᶓ e
+! 7574 ᶖ i
+! 7577 ᶙ u
+! 7580 ᶜ c
+! 7584 ᶠ f
+! 7611 ᶻ z
+! 7680 Ḁ A
+! 7681 ḁ a
+! 7682 Ḃ B
+! 7683 ḃ b
+! 7684 Ḅ B
+! 7685 ḅ b
+! 7686 Ḇ B
+! 7687 ḇ b
+! 7688 Ḉ C
+! 7689 ḉ c
+! 7690 Ḋ D
+! 7691 ḋ d
+! 7692 Ḍ D
+! 7693 ḍ d
+! 7694 Ḏ D
+! 7695 ḏ d
+! 7696 Ḑ D
+! 7697 ḑ d
+! 7698 Ḓ D
+! 7699 ḓ d
+! 7700 Ḕ E
+! 7701 ḕ e
+! 7702 Ḗ E
+! 7703 ḗ e
+! 7704 Ḙ E
+! 7705 ḙ e
+! 7706 Ḛ E
+! 7707 ḛ e
+! 7708 Ḝ E
+! 7709 ḝ e
+! 7710 Ḟ F
+! 7711 ḟ f
+! 7712 Ḡ G
+! 7713 ḡ g
+! 7714 Ḣ H
+! 7715 ḣ h
+! 7716 Ḥ H
+! 7717 ḥ h
+! 7718 Ḧ H
+! 7719 ḧ h
+! 7720 Ḩ H
+! 7721 ḩ h
+! 7722 Ḫ H
+! 7723 ḫ h
+! 7724 Ḭ I
+! 7725 ḭ i
+! 7726 Ḯ I
+! 7727 ḯ i
+! 7728 Ḱ K
+! 7729 ḱ k
+! 7730 Ḳ K
+! 7731 ḳ k
+! 7732 Ḵ K
+! 7733 ḵ k
+! 7734 Ḷ L
+! 7735 ḷ l
+! 7736 Ḹ L
+! 7737 ḹ l
+! 7738 Ḻ L
+! 7739 ḻ l
+! 7740 Ḽ L
+! 7741 ḽ l
+! 7742 Ḿ M
+! 7743 ḿ m
+! 7744 Ṁ M
+! 7745 ṁ m
+! 7746 Ṃ M
+! 7747 ṃ m
+! 7748 Ṅ N
+! 7749 ṅ n
+! 7750 Ṇ N
+! 7751 ṇ n
+! 7752 Ṉ N
+! 7753 ṉ n
+! 7754 Ṋ N
+! 7755 ṋ n
+! 7756 Ṍ O
+! 7757 ṍ o
+! 7758 Ṏ O
+! 7759 ṏ o
+! 7760 Ṑ O
+! 7761 ṑ o
+! 7762 Ṓ O
+! 7763 ṓ o
+! 7764 Ṕ P
+! 7765 ṕ p
+! 7766 Ṗ P
+! 7767 ṗ p
+! 7768 Ṙ R
+! 7769 ṙ r
+! 7770 Ṛ R
+! 7771 ṛ r
+! 7772 Ṝ R
+! 7773 ṝ r
+! 7774 Ṟ R
+! 7775 ṟ r
+! 7776 Ṡ S
+! 7777 ṡ s
+! 7778 Ṣ S
+! 7779 ṣ s
+! 7780 Ṥ S
+! 7781 ṥ s
+! 7782 Ṧ S
+! 7783 ṧ s
+! 7784 Ṩ S
+! 7785 ṩ s
+! 7786 Ṫ T
+! 7787 ṫ t
+! 7788 Ṭ T
+! 7789 ṭ t
+! 7790 Ṯ T
+! 7791 ṯ t
+! 7792 Ṱ T
+! 7793 ṱ t
+! 7794 Ṳ U
+! 7795 ṳ u
+! 7796 Ṵ U
+! 7797 ṵ u
+! 7798 Ṷ U
+! 7799 ṷ u
+! 7800 Ṹ U
+! 7801 ṹ u
+! 7802 Ṻ U
+! 7803 ṻ u
+! 7804 Ṽ V
+! 7805 ṽ v
+! 7806 Ṿ V
+! 7807 ṿ v
+! 7808 Ẁ W
+! 7809 ẁ w
+! 7810 Ẃ W
+! 7811 ẃ w
+! 7812 Ẅ W
+! 7813 ẅ w
+! 7814 Ẇ W
+! 7815 ẇ w
+! 7816 Ẉ W
+! 7817 ẉ w
+! 7818 Ẋ X
+! 7819 ẋ x
+! 7820 Ẍ X
+! 7821 ẍ x
+! 7822 Ẏ Y
+! 7823 ẏ y
+! 7824 Ẑ Z
+! 7825 ẑ z
+! 7826 Ẓ Z
+! 7827 ẓ z
+! 7828 Ẕ Z
+! 7829 ẕ z
+! 7830 ẖ h
+! 7831 ẗ t
+! 7832 ẘ w
+! 7833 ẙ y
+! 7834 ẚ a
+! 7836 ẜ s
+! 7837 ẝ s
+! 7840 Ạ A
+! 7841 ạ a
+! 7842 Ả A
+! 7843 ả a
+! 7844 Ấ A
+! 7845 ấ a
+! 7846 Ầ A
+! 7847 ầ a
+! 7848 Ẩ A
+! 7849 ẩ a
+! 7850 Ẫ A
+! 7851 ẫ a
+! 7852 Ậ A
+! 7853 ậ a
+! 7854 Ắ A
+! 7855 ắ a
+! 7856 Ằ A
+! 7857 ằ a
+! 7858 Ẳ A
+! 7859 ẳ a
+! 7860 Ẵ A
+! 7861 ẵ a
+! 7862 Ặ A
+! 7863 ặ a
+! 7864 Ẹ E
+! 7865 ẹ e
+! 7866 Ẻ E
+! 7867 ẻ e
+! 7868 Ẽ E
+! 7869 ẽ e
+! 7870 Ế E
+! 7871 ế e
+! 7872 Ề E
+! 7873 ề e
+! 7874 Ể E
+! 7875 ể e
+! 7876 Ễ E
+! 7877 ễ e
+! 7878 Ệ E
+! 7879 ệ e
+! 7880 Ỉ I
+! 7881 ỉ i
+! 7882 Ị I
+! 7883 ị i
+! 7884 Ọ O
+! 7885 ọ o
+! 7886 Ỏ O
+! 7887 ỏ o
+! 7888 Ố O
+! 7889 ố o
+! 7890 Ồ O
+! 7891 ồ o
+! 7892 Ổ O
+! 7893 ổ o
+! 7894 Ỗ O
+! 7895 ỗ o
+! 7896 Ộ O
+! 7897 ộ o
+! 7898 Ớ O
+! 7899 ớ o
+! 7900 Ờ O
+! 7901 ờ o
+! 7902 Ở O
+! 7903 ở o
+! 7904 Ỡ O
+! 7905 ỡ o
+! 7906 Ợ O
+! 7907 ợ o
+! 7908 Ụ U
+! 7909 ụ u
+! 7910 Ủ U
+! 7911 ủ u
+! 7912 Ứ U
+! 7913 ứ u
+! 7914 Ừ U
+! 7915 ừ u
+! 7916 Ử U
+! 7917 ử u
+! 7918 Ữ U
+! 7919 ữ u
+! 7920 Ự U
+! 7921 ự u
+! 7922 Ỳ Y
+! 7923 ỳ y
+! 7924 Ỵ Y
+! 7925 ỵ y
+! 7926 Ỷ Y
+! 7927 ỷ y
+! 7928 Ỹ Y
+! 7929 ỹ y
+! 7932 Ỽ V
+! 7933 ỽ v
+! 7934 Ỿ Y
+! 7935 ỿ y
+! 8175 ` `
+! 8208 ‐ -
+! 8209 ‑ -
+! 8210 ‒ -
+! 8211 – -
+! 8213 ― -
+! 8216 ‘ '
+! 8217 ’ '
+! 8218 ‚ ,
+! 8219 ‛ '
+! 8220 “ "
+! 8221 ” "
+! 8223 ‟ "
+! 8224 † +
+! 8226 • o
+! 8228 ․ .
+! 8245 ‵ `
+! 8249 ‹ <
+! 8250 › >
+! 8260 ⁄ /
+! 8266 ⁊ &
+! 8304 ⁰ 0
+! 8305 ⁱ i
+! 8308 ⁴ 4
+! 8309 ⁵ 5
+! 8310 ⁶ 6
+! 8311 ⁷ 7
+! 8312 ⁸ 8
+! 8313 ⁹ 9
+! 8314 ⁺ +
+! 8316 ⁼ =
+! 8317 ⁽ (
+! 8318 ⁾ )
+! 8319 ⁿ n
+! 8320 ₀ 0
+! 8321 ₁ 1
+! 8322 ₂ 2
+! 8323 ₃ 3
+! 8324 ₄ 4
+! 8325 ₅ 5
+! 8326 ₆ 6
+! 8327 ₇ 7
+! 8328 ₈ 8
+! 8329 ₉ 9
+! 8330 ₊ +
+! 8332 ₌ =
+! 8333 ₍ (
+! 8334 ₎ )
+! 8336 ₐ a
+! 8337 ₑ e
+! 8338 ₒ o
+! 8339 ₓ x
+! 8341 ₕ h
+! 8342 ₖ k
+! 8343 ₗ l
+! 8344 ₘ m
+! 8345 ₙ n
+! 8346 ₚ p
+! 8347 ₛ s
+! 8348 ₜ t
+! 8450 ℂ C
+! 8458 ℊ g
+! 8459 ℋ H
+! 8460 ℌ H
+! 8461 ℍ H
+! 8462 ℎ h
+! 8464 ℐ I
+! 8465 ℑ I
+! 8466 ℒ L
+! 8467 ℓ l
+! 8469 ℕ N
+! 8473 ℙ P
+! 8474 ℚ Q
+! 8475 ℛ R
+! 8476 ℜ R
+! 8477 ℝ R
+! 8484 ℤ Z
+! 8488 ℨ Z
+! 8490 K K
+! 8491 Å A
+! 8492 ℬ B
+! 8493 ℭ C
+! 8494 ℮ e
+! 8495 ℯ e
+! 8496 ℰ E
+! 8497 ℱ F
+! 8499 ℳ M
+! 8500 ℴ o
+! 8505 ℹ i
+! 8517 ⅅ D
+! 8518 ⅆ d
+! 8519 ⅇ e
+! 8520 ⅈ i
+! 8521 ⅉ j
+! 8722 − -
+! 8725 ∕ /
+! 8726 ∖
+! 8727 ∗ *
+! 8758 ∶ :
+! 8764 ∼ ~
+! 9001 〈 <
+! 9002 〉 >
+! 9251 ␣ _
+! 9472 ─ -
+! 9474 │ |
+! 9484 ┌ +
+! 9488 ┐ +
+! 9492 └ +
+! 9496 ┘ +
+! 9500 ├ +
+! 9508 ┤ +
+! 9516 ┬ +
+! 9524 ┴ +
+! 9532 ┼ +
+! 9585 ╱ /
+! 9586 ╲
+! 9702 ◦ o
+! 10187 ⟋ /
+! 10189 ⟍
+! 10222 ⟮ (
+! 10223 ⟯ )
+! 10723 ⧣ #
+! 10725 ⧥ #
+! 10741 ⧵
+! 10744 ⧸ /
+! 10745 ⧹
+! 10748 ⧼ <
+! 10749 ⧽ >
+! 10750 ⧾ +
+! 10751 ⧿ -
+! 11388 ⱼ j
+! 11389 ⱽ V
+! 12296 〈 <
+! 12297 〉 >
+! 12448 ゠ =
+! 64297 ﬩ +
+! 65040 ︐ ,
+! 65043 ︓ :
+! 65044 ︔ ;
+! 65045 ︕ !
+! 65075 ︳ _
+! 65076 ︴ _
+! 65077 ︵ (
+! 65078 ︶ )
+! 65079 ︷ {
+! 65080 ︸ }
+! 65095 ﹇ [
+! 65096 ﹈ ]
+! 65101 ﹍ _
+! 65102 ﹎ _
+! 65103 ﹏ _
+! 65104 ﹐ ,
+! 65106 ﹒ .
+! 65108 ﹔ ;
+! 65109 ﹕ :
+! 65111 ﹗ !
+! 65113 ﹙ (
+! 65114 ﹚ )
+! 65115 ﹛ {
+! 65116 ﹜ }
+! 65119 ﹟ #
+! 65120 ﹠ &
+! 65121 ﹡ *
+! 65122 ﹢ +
+! 65123 ﹣ -
+! 65124 ﹤ <
+! 65125 ﹥ >
+! 65126 ﹦ =
+! 65128 ﹨
+! 65129 ﹩ $
+! 65130 ﹪ %
+! 65131 ﹫ @
+! 733 ˝ ''
+! 9786 ☺ :)
+! 9787 ☻ :)
+! 127232 🄀 0.
+! 127233 🄁 0,
+! 127234 🄂 1,
+! 127235 🄃 2,
+! 127236 🄄 3,
+! 127237 🄅 4,
+! 127238 🄆 5,
+! 127239 🄇 6,
+! 127240 🄈 7,
+! 127241 🄉 8,
+! 127242 🄊 9,
+
+
+! 222 Þ TH
+! 223 ß ss
+! 254 þ th
+! 306 Ĳ IJ
+! 307 ĳ ij
+! 329 ŉ 'n
+! 338 Œ OE
+! 339 œ oe
+! 418 Ƣ OI
+! 419 ƣ oi
+! 405 ƕ hv
+! 455 Ǉ LJ
+! 456 ǈ Lj
+! 457 ǉ lj
+! 458 Ǌ NJ
+! 459 ǋ Nj
+! 460 ǌ nj
+! 497 Ǳ DZ
+! 498 ǲ Dz
+! 499 ǳ dz
+! 568 ȸ db
+! 569 ȹ qp
+! 630 ɶ OE
+! 675 ʣ dz
+! 677 ʥ dz
+! 678 ʦ ts
+! 682 ʪ ls
+! 683 ʫ lz
+! 1423 ֏ AMD
+! 7531 ᵫ ue
+! 7546 ᵺ th
+! 7838 ẞ SS
+! 7930 Ỻ LL
+! 7931 ỻ ll
+! 8229 ‥ ..
+! 8230 … ...
+! 8246 ‶ ``
+! 8247 ‷ ```
+! 8222 „ ,,
+! 8264 ⁈ ?!
+! 8352 ₠ CE
+! 8353 ₡ C=
+! 8354 ₢ Cr
+! 8355 ₣ Fr.
+! 8356 ₤ L.
+! 8359 ₧ Pts
+! 8360 ₨ Rs
+! 8361 ₩ KRW
+! 8362 ₪ ILS
+! 8363 ₫ Dong
+! 8367 ₯ GRD
+! 8369 ₱ PHP
+! 8372 ₴ UAH
+! 8376 ₸ KZT
+! 8377 ₹ INR
+! 8378 ₺ TL
+! 8381 ₽ RUB
+! 8382 ₾ GEL
+! 8448 ℀ a/c
+! 8449 ℁ a/s
+! 8453 ℅ c/o
+! 8454 ℆ c/u
+! 8470 № No
+! 8478 ℞ Rx
+! 8480 ℠ SM
+! 8481 ℡ TEL
+! 8507 ℻ FAX
+!
+! 8592 ← <-
+! 8594 → ->
+! 8596 ↔ <->
+! 8622 ↮ !<->
+! 8653 ⇍ !<=
+! 8654 ⇎ !<=>
+! 8655 ⇏ !=>
+! 8656 ⇐ <=
+! 8658 ⇒ =>
+! 8660 ⇔ <=>
+! 8741 ∥ ||
+! 8769 ≁ !~
+! 8772 ≄ !~-
+! 8775 ≇ !~=
+! 8777 ≉ !~~
+! 8800 ≠ !=
+! 8802 ≢ !==
+! 8810 ≪ <<
+! 8811 ≫ >>
+! 8814 ≮ !<
+! 8815 ≯ !>
+! 8816 ≰ !<=
+! 8817 ≱ !>=
+! 8820 ≴ !<~
+! 8821 ≵ !>~
+! 8824 ≸ !<>
+! 8825 ≹ !><
+! 8920 ⋘ <<<
+! 8921 ⋙ >>>
+! 9216 ␀ NUL
+! 9217 ␁ SOH
+! 9218 ␂ STX
+! 9219 ␃ ETX
+! 9220 ␄ EOT
+! 9221 ␅ ENQ
+! 9222 ␆ ACK
+! 9223 ␇ BEL
+! 9224 ␈ BS
+! 9225 ␉ HT
+! 9226 ␊ LF
+! 9227 ␋ VT
+! 9228 ␌ FF
+! 9229 ␍ CR
+! 9230 ␎ SO
+! 9231 ␏ SI
+! 9232 ␐ DLE
+! 9233 ␑ DC1
+! 9234 ␒ DC2
+! 9235 ␓ DC3
+! 9236 ␔ DC4
+! 9237 ␕ NAK
+! 9238 ␖ SYN
+! 9239 ␗ ETB
+! 9240 ␘ CAN
+! 9241 ␙ EM
+! 9242 ␚ SUB
+! 9243 ␛ ESC
+! 9244 ␜ FS
+! 9245 ␝ GS
+! 9246 ␞ RS
+! 9247 ␟ US
+! 9248 ␠ SP
+! 9249 ␡ DEL
+! 9252 ␤ NL
+! 9312 ① (1)
+! 9313 ② (2)
+! 9314 ③ (3)
+! 9315 ④ (4)
+! 9316 ⑤ (5)
+! 9317 ⑥ (6)
+! 9318 ⑦ (7)
+! 9319 ⑧ (8)
+! 9320 ⑨ (9)
+! 9321 ⑩ (10)
+! 9322 ⑪ (11)
+! 9323 ⑫ (12)
+! 9324 ⑬ (13)
+! 9325 ⑭ (14)
+! 9326 ⑮ (15)
+! 9327 ⑯ (16)
+! 9328 ⑰ (17)
+! 9329 ⑱ (18)
+! 9330 ⑲ (19)
+! 9331 ⑳ (20)
+! 9332 ⑴ (1)
+! 9333 ⑵ (2)
+! 9334 ⑶ (3)
+! 9335 ⑷ (4)
+! 9336 ⑸ (5)
+! 9337 ⑹ (6)
+! 9338 ⑺ (7)
+! 9339 ⑻ (8)
+! 9340 ⑼ (9)
+! 9341 ⑽ (10)
+! 9342 ⑾ (11)
+! 9343 ⑿ (12)
+! 9344 ⒀ (13)
+! 9345 ⒁ (14)
+! 9346 ⒂ (15)
+! 9347 ⒃ (16)
+! 9348 ⒄ (17)
+! 9349 ⒅ (18)
+! 9350 ⒆ (19)
+! 9351 ⒇ (20)
+! 9352 ⒈ 1.
+! 9353 ⒉ 2.
+! 9354 ⒊ 3.
+! 9355 ⒋ 4.
+! 9356 ⒌ 5.
+! 9357 ⒍ 6.
+! 9358 ⒎ 7.
+! 9359 ⒏ 8.
+! 9360 ⒐ 9.
+! 9361 ⒑ 10.
+! 9362 ⒒ 11.
+! 9363 ⒓ 12.
+! 9364 ⒔ 13.
+! 9365 ⒕ 14.
+! 9366 ⒖ 15.
+! 9367 ⒗ 16.
+! 9368 ⒘ 17.
+! 9369 ⒙ 18.
+! 9370 ⒚ 19.
+! 9371 ⒛ 20.
+! 9372 ⒜ (a)
+! 9373 ⒝ (b)
+! 9374 ⒞ (c)
+! 9375 ⒟ (d)
+! 9376 ⒠ (e)
+! 9377 ⒡ (f)
+! 9378 ⒢ (g)
+! 9379 ⒣ (h)
+! 9380 ⒤ (i)
+! 9381 ⒥ (j)
+! 9382 ⒦ (k)
+! 9383 ⒧ (l)
+! 9384 ⒨ (m)
+! 9385 ⒩ (n)
+! 9386 ⒪ (o)
+! 9387 ⒫ (p)
+! 9388 ⒬ (q)
+! 9389 ⒭ (r)
+! 9390 ⒮ (s)
+! 9391 ⒯ (t)
+! 9392 ⒰ (u)
+! 9393 ⒱ (v)
+! 9394 ⒲ (w)
+! 9395 ⒳ (x)
+! 9396 ⒴ (y)
+! 9397 ⒵ (z)
+! 9398 Ⓐ (A)
+! 9399 Ⓑ (B)
+! 9400 Ⓒ (C)
+! 9401 Ⓓ (D)
+! 9402 Ⓔ (E)
+! 9403 Ⓕ (F)
+! 9404 Ⓖ (G)
+! 9405 Ⓗ (H)
+! 9406 Ⓘ (I)
+! 9407 Ⓙ (J)
+! 9408 Ⓚ (K)
+! 9409 Ⓛ (L)
+! 9410 Ⓜ (M)
+! 9411 Ⓝ (N)
+! 9412 Ⓞ (O)
+! 9413 Ⓟ (P)
+! 9414 Ⓠ (Q)
+! 9415 Ⓡ (R)
+! 9416 Ⓢ (S)
+! 9417 Ⓣ (T)
+! 9418 Ⓤ (U)
+! 9419 Ⓥ (V)
+! 9420 Ⓦ (W)
+! 9421 Ⓧ (X)
+! 9422 Ⓨ (Y)
+! 9423 Ⓩ (Z)
+! 9424 ⓐ (a)
+! 9425 ⓑ (b)
+! 9426 ⓒ (c)
+! 9427 ⓓ (d)
+! 9428 ⓔ (e)
+! 9429 ⓕ (f)
+! 9430 ⓖ (g)
+! 9431 ⓗ (h)
+! 9432 ⓘ (i)
+! 9433 ⓙ (j)
+! 9434 ⓚ (k)
+! 9435 ⓛ (l)
+! 9436 ⓜ (m)
+! 9437 ⓝ (n)
+! 9438 ⓞ (o)
+! 9439 ⓟ (p)
+! 9440 ⓠ (q)
+! 9441 ⓡ (r)
+! 9442 ⓢ (s)
+! 9443 ⓣ (t)
+! 9444 ⓤ (u)
+! 9445 ⓥ (v)
+! 9446 ⓦ (w)
+! 9447 ⓧ (x)
+! 9448 ⓨ (y)
+! 9449 ⓩ (z)
+! 9450 ⓪ (0)
+! 10220 ⟬ ((
+! 10221 ⟭ ))
+! 10624 ⦀ |||
+! 10627 ⦃ {|
+! 10628 ⦄ |}
+! 10629 ⦅ ((
+! 10630 ⦆ ))
+! 10631 ⦇ (|
+! 10632 ⦈ |)
+! 10633 ⦉ <|
+! 10634 ⦊ |>
+! 10868 ⩴ ::=
+! 10869 ⩵ ==
+! 10870 ⩶ ===
+! 12880 ㉐ PTE
+! 12881 ㉑ (21)
+! 12882 ㉒ (22)
+! 12883 ㉓ (23)
+! 12884 ㉔ (24)
+! 12885 ㉕ (25)
+! 12886 ㉖ (26)
+! 12887 ㉗ (27)
+! 12888 ㉘ (28)
+! 12889 ㉙ (29)
+! 12890 ㉚ (30)
+! 12891 ㉛ (31)
+! 12892 ㉜ (32)
+! 12893 ㉝ (33)
+! 12894 ㉞ (34)
+! 12895 ㉟ (35)
+! 12977 ㊱ (36)
+! 12978 ㊲ (37)
+! 12979 ㊳ (38)
+! 12980 ㊴ (39)
+! 12981 ㊵ (40)
+! 12982 ㊶ (41)
+! 12983 ㊷ (42)
+! 12984 ㊸ (43)
+! 12985 ㊹ (44)
+! 12986 ㊺ (45)
+! 12987 ㊻ (46)
+! 12988 ㊼ (47)
+! 12989 ㊽ (48)
+! 12990 ㊾ (49)
+! 12991 ㊿ (50)
+
+! 13004 ㋌ Hg
+! 13005 ㋍ erg
+! 13006 ㋎ eV
+! 13007 ㋏ LTD
+! 13169 ㍱ hPa
+! 13170 ㍲ da
+! 13171 ㍳ AU
+! 13172 ㍴ bar
+! 13173 ㍵ oV
+! 13174 ㍶ pc
+! 13175 ㍷ dm
+! 13176 ㍸ dm^2
+! 13177 ㍹ dm^3
+! 13178 ㍺ IU
+! 13184 ㎀ pA
+! 13185 ㎁ nA
+! 13186 ㎂ uA
+! 13187 ㎃ mA
+! 13188 ㎄ kA
+! 13189 ㎅ KB
+! 13190 ㎆ MB
+! 13191 ㎇ GB
+! 13192 ㎈ cal
+! 13193 ㎉ kcal
+! 13194 ㎊ pF
+! 13195 ㎋ nF
+! 13196 ㎌ uF
+! 13197 ㎍ ug
+! 13198 ㎎ mg
+! 13199 ㎏ kg
+! 13200 ㎐ Hz
+! 13201 ㎑ kHz
+! 13202 ㎒ MHz
+! 13203 ㎓ GHz
+! 13204 ㎔ THz
+! 13205 ㎕ ul
+! 13206 ㎖ ml
+! 13207 ㎗ dl
+! 13208 ㎘ kl
+! 13209 ㎙ fm
+! 13210 ㎚ nm
+! 13211 ㎛ um
+! 13212 ㎜ mm
+! 13213 ㎝ cm
+! 13214 ㎞ km
+! 13215 ㎟ mm^2
+! 13216 ㎠ cm^2
+! 13217 ㎡ m^2
+! 13218 ㎢ km^2
+! 13219 ㎣ mm^3
+! 13220 ㎤ cm^3
+! 13221 ㎥ m^3
+! 13222 ㎦ km^3
+! 13223 ㎧ m/s
+! 13224 ㎨ m/s^2
+! 13225 ㎩ Pa
+! 13226 ㎪ kPa
+! 13227 ㎫ MPa
+! 13228 ㎬ GPa
+! 13229 ㎭ rad
+! 13230 ㎮ rad/s
+! 13231 ㎯ rad/s^2
+! 13232 ㎰ ps
+! 13233 ㎱ ns
+! 13234 ㎲ us
+! 13235 ㎳ ms
+! 13236 ㎴ pV
+! 13237 ㎵ nV
+! 13238 ㎶ uV
+! 13239 ㎷ mV
+! 13240 ㎸ kV
+! 13241 ㎹ MV
+! 13242 ㎺ pW
+! 13243 ㎻ nW
+! 13244 ㎼ uW
+! 13245 ㎽ mW
+! 13246 ㎾ kW
+! 13247 ㎿ MW
+! 13250 ㏂ a.m.
+! 13251 ㏃ Bq
+! 13252 ㏄ cc
+! 13253 ㏅ cd
+! 13254 ㏆ C/kg
+! 13255 ㏇ Co.
+! 13256 ㏈ dB
+! 13257 ㏉ Gy
+! 13258 ㏊ ha
+! 13259 ㏋ HP
+! 13260 ㏌ in
+! 13261 ㏍ KK
+! 13262 ㏎ KM
+! 13263 ㏏ kt
+! 13264 ㏐ lm
+! 13265 ㏑ ln
+! 13266 ㏒ log
+! 13267 ㏓ lx
+! 13268 ㏔ mb
+! 13269 ㏕ mil
+! 13270 ㏖ mol
+! 13271 ㏗ PH
+! 13272 ㏘ p.m.
+! 13273 ㏙ PPM
+! 13274 ㏚ PR
+! 13275 ㏛ sr
+! 13276 ㏜ Sv
+! 13277 ㏝ Wb
+! 13278 ㏞ V/m
+! 13279 ㏟ A/m
+! 13311 ㏿ gal
+
+! 64261 ﬅ st
+! 64262 ﬆ st
+! 65049 ︙ ...
+! 65072 ︰ ..
+! 127248 🄐 (A)
+! 127249 🄑 (B)
+! 127250 🄒 (C)
+! 127251 🄓 (D)
+! 127252 🄔 (E)
+! 127253 🄕 (F)
+! 127254 🄖 (G)
+! 127255 🄗 (H)
+! 127256 🄘 (I)
+! 127257 🄙 (J)
+! 127258 🄚 (K)
+! 127259 🄛 (L)
+! 127260 🄜 (M)
+! 127261 🄝 (N)
+! 127262 🄞 (O)
+! 127263 🄟 (P)
+! 127264 🄠 (Q)
+! 127265 🄡 (R)
+! 127266 🄢 (S)
+! 127267 🄣 (T)
+! 127268 🄤 (U)
+! 127269 🄥 (V)
+! 127270 🄦 (W)
+! 127271 🄧 (X)
+! 127272 🄨 (Y)
+! 127273 🄩 (Z)
+! 127275 🄫 (C)
+! 127276 🄬 (R)
+! 127277 🄭 (CD)
+! 127278 🄮 (WZ)
+! 127306 🅊 HV
+! 127307 🅋 MV
+! 127308 🅌 SD
+! 127309 🅍 SS
+! 127310 🅎 PPV
+! 127311 🅏 WC
+! 127338 🅪 MC
+! 127339 🅫 MD
+! 127340 🅬 MR
+! 127376 🆐 DJ
+$!==============================================================================
 contains
 subroutine setup()
 !! Put everything to do with command parsing here
-use M_CLI2,  only : set_mode, set_args, get_args, sgets, specified, files=>unnamed
 character(len=:),allocatable :: help_text(:), version_text(:)
 integer                      :: startrange, endrange
 integer                      :: i
@@ -132,133 +1778,164 @@ type(ut)                     :: ustr
 $!==============================================================================
 $BLOCK variable --varname help_text -width 80
 NAME
-   uni(1f) - [CONVERSION] Unicode-related text operations such as
-   converting between UTF-8 and ASCII-7 C-style escape sequences, changing
-   case of multi-byte characters, drawing box characters, displaying
-   ranges of Unicode characters, locating multi-byte characters in what
-   should be an ASCII file, ...
+   uni(1f) - [CONVERSION] identify and convert and format Unicode-related text
    (LICENSE:PD)
 
 SYNOPSIS
-    uni [--escape|--noescape] [--lcase|--ucase] --html --reverse |
-    [ [--box STYLE | --border STYLE] --styles NAME] |
-    --entities |
-    --start STARTCODE --finish ENDCODE |
-    --code |
-    --example |
-    --text |
-    --wide | --length infile(s)
+    uni [--toescape|--noescape] | [--tohtml|--nohtml] | [--code] | [--nokeys]
+    [--lcase|--ucase] [--reverse] [--box STYLE --border STYLE] |
+    [--text | infile(s)] |
 
-To see short names and defaults enter "uni --usage"
+    uni --findwide | --nowide [--text | infile(s)]
+
+    uni --length  [--text | infile(s)]
+
+    uni [--start STARTCODE] [--finish ENDCODE] [--styles STYLE_NAMES]
+
+    uni --entities
+
+    uni --show_keys
+
+    uni --sample
+
+   To see short names and defaults enter "uni --usage"
 
 DESCRIPTION
-   uni(1) is a handy filter for converting UTF-8 encoded text to and from
-   ASCII-7 C-style escape sequences, converting the case of multi-byte
-   text, converting pound characters to box characters, and identifying
-   sundry properties of lines of UTF-8 encoded text.
+   uni performs operations such as
 
-   In addition when given a range of codepoint values uni(1) displays
-   the characters in several common formats for use in generating code
-   or text or HTML.
+   + locating multi-byte characters in what is primarily an ASCII file
+
+   + convert between UTF-8 and C-style escape sequences
+   + converting between HTML entity names and UTF-8
+
+   + changing case of multi-byte characters
+   + drawing box characters using "#" characters
+
+   + displaying ranges of Unicode characters in common formats
+     for use in generating code or text or HTML
+
+   + describing or identifying sundry UTF-8 encoded text.
 
    uni(1) defaults to displaying only lines containing a wide
    (ie. multi-byte) character along with the line number; with each line
    as-is and then with wide characters converted to C++-style escape
-   sequences. That is, the default is "uni --wide".
+   sequences. That is, the default is "uni --findwide".
 
-   For example, the primary Unicode block for the Greek alphabet is the
-   Greek and Coptic section (U+0370–U+03FF; standard letters, numbers,
-   and symbols) which contains most modern monotonic Greek letters while
-   the Greek Extended block (U+1F00–U+1FFF; additional characters with
-   diacritics). is used for polytonic Greek. So to see the basic Greek
-   alphabet enter
+   uni(1) can display a range of characters. For example, The primary
+   Unicode block for the Greek alphabet is the Greek and Coptic section
+   (U+0370-U+03FF; standard letters, numbers, and symbols) which contains
+   most modern monotonic Greek letters while the Greek Extended block
+   (U+1F00-U+1FFF; additional characters with diacritics). is used for
+   polytonic Greek. So to see the basic Greek alphabet enter
 
-       uni --start 880 --finish 1023
+       uni --start U+0370 --finish U+03FF
+       # or
+       uni --start 880    --finish 1023
 
    Key details about the Unicode codespace:
-
-   Valid vs. Assigned: Not all code points within this range are assigned
-   to characters or are valid for use. Some ranges are reserved for
-   private use and non-characters.
-
-   As of January 2024, only a small fraction (fewer than 4%) of the
-   possible code points had assigned meanings.
-
-   Encoding Limits:
 
    While the UTF-8 encoding scheme is theoretically capable of
    representing much larger codepoints (up to 0x7FFFFFFF), it was
    restricted by RFC 3629 to stop at U+10FFFF (1 114 111, in decimal)
    to match the Unicode standard's UTF-16 constraint.
 
+   **Valid vs. Assigned**: Not all code points within the supported
+   range are assigned to characters or are valid for use. Some ranges
+   are reserved for private use and non-characters. As of January 2024,
+   only a small fraction (fewer than 4%) of the possible code points
+   had assigned meanings.
+
    This limit ensures compatibility with the UTF-16 encoding, which uses
    surrogate pairs to represent characters beyond the Basic Multilingual
    Plane (BMP).
 
-   That is, 1 114 111, is the highest value that can be represented using
-   a single or a pair of 16-bit code units in the UTF-16 encoding.
-
 OPTIONS
-   CONVERSION
+   BASIC CONVERSION
 
-   --escape,E    convert non-ASCII7 characters to C-style escape sequences
+   --toescape,E  convert non-ASCII-7 characters to C-style escape sequences
    --noescape,N  convert C-style escape sequences to UTF8 encoded data
 
-   --html,H      expand HTML character entities of the form &NAME; and
-                 &#NNNNN;.
-
-   --reverse,R   reverse the glyphs on a line
+   --tohtml,h    convert non-printable and non-ASCII-7 characters to the
+                 HTML format &#NNNNN;.
+   --nohtml,H    expand text containing HTML character entities of the
+                 form &NAME; and &#NNNNN; to UTF-8
+   --nokeys,K    expand text containing text between "<" and ">" using the
+                 keyword dictionary
 
    --lcase,L     convert uppercase to lowercase
    --ucase,U     convert lowercase to uppercase
 
-   --code,C      write as Fortran code using KIND=ISO_10646
+   --reverse,R   reverse the glyphs on a line
 
-   --box,B       box style choice from set {"light","bold","double"}.
-                 Causes pound character to be used to construct boxes
-                 using box characters. If specified other options are
-                 ignored.
+   IDENTIFY AND QUANTIFY INPUT
+   --findwide,W  identify and write lines not composed entirely of ASCII-7.
+                 Only lines containing non-ASCII-7 characters are printed;
+                 once as-is and once with non-ASCII-7 characters expanded
+                 to C-like escape sequences with a line number.
 
-                 Input characters are assumed to be monospaced.
+                 If no parameters are specified this is the default.
 
-   --border,b    place box around text, choosing box style from set
-                 {"light","bold","double"}. If specified other options
-                 are ignored.
+   --nowide,w    make reasonable conversions from UTF-8 to ASCII-7 in an
+                 attempt to make the file ASCII-7. Characters not
+                 substituted are converted to HTML decimal syntax
 
-                 Input characters are assumed to be monospaced.
-
-   RANGE
-   --start,S     starting codepoint to generate a list of glyphs from.
-                 If specified conversion options are ignored.
-   --finish,F    ending codepoint to generate a list of glyphs from
-                 If specified conversion options are ignored.
-   --styles,s    Display style name(s). Default is all styles. The
-                 "test" style just streams the UTF-8 values of the
-                 specified values. For other allowed names ("decimal",
-                 "utf8", "c", "standard", "htmlx", "htmld", "ucs4",
-                 "codex", "hex") see the following section "STYLES".
-
-   INFORMATIVE
    --length,L    prefix lines with line number, glyph and byte count
                  of input line.
+   FORMATTING
+   --code,C STYLE    write as Fortran code using KIND=ISO_10646
 
-   --wide,W      identify and write lines not composed entirely of ASCII-7.
-                 If no other parameters are specified this is the default.
+   --box,B STYLE box style choice from set {"light","bold","double"}.
+                 Causes pound character to be used to construct boxes
+                 using box characters.
 
-   MODES
-   --verbose,V   echo the input as well as the computed values
+                 Input characters are assumed to be monospaced.
+
+   --border,b STYLE  place box around text, choosing box style from set
+                     {"light","bold","double"}.  Input characters are
+                     assumed to be monospaced.
+
+   Note when --box and/or --border are present only basic and input
+   source options are applied. Other options are ignored.
+
+   INPUT
+
+   FILENAMES     name(s) of files to read input from. Defaults to stdin
    --text,t      strings on the command that would be treated as filenames
                  are treated as text instead.
 
    INFORMATION
+   --start,S     starting codepoint to generate a list of glyphs from.
+
+                 If specified other options are ignored except --finish
+                 and --styles.
+
+   --finish,F    ending codepoint to generate a list of glyphs from.
+                 1 114 111, is the highest value that can be represented
+                 using a single or a pair of 16-bit code units in the
+                 UTF-16 encoding.
+
+                 If specified other options are ignored except --start
+                 and --styles.
+
+   --styles,s    Styles to print range specified by --start and --finish
+                 with. Default is all styles. The "test" style just
+                 streams the UTF-8 values of the specified values. For
+                 other allowed names ("decimal", "utf8", "c", "standard",
+                 "htmlx", "htmld", "ucs4", "codex", "hex") see the
+                 following section "STYLES". Multiple names separated
+                 by commas are allowed.
 
    --entities,e  display table of HTML character entities and stop.
                  Other parameters are ignored.
-   --example,x   display sample input file and stop.
+   --show_keys   Dump the current dictionary of keys for the --nokeys
+                 mode.
+   --sample,x    display sample input file and stop.
                  Other parameters are ignored.
-   --help        display this help and exit
-   --usage       display state of command options and exit
-   --version     output version information and exit
+   STANDARD
+   --verbose,V   display additional output
+   --help,h      display this help and exit
+   --usage,u     display state of command options and exit
+   --version,v   output version information and exit
 
 STYLES
 
@@ -302,37 +1979,56 @@ ways to represent Unicode Codepoints.
 EXAMPLE
   Sample runs:
 
-   # basic Greek alphabet
-   uni --start 880 --finish 1023
-
-   # test current font
-   uni --start 32 --finish 1114111 --test
-
-   # box characters
-   # The majority of Unicode box-drawing characters are in the Box
-   # Drawing block, which runs from decimal code points 9472 to 9599,
-   # corresponding to hexadecimal U+2500 to U+257F.
-
-   uni -S 9472 -F 9599
-
-   # find any lines with non-ASCII7 characters
+   # find any lines with non-ASCII-7 characters
    uni -W The_Crow_and_the_Fox.utf8
 
+       1 [“The Crow and the Fox” by Jean de la Fontaine]
+         [\u201CThe Crow and the Fox\u201D by Jean de la Fontaine]
+       5 [   Maître Corbeau, sur un arbre perché,]
+         [   Ma\xEEtre Corbeau, sur un arbre perch\xE9,]
+       7 [   Maître Renard, par l’odeur alléché,]
+         [   Ma\xEEtre Renard, par l\u2019odeur all\xE9ch\xE9,]
+       8 [   Lui tint à peu près ce langage :]
+         [   Lui tint \xE0 peu pr\xE8s ce langage :]
+       9 [   «Hé ! bonjour, Monsieur du Corbeau.]
+         [   \xABH\xE9 ! bonjour, Monsieur du Corbeau.]
+      10 [   Que vous êtes joli ! que vous me semblez beau !]
+         [   Que vous \xEAtes joli ! que vous me semblez beau !]
+      12 [   Se rapporte à votre plumage,]
+         [   Se rapporte \xE0 votre plumage,]
+      13 [   Vous êtes le Phénix des hôtes de ces bois.»]
+         [   Vous \xEAtes le Ph\xE9nix des h\xF4tes de ces bois.\xBB]
+      17 [   Le Renard s’en saisit, et dit : «Mon bon Monsieur,]
+         [   Le Renard s\u2019en saisit, et dit : \xABMon bon Monsieur,]
+      19 [   Vit aux dépens de celui qui l’écoute :]
+         [   Vit aux d\xE9pens de celui qui l\u2019\xE9coute :]
+      20 [   Cette leçon vaut bien un fromage, sans doute.»]
+         [   Cette le\xE7on vaut bien un fromage, sans doute.\xBB]
+      22 [   Jura, mais un peu tard, qu’on ne l’y prendrait plus.]
+         [   Jura, mais un peu tard, qu\u2019on ne l\u2019y prendrait plus.]
+
+   # convert text containing HTML entities
+   uni -t 'c=&pi;&times;d' --nohtml
+   c=π×d
+
+   # list all alphanumeric HTML entities
+   uni --entitites
+
    # convert a file with wide characters to C-style escape codes
-   # (that can be used with M_unicode module).
-   uni --escape <<\end_of_data
-   七転び八起き。
-   転んでもまた立ち上がる。
-   くじけずに前を向いて歩いていこう。
-   end_of_data
-
-  Sample output(wrapped):
-
+   # (that can be used with M_unicode module and Fortran or C code).
+   uni --toescape proverb.txt >proverb.esc
+   cat proverb.esc
    >\u4E03\u8EE2\u3073\u516B\u8D77\u304D\u3002
    >\u8EE2\u3093\u3067\u3082\u307E\u305F\u7ACB\u3061\u4E0A\u304C
    \u308B\u3002
    >\u304F\u3058\u3051\u305A\u306B\u524D\u3092\u5411\u3044\u3066
    \u6B69\u3044\u3066\u3044\u3053\u3046\u3002
+
+   and back again:
+   uni --noescape proverb.esc
+   七転び八起き。
+   転んでもまた立ち上がる。
+   くじけずに前を向いて歩いていこう。
 
    uni --box bold <<\end_of_data
    #################################
@@ -345,6 +2041,28 @@ EXAMPLE
    ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
    ┃ Warning: proceed with caution ┃
    ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+
+   uni -t "Warning. Warning Will Robinson!" --border double
+   ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+   ┃Warning. Warning Will Robinson!┃
+   ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+
+   # listing a section of Unicode : box characters
+   # The majority of Unicode box-drawing characters are in the Box
+   # Drawing block, which runs from decimal code points 9472 to 9599,
+   # corresponding to hexadecimal U+2500 to U+257F.
+
+   uni -S 9472 -F 9599
+
+   uni -t '&#128512; &#128516; &#128525; &#128151;' -H
+   😀 😄 😍 💗
+
+   # basic Greek alphabet
+   uni --start 880 --finish 1023
+
+   # test current font
+   uni --start 32 --finish 1114111 --test
+
 SEE ALSO
    dos2unix(1)/unix2dos(1), iconv(1)
 
@@ -367,10 +2085,13 @@ $!==============================================================================
     & --box:B " " &
     & --code:C F &
     & --entities:e F &
-    & --escape:E F &
+    & --show_keys:d F &
+    & --toescape:E F &
     & --noescape:N F &
-    & --example:x F &
-    & --html:H F &
+    & --sample:x F &
+    & --nohtml:H F &
+    & --tohtml:h F &
+    & --nokeys:k F &
     & --kind:K 1 &
     & --lcase:L F &
     & --ucase:U F &
@@ -380,31 +2101,42 @@ $!==============================================================================
     & --start:S 0 &
     & --finish:F 1114111 &
     & --styles:s "decimal,utf8,c,standard,htmlx,htmld,ucs4,codex,hex" &
-    & --wide:W F &
+    & --findwide:W F &
+    & --nowide:w F &
     & --debug:D F', &
     & help_text, version_text)
-   call get_args('border',   style )
-   call get_args('box',      style )
+
+   if(specified('border')) call get_args('border', style_border )
+   if(specified('box'))    call get_args('box',    style_box )
+
    call get_args('code',     code )
    call get_args('debug',    debug )
    call get_args('entities', entities )
-   call get_args('escape',   escape,     'noescape', noescape )
-   call get_args('example',  example )
-   call get_args('html',     html )
+   call get_args('show_keys', show_keys )
+   call get_args('toescape', toescape,     'noescape', noescape )
+   call get_args('sample',   sample )
+   call get_args('nohtml',   nohtml )
+   call get_args('tohtml',   tohtml )
+   call get_args('nokeys',   nokeys )
    call get_args('kind',     knd )
    call get_args('lcase',    lcase,      'ucase',    ucase    )
    call get_args('length',   length )
    call get_args('reverse',  reverse )
    call get_args('start',    startrange, 'finish',   endrange )
    call get_args('verbose',  verbose )
-   call get_args('wide',     wide )
+   call get_args('findwide', findwide )
+   call get_args('nowide',   nowide )
    call get_args('text',     nofile )
    styles=sgets('styles')
    if( specified('border') ) border=.TRUE.
-   if( specified('box') .and. style==' ') style='bold'
-   if( specified('border') .and. style==' ') style='bold'
+   if( specified('box') .and. style_box==' ') style_box='bold'
+   if( specified('border') .and. style_border==' ') style_border='bold'
    if(entities)then
       line=expand_html()
+      stop
+   endif
+   if(show_keys)then
+      call keyword_mode('dump')
       stop
    endif
    if(size(files).eq.0)then
@@ -412,8 +2144,8 @@ $!==============================================================================
    else
       filenames=files
    endif
-   if(example)then
-      call example_file()
+   if(sample)then
+      call sample_file()
    endif
    ! process --start and --finish
    if( specified('start')  .and. (.not.specified('finish')) ) endrange=startrange
@@ -446,11 +2178,11 @@ $!==============================================================================
       endif
       stop
    endif
-   ! if no actions specified default to --wide
-   if( .not.any(specified([ character(len=20) :: 'border', 'box', 'code', 'entities', &
-   & 'escape', 'noescape', 'example', 'html', 'kind', 'lcase', 'ucase', 'length', &
-   & 'reverse', 'start', 'finish', 'styles', 'wide'])))then
-      wide=.true.
+   ! if no actions specified default to --findwide
+   if( .not.any(specified([ character(len=20) :: 'border', 'box', 'code', 'entities', 'nokeys', &
+   & 'toescape', 'noescape', 'sample', 'tohtml', 'nohtml', 'kind', 'lcase', 'ucase', 'length', &
+   & 'reverse', 'start', 'finish', 'styles', 'findwide', 'nowide' ])))then
+      findwide=.true.
    endif
    if(debug)then
       write(stderr,'(*(g0))')'nofile=',nofile
@@ -461,43 +2193,56 @@ $!==============================================================================
    endif
 end subroutine setup
 
-subroutine example_file()
+subroutine sample_file()
 integer                                                              :: i
-character(len=128),parameter :: example_data(*)=[ CHARACTER(LEN=128) :: &
-'The Greek alphabet consists of 24 letters, from Alpha to Omega, widely',&
-'used in mathematics, science, and engineering. The letters are        ',&
-'                                                                      ',&
-'   Alpha (Αα), Beta (Ββ), Gamma (Γγ), Delta (Δδ), Epsilon (Εε), Zeta',&
-'   (Ζζ), Eta (Ηη), Theta (Θθ), Iota (Ιι), Kappa (Κκ), Lambda        ',&
-'   (Λλ), Mu (Μμ), Nu (Νν), Xi (Ξξ), Omicron (Οο), Pi (Ππ), Rho    ',&
-'   (Ρρ), Sigma (Σσ/ς), Tau (Ττ), Upsilon (Υυ), Phi (Φφ), Chi       ',&
-'   (Χχ), Psi (Ψψ), and Omega (Ωω).                                      ',&
-'                                                                              ',&
-'Sigma (Σ, σ/ς) (Note: ς is used only at the end of words)                 ',&
-'                                                                              ',&
-'## As C++ escape sequences                                                                                                ',&
+character(len=128),parameter :: sample_data(*)=[ CHARACTER(LEN=128) :: &
+'                                                                                                                          ',&
+'test for "uni --toescape" and "uni --tohtml" and "uni --nowide" has the Greek alphabet in UTF-8                           ',&
+'                                                                                                                          ',&
+' The Greek alphabet consists of 24 letters, from Alpha to Omega, widely                                                   ',&
+' used in mathematics, science, and engineering. The letters are                                                           ',&
+'                                                                                                                          ',&
+'   Alpha (Αα), Beta (Ββ), Gamma (Γγ), Delta (Δδ), Epsilon (Εε), Zeta      ',&
+'   (Ζζ), Eta (Ηη), Theta (Θθ), Iota (Ιι), Kappa (Κκ), Lambda              ',&
+'   (Λλ), Mu (Μμ), Nu (Νν), Xi (Ξξ), Omicron (Οο), Pi (Ππ), Rho            ',&
+'   (Ρρ), Sigma (Σσ/ς), Tau (Ττ), Upsilon (Υυ), Phi (Φφ), Chi              ',&
+'   (Χχ), Psi (Ψψ), and Omega (Ωω).                                        ',&
+'                                                                                                                          ',&
+' Sigma (Σ, σ/ς) (Note: ς is used only at the end of words)                                                                ',&
+'                                                                                                                          ',&
+'test for "uni --noescape" has C++ escape sequences                                                                        ',&
+'                                                                                                                          ',&
 '   Alpha (\u0391\u03B1), Beta (\u0392\u03B2), Gamma (\u0393\u03B3), Delta (\u0394\u03B4), Epsilon (\u0395\u03B5), Zeta    ',&
 '   (\u0396\u03B6), Eta (\u0397\u03B7), Theta (\u0398\u03B8), Iota (\u0399\u03B9), Kappa (\u039A\u03BA), Lambda            ',&
 '   (\u039B\u03BB), Mu (\u039C\u03BC), Nu (\u039D\u03BD), Xi (\u039E\u03BE), Omicron (\u039F\u03BF), Pi (\u03A0\u03C0), Rho',&
 '   (\u03A1\u03C1), Sigma (\u03A3\u03C3/\u03C2), Tau (\u03A4\u03C4), Upsilon (\u03A5\u03C5), Phi (\u03A6\u03C6), Chi       ',&
 '   (\u03A7\u03C7), Psi (\u03A8\u03C8), and Omega (\u03A9\u03C9).                                                          ',&
 '                                                                                                                          ',&
-'Sigma (\u03A3, \u03C3/\u03C2) (Note: \u03C2 is used only at the end of words)                                             ',&
+'   Sigma (\u03A3, \u03C3/\u03C2) (Note: \u03C2 is used only at the end of words)                                          ',&
 '                                                                                                                          ',&
-'## As HTML character entities                                                                                             ',&
-'&Alpha;,&alpha;, &Beta;,&beta;, &Gamma;,&gamma;,                                                                          ',&
-'&Delta;,&delta;, &Epsilon;,&epsilon;, &Zeta;,&zeta;,                                                                      ',&
-'&Eta;,&eta;, &Theta;,&theta;, &Iota;,&iota;,                                                                              ',&
-'&Kappa;,&kappa;, &Lambda;,&lambda;, &Mu;,&mu;,                                                                            ',&
-'&Nu;,&nu;, &Xi;,&xi;, &Omicron;,&omicron;,                                                                                ',&
-'&Pi;,&pi;, &Rho;,&rho;, &Sigma;,&sigma;,                                                                                  ',&
-'&Tau;,&tau;, &Upsilon;,&upsilon;, &Phi;,&phi;,                                                                            ',&
-'&Chi;,&chi;, &Psi;,&psi;, &Omega;,&omega;                                                                                  ',&
+'test for "uni --nohtml" will convert this to actual Greek characters                                                      ',&
 '                                                                                                                          ',&
+'    ## Greek alphabet in HTML character entities                                                                          ',&
+'    &Alpha;,&alpha;, &Beta;,&beta;, &Gamma;,&gamma;,                                                                      ',&
+'    &Delta;,&delta;, &Epsilon;,&epsilon;, &Zeta;,&zeta;,                                                                  ',&
+'    &Eta;,&eta;, &Theta;,&theta;, &Iota;,&iota;,                                                                          ',&
+'    &Kappa;,&kappa;, &Lambda;,&lambda;, &Mu;,&mu;,                                                                        ',&
+'    &Nu;,&nu;, &Xi;,&xi;, &Omicron;,&omicron;,                                                                            ',&
+'    &Pi;,&pi;, &Rho;,&rho;, &Sigma;,&sigma;,                                                                              ',&
+'    &Tau;,&tau;, &Upsilon;,&upsilon;, &Phi;,&phi;,                                                                        ',&
+'    &Chi;,&chi;, &Psi;,&psi;, &Omega;,&omega;                                                                             ',&
+'                                                                                                                          ',&
+'test for "uni --box" will convert the # characters to box characters                                                      ',&
+'  #################################                                                                                       ',&
+'  # Warning: proceed with caution #                                                                                       ',&
+'  #################################                                                                                       ',&
+'                                                                                                                          ',&
+'try "uni --sample|uni --box --noescape --nohtml" to convert the sample to plain UTF-8                                     ',&
+'try "uni --sample|uni"                           to locate lines with non-ASCII-7 characters                              ',&
 '']
-   write(stdout,'(a)')(trim(example_data(i)),i=1,size(example_data))
+   write(stdout,'(a)')(trim(sample_data(i)),i=1,size(sample_data))
    stop
-end subroutine example_file
+end subroutine sample_file
 
 function get_text(fname) result(text_out)
 character(len=*),intent(in)  :: fname
@@ -520,12 +2265,14 @@ integer                      :: i
    if(.not.allocated(text_out))text_out=['']
    do i=1,size(text_out)
       line=text_out(i)
-      if(html)     line=expand_html(line)
+      if(nokeys)   line=keyword(line)
+      if(nohtml)   line=expand_html(line)
       if(lcase)    line=lower(line)
       if(ucase)    line=upper(line)
       if(noescape) line=remove_backslash(line)
       if(reverse)  line=reverse_line(line)
-      if(escape)   line=add_backslash(line)
+      if(toescape) line=add_backslash(line)
+      if(tohtml)   line=add_html(line)
       text_out(i)=line
    enddo
 
@@ -556,3 +2303,26 @@ integer,parameter           :: diff = iachar('A')-iachar('a')
 end function to_lower
 
 end program uni
+!
+! Maybe make an equivalent of the banner program that uses box characters
+!    #####         ##                      #######                 ### ###         ##
+!      #            #                      #     #                  #   #           #
+!      #            #                      #                        #   #           #
+!      #   #######  #####  ######          #                        #   #  #######  ######  #####  ######
+!      #   #     #  #   #   #   #          #######                  #   #    #   #  #    #      #   #   #
+!      #   #     #  #   #   #   #                #                  #   #    #      #    # ######   #   #
+!  #   #   #     #  #   #   #   #                #                  #   #    #      #    # #    #   #   #
+!  #   #   #     #  #   #   #   #          #     #    ##            #   #    #      #    # #    #   #   #
+!  #####   ####### ### ### ### ###         #######    ##            #####  #####   ####### ####### ### ###
+!
+!    ━━┳━━         ━┓                      ┏━━━━━┓                 ━┳━ ━┳━         ━┓
+!      ┃            ┃                      ┃     ┃                  ┃   ┃           ┃
+!      ┃            ┃                      ┃                        ┃   ┃           ┃
+!      ┃   ┏━━━━━┓  ┣━━━┓  ━┳━━━┓          ┃                        ┃   ┃  ━━┳━━━┓  ┣━━━━┓  ━━━━┓  ━┳━━━┓
+!      ┃   ┃     ┃  ┃   ┃   ┃   ┃          ┗━━━━━┓                  ┃   ┃    ┃   ┃  ┃    ┃      ┃   ┃   ┃
+!      ┃   ┃     ┃  ┃   ┃   ┃   ┃                ┃                  ┃   ┃    ┃      ┃    ┃ ┏━━━━┫   ┃   ┃
+!  ┃   ┃   ┃     ┃  ┃   ┃   ┃   ┃                ┃                  ┃   ┃    ┃      ┃    ┃ ┃    ┃   ┃   ┃
+!  ┃   ┃   ┃     ┃  ┃   ┃   ┃   ┃          ┃     ┃    ┏┓            ┃   ┃    ┃      ┃    ┃ ┃    ┃   ┃   ┃
+!  ┗━━━┛   ┗━━━━━┛ ━┻━ ━┻━ ━┻━ ━┻━         ┗━━━━━┛    ┗┛            ┗━━━┛  ━━┻━━   ━┻━━━━┛ ┗━━━━┻━ ━┻━ ━┻━
+!
+!

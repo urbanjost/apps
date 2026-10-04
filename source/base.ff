@@ -1,0 +1,316 @@
+program demo_base
+use,intrinsic :: iso_fortran_env, only : int8, int16, int32, int64
+
+use M_strings, only : codebase, decodebase, lower, string_to_value, stretch, getvals, unquote
+use M_kracken, only : kracken, sgets, lget, sget, iget, igets           ! add command-line parser module
+use M_kracken, only : kracken, kracken_comment
+implicit none
+character(len=80)             :: endstring
+integer                       :: value_in_base10
+integer                       :: ibase, obase, i, j, ierr
+integer,allocatable           :: obases(:)
+character(len=80),allocatable :: values(:)
+logical                       :: brief
+logical                       :: readem
+logical                       :: debug
+character(len=:),allocatable  :: set
+integer,parameter             :: longest_line=256
+character(len=longest_line)   :: line
+character(len=80)             :: readvalues(longest_line/2+1)
+integer                       :: iostat
+integer                       :: icount
+integer                       :: ilines
+!-----------------------------------------------------------------------------------------------------------------------------------
+   ! define command arguments,default values and crack command line
+   kracken_comment='!'
+   call kracken('base','--help .f. --version .f. --ibase 10 --obase 10 --brief .f. --debug .f. ')
+!-----------------------------------------------------------------------------------------------------------------------------------
+   call help_usage(lget('base_help'))                                ! if -help option is present, display help text and exit
+   call help_version(lget('base_version'))                           ! if -version option is present, display version text and exit
+!-----------------------------------------------------------------------------------------------------------------------------------
+   readem=.false.
+   ibase=iget('base_ibase')
+   select case(lower(sget('base_obase')))
+   case('all')
+      obases=[(i,i=2,36)]
+   case('','boz')
+      obases=[2,8,16]
+   case default
+      obases=[igets('base_obase')]
+   end select
+   brief=lget('base_brief')
+   debug=lget('base_debug')
+   values=sgets('base_oo')
+   if(size(values).eq.0)readem=.true.
+   ! if input base is default base10 or less allow BOZ and U and H input
+   if(ibase.le.10)then
+      set='#:bozuh'
+   else
+      set='#:'
+   endif
+   ilines=0
+   INFINITE: do
+      if(readem)then
+         read(*,'(a)',iostat=iostat) line
+         if(iostat /= 0)exit INFINITE
+         call getvals0(line,readvalues,icount,ierr)
+         ilines=ilines+1
+         if(ierr.ne.0)then
+            write(*,*)'*base* error occurred reading line ',ilines,': ',trim(line)
+            exit INFINITE
+         endif
+         if(icount.eq.0)cycle
+         values=readvalues(:icount)
+      endif
+      do j=1,size(obases)
+         obase=obases(j)
+         do i=1,size(values)
+            if(debug)write(*,*)i,'==>',lower(values(i))
+            if(scan(lower(values(i)),set).eq.0)then ! REGULAR NUMBER
+               if(decodebase(values(i),ibase,value_in_base10)) then
+                  if(CodeBase(value_in_base10,obase,endstring)) then
+                     if(brief)then
+                        write(*,'(A,1x)',advance='no')trim(endstring)
+                     else
+                        write(*,'(i0,"#",A," = ",I0,"#",A)')  ibase,stretch(trim(values(i)),14),obase, trim(endstring)
+                     endif
+                  else
+                     print *,'Error in coding number ',trim(values(i)), ' ibase=',ibase,' obase=',obase
+                  endif
+               else
+                  print *,'Error in decoding number ',trim(values(i)), ' ibase=',ibase,' obase=',obase
+               endif
+            else ! EXPLICIT BASE SPECIFIED (NN#MMMMM)
+               call string_to_value(values(i),value_in_base10,ierr)
+               if(debug)write(*,*)i,'==>',lower(values(i)),'==>',value_in_base10
+               if(ierr.eq.0) then
+                  if(CodeBase(value_in_base10,obase,endstring)) then
+                     if(brief)then
+                        write(*,'(A,1x)',advance='no')trim(endstring)
+                     else
+                        write(*,'(A," = ",I0,"#",A)')  stretch(trim(values(i)),14),obase, trim(endstring)
+                     endif
+                  else
+                     print *,'Error in coding number ',trim(values(i)), ' ibase=',ibase,' obase=',obase
+                  endif
+               else
+                  print *,'Error in decoding number NN#MMMM=',trim(values(i)), ' ibase=',ibase,' obase=',obase
+               endif
+            endif
+         enddo
+      enddo
+      if(.not.readem)exit
+   enddo INFINITE
+
+   if(brief)then
+      write(*,*)
+   endif
+contains
+$!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+$BLOCK HELP --file base.1.man
+NAME
+
+   base(1f) - [CONVERT] convert numbers between bases
+   (LICENSE:PD)
+
+SYNOPSIS
+   base values [ --ibase NN][ --obase MM][ --brief] |[[ --help]|[ --version]]
+
+DESCRIPTION
+
+   This program converts a whole number in base IBASE into a number in
+   base OBASE (IBASE and OBASE must be between 2 and 36).
+
+   + If IBASE is the default base of 10 or less then BOZ (binary, octal,
+     hexadecimal) input values are allowed with a leading B,O,Z,H,or U
+     indicating their base.
+
+     Letting leading letters designate a base in this case is allowed
+     as numeric values with a base less than 11 are composed entirely
+     of the digits 0-9.
+
+   + IBASE is ignored for input strings of the form BASE:VALUE or
+     BASE#VALUE and the explicitly specified base is used.
+
+   + Otherwise the letters A,B,C ... Z represent a base10 
+     10,11,12 ... 36 when IBASE is a base > 10 up to the magnitude
+     of the base. 
+
+METHOD
+
+   Internally this utility uses the M_strings(3) module and the
+   string_to_value(3f) procedure or the number is first converted from
+   base IBASE to base 10 by DecodeBase(3f), then converted from base 10
+   to base OBASE by CodeBase(3f).
+
+OPTIONS
+
+    values      space-delimited strings representing input values.
+                If none are specified read from stdin.
+
+                Note: values come **before** any command line options.
+
+    --ibase NN  The default base assumed for input values. Defaults to 10.
+
+                When IBASE is 10 (the default) BOZ literals are allowed,
+                where U and H are equivalent to Z.
+
+                IBASE is ignored for input values of the form form
+                NN:MMMM or NN#MMMM where NN is the base and MMMM the
+                value the numbers are interpreted in the explicit base
+                the numbers represent.
+
+                Otherwise, input values are interpreted as in base NN.
+
+    --obase MM  bases for output values. The Default is 10. Values must
+                be in the range from 2 to 36 or the keyword 'all' or 'boz'.
+
+    --brief     just show output value with no base designation
+
+    --help      display this help and exit
+    --version   output version information and exit
+
+    Having a pound character (#) in an input line is problematic, as
+    it is relatively commonly used to begin an in-line comment in many
+    programs. Shells such as bash treat the "#" as a regular character if
+    it appears inside a word so it may not be a problem but in general
+    it is a good practice to avoid using pound characters and use the
+    colon instead when using explicit base numbers in values.
+
+EXAMPLE
+
+  Sample runs:
+
+   # convert BOZ (binary, octal, hexadecimal) values to base10
+    base zFF o777 U+FF b111111
+    > zFF            = 10#255
+    > o777           = 10#511
+    > U+FF           = 10#255
+    > b111111        = 10#63
+   
+   # convert base2 values to base10
+    base 1010 101010 101010101010 -ibase 2
+    > 2#1010           = 10#10
+    > 2#101010         = 10#42
+    > 2#101010101010   = 10#2730
+   
+   # convert base2 values to base10 in brief mode
+    base 10 1010 101010 10101010 101010101010 -ibase 2 -brief
+    > 2 10 42 170 2730 
+   
+   # convert base10 values to base2
+    base 2 42 2730 -obase 2
+    > 10#2              = 2#10
+    > 10#42             = 2#101010
+    > 10#2730           = 2#101010101010
+   
+   # convert base10 values to base3
+    base 10 20 50 -obase 3
+    > 10#10             = 3#101
+    > 10#20             = 3#202
+    > 10#50             = 3#1212
+   
+   # convert values of various explicit bases to base10
+    base 2:11 3:1212 4:123123
+    > 2:11           = 10#3
+    > 3:1212         = 10#50
+    > 4:123123       = 10#1755
+    base "2#11 3#1212 4#123123"
+    > 2#11           = 10#3
+    > 3#1212         = 10#50
+    > 4#123123       = 10#1755
+   
+   # convert values with explicit bases to base2 in brief mode
+    base 2:1111 3:10 4:10 8:10 16:10 --obase 2 --brief
+    > 1111 11 100 1000 10000 
+   
+   # convert a value to multiple bases
+    base 16:FF -obase 2 8 16
+    > 16:FF          = 2#11111111
+    > 16:FF          = 8#377
+    > 16:FF          = 16#FF
+    base 16:FF -obase boz
+    > 16:FF          = 2#11111111
+    > 16:FF          = 8#377
+    > 16:FF          = 16#FF
+SEE ALSO
+   + bc(1) obase and ibase (bc <<< "obase=2;ibase=16;F0F0")
+   + bash shell conversion to base 10 : $((base#value))
+   + printf octal, and hexadecimal formats (printf '%x\n' 255,
+   printf '%o\n' 255)
+   + M_strings(3f) module
+   + Fortran format descriptors b,o,z
+AUTHOR
+   John S. Urban
+LICENSE
+   Public Domain
+$ENDBLOCK 
+$!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+$BLOCK VERSION
+PRODUCT:        GPF (General Purpose Fortran) utilities and examples
+PROGRAM:        base(1)
+DESCRIPTION:    convert numbers between bases
+VERSION:        1.0, 20170916
+AUTHOR:         John S. Urban
+LICENSE:        Public Domain
+REPORTING BUGS: http://www.urbanjost.altervista.org/
+$ENDBLOCK 
+$!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+subroutine getvals0(line,values,icount,ierr)
+
+$@(#) M_strings::getvals(3f): read arbitrary number of values from a character variable
+
+! JSU 20170831
+
+character(len=*),intent(in)  :: line
+class(*),intent(out)         :: values(:)
+integer,intent(out)          :: icount
+integer,intent(out),optional :: ierr
+
+character(len=:),allocatable :: buffer
+character(len=len(line))     :: words(size(values))
+integer                      :: iostat, i, ierr_local,isize
+
+   isize=0
+   select type(values)
+   type is (integer);          isize=size(values)
+   type is (real);             isize=size(values)
+   type is (doubleprecision);  isize=size(values)
+   type is (character(len=*)); isize=size(values)
+   end select
+
+   ierr_local=0
+
+   words=' '                            ! make sure words() is initialized to null+blanks
+   buffer=trim(unquote(line))//"/"      ! add a slash to the end so how the read behaves with missing values is clearly defined
+   read(buffer,*,iostat=iostat) words   ! undelimited strings are read into an array
+   icount=0
+   do i=1,isize                         ! loop thru array and convert non-blank words to numbers
+      if(words(i) == ' ')cycle
+
+      select type(values)
+      type is (integer);          read(words(i),*,iostat=iostat)values(icount+1)
+      type is (real);             read(words(i),*,iostat=iostat)values(icount+1)
+      type is (doubleprecision);  read(words(i),*,iostat=iostat)values(icount+1)
+      type is (character(len=*)); values(icount+1)=words(i)
+      end select
+
+      if(iostat == 0)then
+         icount=icount+1
+      else
+         ierr_local=iostat
+         write(*,*)'*getvals* WARNING:['//trim(words(i))//'] is not a number of specified type'
+      endif
+   enddo
+
+   if(present(ierr))then
+      ierr=ierr_local
+   elseif(ierr_local /= 0)then        ! error occurred and not returning error to main program to print message and stop program
+      write(*,*)'*getval* error reading line ['//trim(line)//']'
+      stop 2
+   endif
+
+end subroutine getvals0
+$!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+end program demo_base
+$!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@

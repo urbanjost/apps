@@ -1,0 +1,25 @@
+name = "base"
+version = "1.0.0"
+license = "MIT"
+author = "John S. Urban"
+maintainer = "urbanjost@comcast.net"
+copyright = "Copyright 2025,2026 John S. Urban"
+description = "convert numbers between various bases"
+categories = ["math","strings","conversion"]
+keywords = ["base", "convert","strings" ]
+homepage = "https://github.com/urbanjost/apps/base"
+
+[[executable]]
+   name="base"
+   source-dir="app"
+   main="base.f90"
+
+[dependencies]
+   #M_strings  =  { git        =  "https://github.com/urbanjost/M_strings.git" }
+   #M_kracken  =  { git        =  "https://github.com/urbanjost/M_kracken.git" }
+
+   #M_strings  =  { namespace  =  "GPF"                                        }
+   #M_kracken  =  { namespace  =  "GPF"                                        }
+
+   M_strings   =  { path       =  "GLINKS/M_strings"                           }
+   M_kracken   =  { path       =  "GLINKS/M_kracken"                           }
