@@ -1,5 +1,13 @@
-<ss> and <SS> and <ae oe ue> and <Ae Oe Ue>
-<beta> and <Beta> and <auml ouml uuml> and <Auml Ouml Uuml>
+Keys for German:
+
+  <ss> and <SS> and <ae oe ue> and <Ae Oe Ue> and <AE OE UE>
+
+HTML entities work as keys as well:
+
+  <szlig> and <7838> and <auml ouml uuml> and <Auml Ouml Uuml>
+
+The Unicode codepoints for the German Eszett (sharp s) are U+00DF for
+the lowercase letter and U+1E9E for the capital letter.
 
 A classic German tongue-twister (Zungenbrecher) packed with ä, ö, ü,
 and ß:
@@ -14,5 +22,5 @@ and ß:
 
 📝 English Translation
 
-   "Behind mansions circle croaking crows, while sweet, tender little geese
-   knock over large oil barrels."
+   "Behind mansions circle croaking crows, while sweet, tender little
+   geese knock over large oil barrels."
