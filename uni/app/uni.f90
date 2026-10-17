@@ -1930,6 +1930,9 @@ help_text=[ CHARACTER(LEN=128) :: &
 '                                                                                ',&
 '                Multiple names separated by commas are allowed.                 ',&
 '                                                                                ',&
+'                If "test" is specified the glyphs of the specified values       ',&
+'                are streamed to output separated by a space.                    ',&
+'                                                                                ',&
 '                The --style option also applies when --nokeys is                ',&
 '                specified.  In this case the allowed value is either            ',&
 '                "plain" or "raw",                                               ',&
@@ -2075,7 +2078,10 @@ help_text=[ CHARACTER(LEN=128) :: &
 '   uni --start 880 --finish 1023                                                                      ',&
 '                                                                                                      ',&
 '   # test current font                                                                                ',&
-'   uni --start 32 --finish 1114111 --test                                                             ',&
+'   uni --start 32 --finish 1114111 --style utf8                                                       ',&
+'                                                                                                      ',&
+'   # Show information about a codepoint                                                               ',&
+'   uni -S U+A5                                                                                        ',&
 '                                                                                                      ',&
 'SEE ALSO                                                                                              ',&
 '   dos2unix(1)/unix2dos(1), iconv(1)                                                                  ',&
@@ -2140,6 +2146,7 @@ version_text=[ CHARACTER(LEN=128) :: &
    call get_args('nowide',   nowide )
    call get_args('text',     nofile )
    styles=sgets('style')
+   if(size(styles).eq.0) styles=['all']
    if( specified('nokeys') .and. specified('style') )then
       call keyword_mode(styles(1))
    endif
@@ -2166,6 +2173,9 @@ version_text=[ CHARACTER(LEN=128) :: &
    if( specified('start')  .and. (.not.specified('finish')) ) endrange=startrange
    if( specified('start') .or. specified('finish') )then
       styles=to_lower(styles)
+      if(styles(1).eq.'all')then
+         styles=[character(len=10) :: 'd','utf8','b','o','z','c','hex','u','htmlx','htmld','ucs4','codex']
+      endif
       if(any(styles.eq.'test'))then
          do i=startrange,max(min(endrange,1114111),0)
             ustr=i
@@ -2177,7 +2187,7 @@ version_text=[ CHARACTER(LEN=128) :: &
             ustr=i
             do j=1,size(styles)
              select case(styles(j))
-              case('decimal'); write(stdout,'(1x,i0)',advance='no') i    ! codepoint
+              case('d','decimal'); write(stdout,'(1x,i0)',advance='no') i    ! codepoint
               case('utf8'); write(stdout,'(1x,a)',advance='no')ch(ustr)  ! character
               case('c') ;write(stdout,'(1x,''\U'',z8.8)',advance='no')i  ! \U00000064
               case('b','binary') ;                 write(stdout,'(1x,"b",b0)',advance='no')i       ! bNNNNN
@@ -2343,5 +2353,4 @@ end program uni
 !  ┃   ┃   ┃     ┃  ┃   ┃   ┃   ┃                ┃                  ┃   ┃    ┃      ┃    ┃ ┃    ┃   ┃   ┃
 !  ┃   ┃   ┃     ┃  ┃   ┃   ┃   ┃          ┃     ┃    ┏┓            ┃   ┃    ┃      ┃    ┃ ┃    ┃   ┃   ┃
 !  ┗━━━┛   ┗━━━━━┛ ━┻━ ━┻━ ━┻━ ━┻━         ┗━━━━━┛    ┗┛            ┗━━━┛  ━━┻━━   ━┻━━━━┛ ┗━━━━┻━ ━┻━ ━┻━
-!
 !
