@@ -372,7 +372,6 @@ character(len=256)           :: iomsg
 ! 172 ¬ !
 ! 173 ­ -
 
-
 ! 180 ´ '
 ! 181 µ u
 ! 183 · .
@@ -1287,7 +1286,6 @@ character(len=256)           :: iomsg
 ! 127241 🄉 8,
 ! 127242 🄊 9,
 
-
 ! 222 Þ TH
 ! 223 ß ss
 ! 254 þ th
@@ -1854,7 +1852,6 @@ help_text=[ CHARACTER(LEN=128) :: &
 '                 HTML format &#NNNNN;.                                          ',&
 '   --code,C STYLE  write as Fortran code using KIND=ISO_10646                   ',&
 '                                                                                ',&
-'                                                                                ',&
 '   DECODE ENCODINGS TO UTF-8                                                    ',&
 '   --noescape,N  convert C-style escape sequences to UTF8 encoded data          ',&
 '   --nohtml,H    expand text containing HTML character entities of the          ',&
@@ -2079,6 +2076,10 @@ help_text=[ CHARACTER(LEN=128) :: &
 '                                                                                                      ',&
 '   # test current font                                                                                ',&
 '   uni --start 32 --finish 1114111 --style utf8                                                       ',&
+'                                                                                                      ',&
+'   # German mneumonics                                                                                ',&
+'   uni -t ''<raquo><ae oe ue ss Ae Oe Ue Ss><laquo>'' --nokeys                                        ',&
+'   uni -t ''<raquo><ae oe ue ss Ae Oe Ue Ss><laquo>'' --nokeys --style plain                          ',&
 '                                                                                                      ',&
 '   # Show information about a codepoint                                                               ',&
 '   uni -S U+A5                                                                                        ',&
