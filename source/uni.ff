@@ -373,7 +373,6 @@ $!==============================================================================
 ! 172 ¬ !
 ! 173 ­ -
 
-
 ! 180 ´ '
 ! 181 µ u
 ! 183 · .
@@ -1288,7 +1287,6 @@ $!==============================================================================
 ! 127241 🄉 8,
 ! 127242 🄊 9,
 
-
 ! 222 Þ TH
 ! 223 ß ss
 ! 254 þ th
@@ -1857,7 +1855,6 @@ OPTIONS
                  HTML format &#NNNNN;.
    --code,C STYLE  write as Fortran code using KIND=ISO_10646
 
-
    DECODE ENCODINGS TO UTF-8
    --noescape,N  convert C-style escape sequences to UTF8 encoded data
    --nohtml,H    expand text containing HTML character entities of the
@@ -1927,14 +1924,14 @@ OPTIONS
 
    --style,s    Styles to print range specified by --start and --finish
                 with. Default is "decimal,utf8,b,o,z".
-                                                                 
+
                 See the following section "STYLES" for descriptions of
                 the various styles.
 
                 Multiple names separated by commas are allowed.
 
-		If "test" is specified the glyphs of the specified values
-		are streamed to output separated by a space.
+                If "test" is specified the glyphs of the specified values
+                are streamed to output separated by a space.
 
                 The --style option also applies when --nokeys is
                 specified.  In this case the allowed value is either
@@ -1970,7 +1967,7 @@ ways to represent Unicode Codepoints:
 + OCTAL,O
     + octal value with a "o" prefix
 + HEXADECIMAL,Z
-    + hexadecimal value with a "z" prefix 
+    + hexadecimal value with a "z" prefix
 + HEX
     + hexadecimal value of codepoint
 + UTF8
@@ -2082,6 +2079,10 @@ EXAMPLE
 
    # test current font
    uni --start 32 --finish 1114111 --style utf8
+
+   # German mneumonics
+   uni -t '<raquo><ae oe ue ss Ae Oe Ue Ss><laquo>' --nokeys
+   uni -t '<raquo><ae oe ue ss Ae Oe Ue Ss><laquo>' --nokeys --style plain
 
    # Show information about a codepoint
    uni -S U+A5
