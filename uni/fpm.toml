@@ -15,5 +15,7 @@ homepage = "https://github.com/urbanjost/apps/uni"
    main="uni.f90"
 
 [dependencies]
-M_unicode = { git = "https://github.com/urbanjost/M_unicode.git" }
-M_CLI2    = { git = "https://github.com/urbanjost/M_CLI2.git" }
+M_unicode   =  {  git   =  "https://github.com/urbanjost/M_unicode.git"  }
+M_CLI2      =  {  git   =  "https://github.com/urbanjost/M_CLI2.git"     }
+#M_unicode  =  {  path  =  "GLINKS/M_unicode"                            }
+#M_CLI2     =  {  path  =  "GLINKS/M_CLI2"                               }
