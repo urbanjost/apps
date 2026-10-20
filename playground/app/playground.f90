@@ -75,7 +75,7 @@ contains
       select case (type)
       case ('html')
          ! write percent-encrypted copy of code as a URI
-         write (stdout, '(*(g0))', advance='no') '  <a href="https://play.fortran-lang.org/?code=', percent_encode(text), '" '
+         write (stdout, '(*(g0))', advance='no') '  <a href="https://beliavsky.github.io/fortran-playground/#code=', percent_encode(text), '" '
          play = [CHARACTER(LEN=128) :: &
           '  target="_blank" title="Open in Fortran Playground">', &
           '  <img src="https://raw.githubusercontent.com/fortran-lang/playground/main/frontend/src/fortran-logo.png"', &
@@ -91,7 +91,7 @@ contains
          call write ([CHARACTER(LEN=128) :: ' ', ' '])
          ! write percent-encrypted copy of code as a URI
          write (stdout, '(*(g0))', advance='no') '    open [', shortname, ']'
-         write (stdout, '(*(g0))', advance='no') '(https://play.fortran-lang.org/?code=', percent_encode(text), ')'
+         write (stdout, '(*(g0))', advance='no') '(https://beliavsky.github.io/fortran-playground/#code=', percent_encode(text), ')'
          play = [CHARACTER(LEN=128) :: &
                  '  in Fortran Playground    ', &
                  '  ']
@@ -150,7 +150,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '   > </head>                                                            ',&
 '   > <body>                                                             ',&
 '   >                                                                    ',&
-'   >   <a href="https://play.fortran-lang.org/?code=                    ',&
+'   >   <a href="https://beliavsky.github.io/fortran-playground/#code=                    ',&
 '   >   program%20hello%5Fworld                                          ',&
 '   >   %0A%20%20%20write%28%2A%2C%2A%29%27Hello%20World%21%27           ',&
 '   >   %0Aend%20program%20hello%5Fworld                                 ',&

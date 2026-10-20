@@ -45,7 +45,7 @@ playground --help
      > </head>
      > <body>
      >
-     >	 <a href="https://play.fortran-lang.org/?code=
+     >	 <a href="https://beliavsky.github.io/fortran-playground/#code=
      >	 program%20hello%5Fworld
      >	 %0A%20%20%20write%28%2A%2C%2A%29%27Hello%20World%21%27
      >	 %0Aend%20program%20hello%5Fworld
