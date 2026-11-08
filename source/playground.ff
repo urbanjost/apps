@@ -102,9 +102,11 @@ contains
                  '  ']
          write (stdout, '(a)') (trim(play(j)), j=1, size(play))
          ! now write file to stdout as-is
+         write (stdout, '(*(a:))') '[details="source of '//shortname//'"]'
          write (stdout, '(*(a:))') '```fortran'
          write (stdout, '(*(a:))', advance='no') text
          write (*, '(*(a:))') '```'
+         write (stdout, '(*(a:))') '[/details]'
          deallocate (text)  ! release memory
       case default
          write (stderr,*) '<ERROR> unknown type', type, 'must be from {html|md}'

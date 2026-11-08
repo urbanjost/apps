@@ -13,6 +13,7 @@ program testit
    integer                      :: i, j, k, ii, imax
 
    call set_args('--separator:s "::"', help_text=[ CHARACTER(LEN=128) :: &
+   !12345678901234567890123456789012345678901234567890123456789012345678901234567890!
    'NAME                                                                           ',&
    '    lineup(1f) - [APPS] align strings in Fortran declarations                  ',&
    '    (LICENSE:PD)                                                               ',&

@@ -1,4 +1,9 @@
 program playground
+! changed
+!     https://play.fortran-lang.org/?code=
+! to
+!     https://beliavsky.github.io/fortran-playground/#code=
+!
    use, intrinsic :: iso_fortran_env, only: &
     & stderr => ERROR_UNIT,&
     & stdin => INPUT_UNIT,&
@@ -97,9 +102,11 @@ contains
                  '  ']
          write (stdout, '(a)') (trim(play(j)), j=1, size(play))
          ! now write file to stdout as-is
+         write (stdout, '(*(a:))') '[details="source of '//shortname//'"]'
          write (stdout, '(*(a:))') '```fortran'
          write (stdout, '(*(a:))', advance='no') text
          write (*, '(*(a:))') '```'
+         write (stdout, '(*(a:))') '[/details]'
          deallocate (text)  ! release memory
       case default
          write (stderr,*) '<ERROR> unknown type', type, 'must be from {html|md}'
@@ -150,7 +157,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '   > </head>                                                            ',&
 '   > <body>                                                             ',&
 '   >                                                                    ',&
-'   >   <a href="https://beliavsky.github.io/fortran-playground/#code=                    ',&
+'   >   <a href="https://beliavsky.github.io/fortran-playground/#code=   ',&
 '   >   program%20hello%5Fworld                                          ',&
 '   >   %0A%20%20%20write%28%2A%2C%2A%29%27Hello%20World%21%27           ',&
 '   >   %0Aend%20program%20hello%5Fworld                                 ',&
